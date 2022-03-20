@@ -1,1 +1,16 @@
 @import url("../node_modules/bulma/css/bulma.css");
+.is-primary{
+    background-color: #F59432 !important;
+    font-weight: bold;
+}
+
+.is-secondary{
+    background-color: #3596B5 !important;
+    font-weight: bold;
+    color: white;
+}
+
+.button{
+    border-radius: 3rem;
+    padding: 0rem 3rem 0rem 3rem;
+}

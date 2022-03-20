@@ -19,17 +19,18 @@ function App() {
   }, []);
  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Ise School Start App</p>
+    <div>
         <ul>
           {users.map((item, index) => (
             <li key={index}>{item.name}</li>
           ))}
         </ul>
-        <button className="button is-primary"> Click aquí </button>
-      </header>
+        <div className="is-flex is-justify-content-space-between">
+          <button className="button is-secondary "> Regresar </button>
+          <button className="button is-primary "> Registrar </button>
+        </div>
+        
+      
     </div>
   );
 }

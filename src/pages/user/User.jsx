@@ -1,7 +1,7 @@
-export default function (){
-    return (
-        <div>
-            "hola"
-        </div>
-    )
+import UserForm from "./UserForm"
+
+export default function User(){
+
+    return(<UserForm/>)
+
 }
