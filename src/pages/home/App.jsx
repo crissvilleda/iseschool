@@ -28,6 +28,7 @@ function App() {
             <li key={index}>{item.name}</li>
           ))}
         </ul>
+        <button className="button is-primary"> Click aquí </button>
       </header>
     </div>
   );
