@@ -1,0 +1,33 @@
+.sidebar-container {
+  height: 100%;
+  background-color: #00b0bd;
+  max-width: 12.5rem;
+  z-index: 150;
+  position: fixed;
+  border-end-end-radius: 1rem;
+  border-start-end-radius: 1rem;
+}
+
+.menu-item {
+  font-size: 1rem;
+}
+
+.menu-link {
+  color: white;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  display: flex;
+}
+.menu-link:hover {
+  color: white;
+}
+.menu-link:hover,
+.menu-link.active {
+  background-color: #002d47;
+  font-weight: bold;
+  border-radius: 1rem;
+}
+
+.menu-icon {
+  max-width: 1rem;
+  margin: 0rem;
+}
