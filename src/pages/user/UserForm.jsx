@@ -14,12 +14,13 @@ export default function UserForm(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <label>Datos Personales</label>
       <div className="field">
         <label htmlFor="test" className="label">
           Nombre
         </label>
         <div className="control">
-          <input className="input" {...register("name", { required: true })} />
+          <input className="input" {...register("name", { required: true })} placeholder="Ingrese nombre" />
           {errors.name && <span>Este campo es requerido.</span>}
         </div>
       </div>
@@ -29,10 +30,7 @@ export default function UserForm(props) {
           Apellidos
         </label>
         <div className="control">
-          <input
-            className="input"
-            {...register("lastName", { required: true })}
-          />
+          <input className="input" {...register("lastName", { required: true })} placeholder="Ingrese Apellido"/>
           {errors.lastName && <span>Este campo es requerido.</span>}
         </div>
       </div>
@@ -44,8 +42,7 @@ export default function UserForm(props) {
         <div className="control">
           <input
             className="input"
-            {...register("bornDate", { required: false })}
-          />
+            {...register("bornDate", { required: false })} placeholder="Date"/>
           {errors.bornDate && <span>Este campo es requerido.</span>}
         </div>
       </div>
@@ -57,12 +54,10 @@ export default function UserForm(props) {
         <div className="control">
           <input
             className="input"
-            {...register("gender", { required: true })}
-          />
+            {...register("gender", { required: true })} placeholder="Select"/>
           {errors.gender && <span>Este campo es requerido.</span>}
         </div>
       </div>
-
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">
           Regresar
