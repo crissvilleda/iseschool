@@ -1,7 +1,5 @@
-import UserForm from "./UserForm"
+import UserForm from "./UserForm";
 
-export default function User(){
-
-    return(<UserForm/>)
-
+export default function User() {
+  return <UserForm />;
 }

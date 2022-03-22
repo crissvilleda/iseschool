@@ -7,11 +7,13 @@ import dayjs from "dayjs";
 export default function () {
   const { getData } = useList("users", "name");
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     getData().then((data) => {
       if (data) setUsers(data);
     });
   }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -29,9 +31,12 @@ export default function () {
       {
         Header: "Fecha Nacimiento",
         accessor: (row) => {
-          const bornDate = row.bornDate.toDate();
-          if (!dayjs(bornDate).isValid()) return "";
-          return dayjs(bornDate).format("DD-MM-YYYY");
+          if (row.bornDate) {
+            const bornDate = row.bornDate.toDate();
+            if (!dayjs(bornDate).isValid()) return "";
+            return dayjs(bornDate).format("DD-MM-YYYY");
+          }
+          return "";
         },
       },
       {

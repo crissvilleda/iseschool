@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import useCreate from "../../hooks/useCreate";
 
 export default function UserForm(props) {
   const {
@@ -8,10 +9,10 @@ export default function UserForm(props) {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { saveData } = useCreate("users", "/user");
+  const onSubmit = (data) => saveData(data);
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="field">
         <label htmlFor="test" className="label">
@@ -43,7 +44,7 @@ export default function UserForm(props) {
         <div className="control">
           <input
             className="input"
-            {...register("bornDate", { required: true })}
+            {...register("bornDate", { required: false })}
           />
           {errors.bornDate && <span>Este campo es requerido.</span>}
         </div>
@@ -66,7 +67,7 @@ export default function UserForm(props) {
         <Link className="button is-secondary " to="/user">
           Regresar
         </Link>
-        <button className="button is-primary " type="submit">
+        <button className="button is-primary" type="submit">
           Registrar
         </button>
       </div>
