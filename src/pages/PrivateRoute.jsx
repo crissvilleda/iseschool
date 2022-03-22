@@ -8,9 +8,7 @@ export default function PrivateRoutes(props) {
         <SideBar className="column is-3 is-hidden-mobile p-2" />
         <div className="columns m-0">
           <Navbar />
-          <main className="column is-9 is-offset-3-tablet is-offset-2-desktop p-4">
-            {props.children}
-          </main>
+          <main className="column is-9 p-4">{props.children}</main>
         </div>
       </div>
     </>
