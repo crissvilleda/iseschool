@@ -1,5 +1,6 @@
 @import url("../../node_modules/bulma/css/bulma.css");
 @import url("./private_route.css");
+@import url("antd/dist/antd.css");
 .is-primary {
   background-color: #f59432 !important;
   font-weight: bold;
@@ -18,4 +19,22 @@
 
 .title {
   color: #002d47 !important;
+}
+
+.title-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.input {
+  max-width: 20rem !important;
+  background-color: #f1f1f0 !important;
+  border-radius: 1rem !important;
+  border: unset !important;
+  color: #878e99 !important;
+  font-weight: bold !important;
+}
+
+.label {
+  color: #375784;
 }
