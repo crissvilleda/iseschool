@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useCreate from "../../hooks/useCreate";
+import 
 
 export default function UserForm(props) {
   const {
@@ -58,6 +59,18 @@ export default function UserForm(props) {
           {errors.gender && <span>Este campo es requerido.</span>}
         </div>
       </div>
+
+      <label>Datos Del Sistema</label>
+
+      <div c lassName="field">
+        <label htmlFor="test" className="label">Tipo de Usuario
+        </label>
+        <div className="control">
+          <input className="input" {...register("name", { required: true })} placeholder="Select" />
+          {errors.name && <span>Este campo es requerido.</span>}
+        </div>
+      </div>
+
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">
           Regresar
@@ -66,6 +79,9 @@ export default function UserForm(props) {
           Registrar
         </button>
       </div>
+
+    
+
     </form>
   );
 }
