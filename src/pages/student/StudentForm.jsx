@@ -37,7 +37,7 @@ export default function StudentForm(props) {
 
         <div className="field column is-6">
           <label htmlFor="test" className="label">
-            Apellidos
+            Apellido
           </label>
           <div className="control">
             <InputText
@@ -45,7 +45,7 @@ export default function StudentForm(props) {
               control={control}
               name="lastName"
               rules={{ required: "Este campo es requerido." }}
-              placeholder={"Ingrese nombre"}
+              placeholder={"Ingrese apellido"}
             />
           </div>
         </div>

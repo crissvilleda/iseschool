@@ -13,6 +13,7 @@ export default function UserForm(props) {
     handleSubmit,
     watch,
     formState: { errors },
+    control,
   } = useForm();
   const { saveData } = useCreate("users", "/user");
   const onSubmit = (data) => saveData(data);
@@ -36,7 +37,7 @@ export default function UserForm(props) {
           
           <div className="field column is-6">
             <label htmlFor="test" className="label">
-              Apellidos
+              Apellido
             </label>
             <div className="control">
               <InputText
@@ -49,19 +50,43 @@ export default function UserForm(props) {
             </div>
           </div>
       </div>
-        
-      <div className="field">
+      <div className="is-flex">
+        <div className="field column id-6">
+          <label htmlFor="test" className="label">
+            Fecha de Nacimiento 
+          </label>
+          <div className="control">
+            <InputDate
+              className="input"
+              control={control}
+              name="bornDate"
+              rules={{required: "Este campo es requerido."}}
+            />
+          </div>
+        </div>
+
+        <div className="field column is-6">
         <label htmlFor="test" className="label">
-          Fecha de Nacimiento
+          Genero
         </label>
         <div className="control">
-          <input
-            className="input"
-            {...register("bornDate", { required: false })} placeholder="Date"/>
-          {errors.bornDate && <span>Este campo es requerido.</span>}
+          <InputSelect
+          className="input"
+          control={control}
+          name="gender"
+          rules={{required: "Este campo es requerido."}}
+          placeholder="Seleccione genero"
+          options={[
+            {value: "M", label: "Masculino"},
+            {value: "F", label: "Femenino"},
+          ]}
+          />
         </div>
       </div>
+      </div>
 
+      
+      
       <div className="field">
         <label htmlFor="test" className="label">
           Genero
