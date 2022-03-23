@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useCreate from "../../hooks/useCreate";
-import { InputDate } from "../../components/CustomInputs";
+import {
+  InputDate,
+  InputText,
+  InputSelect,
+} from "../../components/CustomInputs";
 
 export default function StudentForm(props) {
   const {
@@ -17,57 +21,70 @@ export default function StudentForm(props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Datos Personales</label>
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Nombre
-        </label>
-        <div className="control">
-          <input
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Nombre
+          </label>
+          <InputText
             className="input"
-            {...register("name", { required: true })}
-            placeholder="Ingrese nombre"
+            control={control}
+            name="name"
+            rules={{ required: "Este campo es requerido." }}
+            placeholder={"Ingrese nombre"}
           />
-          {errors.name && <span>Este campo es requerido.</span>}
+        </div>
+
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Apellidos
+          </label>
+          <div className="control">
+            <InputText
+              className="input"
+              control={control}
+              name="lastName"
+              rules={{ required: "Este campo es requerido." }}
+              placeholder={"Ingrese nombre"}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="is-flex">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Fecha de Nacimiento
+          </label>
+          <div className="control">
+            <InputDate
+              className="input"
+              control={control}
+              name="bornDate"
+              rules={{ required: "Este campo es requerido." }}
+            />
+          </div>
+        </div>
+
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Genero
+          </label>
+          <div className="control">
+            <InputSelect
+              className="input"
+              control={control}
+              name="gender"
+              rules={{ required: "Este campo es requerido." }}
+              placeholder="Seleccione genero"
+              options={[
+                { value: "M", label: "Masculino" },
+                { value: "F", label: "Femenino" },
+              ]}
+            />
+          </div>
         </div>
       </div>
 
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Apellidos
-        </label>
-        <div className="control">
-          <input
-            className="input"
-            {...register("lastName", { required: true })}
-            placeholder="Ingrese Apellido"
-          />
-          {errors.lastName && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
-
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Fecha de Nacimiento
-        </label>
-        <div className="control">
-          <InputDate className="input" control={control} name="bornDate" />
-          {errors.bornDate && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
-
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Genero
-        </label>
-        <div className="control">
-          <input
-            className="input"
-            {...register("gender", { required: true })}
-            placeholder="Select"
-          />
-          {errors.gender && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">
           Regresar

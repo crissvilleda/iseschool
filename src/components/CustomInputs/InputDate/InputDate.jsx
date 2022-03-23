@@ -4,8 +4,7 @@ import DatePicker from "../../DatePicker";
 export default function InputDate({ name, control, rules, className }) {
   const {
     field: { onChange, value, ref },
-    fieldState: { invalid, isTouched, isDirty },
-    formState: { touchedFields, dirtyFields },
+    fieldState: { invalid, isTouched, error },
   } = useController({
     name,
     control,
@@ -21,7 +20,9 @@ export default function InputDate({ name, control, rules, className }) {
         placeholder="DD/MM/YYYY"
         value={value}
         ref={ref}
+        size="large"
       />
+      {error && <p class="help is-danger">{error.message}</p>}
     </>
   );
 }
