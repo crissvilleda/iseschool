@@ -51,6 +51,7 @@ export default function StudentList() {
   return (
     <>
       <div className="is-flex is-justify-content-space-between my-4">
+        <img src={StudentIcon} className="title-icon" />
         <h1 className="title is-3">Estudiantes</h1>
         <Link to="/student/create" className="button is-secondary">
           Agregar nuevo

@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "antd": "^4.19.3",
     "bulma": "^0.9.3",
     "dayjs": "^1.11.0",
     "firebase": "^9.6.8",
