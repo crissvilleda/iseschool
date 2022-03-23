@@ -1,6 +1,11 @@
 import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 import UserIcon from "../../assets/img/user.png";
+import StudentIcon from "../../assets/img/student.png";
+import HomeIcon from "../../assets/img/home.png";
+import GroupIcon from "../../assets/img/group.png";
+import ResourceIcon from "../../assets/img/books.png";
+import ActivityIcon from "../../assets/img/activities.png";
 
 function MenuItem({ icon, title, to }) {
   return (
@@ -28,12 +33,12 @@ export default function SideBar({ className }) {
         <br />
         <div className="menu">
           <ul>
-            <MenuItem title="Inicio" to="/" />
+            <MenuItem title="Inicio" to="/" icon={HomeIcon} />
             <MenuItem title="Usuarios" to="/user" icon={UserIcon} />
-            <MenuItem title="Estudiantes" to="/student" />
-            <MenuItem title="Grupos" to="/group" />
-            <MenuItem title="Actividades" to="/activity" />
-            <MenuItem title="Material" to="/resource" />
+            <MenuItem title="Estudiantes" to="/student" icon={StudentIcon} />
+            <MenuItem title="Grupos" to="/group" icon={GroupIcon} />
+            <MenuItem title="Actividades" to="/activity" icon={ActivityIcon} />
+            <MenuItem title="Material" to="/resource" icon={ResourceIcon} />
           </ul>
         </div>
       </aside>
