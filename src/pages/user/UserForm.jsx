@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import useCreate from "../../hooks/useCreate";
-import 
+import useCreate from "../../hooks/useCreate";  
+import {
+  InputDate,
+  InputText,
+  InputSelect,
+} from "../../components/CustomInputs";
 
 export default function UserForm(props) {
   const {
@@ -16,26 +20,36 @@ export default function UserForm(props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Datos Personales</label>
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Nombre
-        </label>
-        <div className="control">
-          <input className="input" {...register("name", { required: true })} placeholder="Ingrese nombre" />
-          {errors.name && <span>Este campo es requerido.</span>}
-        </div>
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Nombre
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="name"
+              rules={{required: "Este campo es requerido."}}
+              placeholder={"Ingrese nombre"}
+            />
+          </div>
+          
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Apellidos
+            </label>
+            <div className="control">
+              <InputText
+                className="input"
+                control={control}
+                name="name"
+                rules={{required: "Este campo es requerido."}}
+                placeholder={"Ingrese apellido"}
+              />
+            </div>
+          </div>
       </div>
-
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Apellidos
-        </label>
-        <div className="control">
-          <input className="input" {...register("lastName", { required: true })} placeholder="Ingrese Apellido"/>
-          {errors.lastName && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
-
+        
       <div className="field">
         <label htmlFor="test" className="label">
           Fecha de Nacimiento
