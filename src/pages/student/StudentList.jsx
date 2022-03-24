@@ -1,16 +1,38 @@
 import { useMemo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Table from "../../components/Table";
-import { useList } from "../../hooks";
 import dayjs from "dayjs";
 import StudentIcon from "../../assets/img/student.png";
+import {
+  collection,
+  query,
+  orderBy,
+  startAfter,
+  limit,
+  getDocs,
+  where,
+} from "firebase/firestore";
+import { db } from "../../firebase";
 
+async function getStudents(students) {
+  let querySet = query(
+    collection(db, "users"),
+    where("type", "==", "estudiante"),
+    orderBy("name"),
+    limit(25)
+  );
+
+  const querySnapshot = await getDocs(querySet);
+  const result = [];
+  querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
+  return result;
+}
 export default function StudentList() {
-  const { getData } = useList("users", "name");
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    getData().then((data) => {
+    getStudents(students).then((data) => {
+      console.log(data);
       if (data) setStudents(data);
     });
   }, []);
