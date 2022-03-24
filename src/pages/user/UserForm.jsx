@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import useCreate from "../../hooks/useCreate";
-import 
+import useCreate from "../../hooks/useCreate";  
+import {
+  InputDate,
+  InputText,
+  InputSelect,
+} from "../../components/CustomInputs";
 
 export default function UserForm(props) {
   const {
@@ -9,6 +13,7 @@ export default function UserForm(props) {
     handleSubmit,
     watch,
     formState: { errors },
+    control,
   } = useForm();
   const { saveData } = useCreate("users", "/user");
   const onSubmit = (data) => saveData(data);
@@ -16,38 +21,72 @@ export default function UserForm(props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>Datos Personales</label>
-      <div className="field">
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Nombre
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="name"
+              rules={{required: "Este campo es requerido."}}
+              placeholder={"Ingrese nombre"}
+            />
+          </div>
+          
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Apellido
+            </label>
+            <div className="control">
+              <InputText
+                className="input"
+                control={control}
+                name="name"
+                rules={{required: "Este campo es requerido."}}
+                placeholder={"Ingrese apellido"}
+              />
+            </div>
+          </div>
+      </div>
+      <div className="is-flex">
+        <div className="field column id-6">
+          <label htmlFor="test" className="label">
+            Fecha de Nacimiento 
+          </label>
+          <div className="control">
+            <InputDate
+              className="input"
+              control={control}
+              name="bornDate"
+              rules={{required: "Este campo es requerido."}}
+            />
+          </div>
+        </div>
+
+        <div className="field column is-6">
         <label htmlFor="test" className="label">
-          Nombre
+          Genero
         </label>
         <div className="control">
-          <input className="input" {...register("name", { required: true })} placeholder="Ingrese nombre" />
-          {errors.name && <span>Este campo es requerido.</span>}
+          <InputSelect
+          className="input"
+          control={control}
+          name="gender"
+          rules={{required: "Este campo es requerido."}}
+          placeholder="Seleccione genero"
+          options={[
+            {value: "M", label: "Masculino"},
+            {value: "F", label: "Femenino"},
+          ]}
+          />
         </div>
       </div>
-
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Apellidos
-        </label>
-        <div className="control">
-          <input className="input" {...register("lastName", { required: true })} placeholder="Ingrese Apellido"/>
-          {errors.lastName && <span>Este campo es requerido.</span>}
-        </div>
       </div>
 
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Fecha de Nacimiento
-        </label>
-        <div className="control">
-          <input
-            className="input"
-            {...register("bornDate", { required: false })} placeholder="Date"/>
-          {errors.bornDate && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
-
+      
+      
       <div className="field">
         <label htmlFor="test" className="label">
           Genero
