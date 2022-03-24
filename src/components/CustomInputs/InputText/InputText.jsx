@@ -14,12 +14,13 @@ export default function InputText({
     name,
     control,
     rules: { ...rules },
+    defaultValue: "",
   });
 
   return (
     <>
       <input className={className || ""} placeholder={placeholder} {...field} />
-      {error && <p class="help is-danger">{error.message}</p>}
+      {error && <p className="help is-danger">{error.message}</p>}
     </>
   );
 }

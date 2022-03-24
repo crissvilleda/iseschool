@@ -39,7 +39,7 @@ export default function InputSelect({
           );
         })}
       </Select>
-      {error && <p class="help is-danger">{error.message}</p>}
+      {error && <p className="help is-danger">{error.message}</p>}
     </>
   );
 }

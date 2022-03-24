@@ -22,7 +22,7 @@ export default function InputDate({ name, control, rules, className }) {
         ref={ref}
         size="large"
       />
-      {error && <p class="help is-danger">{error.message}</p>}
+      {error && <p className="help is-danger">{error.message}</p>}
     </>
   );
 }
