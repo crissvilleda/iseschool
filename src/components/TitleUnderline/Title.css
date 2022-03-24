@@ -1,0 +1,19 @@
+.title-underline {
+  --ww: 0;
+  --color: #ef5543;
+  color: var(--color) !important;
+  font-size: 1rem;
+  font-weight: 700 !important;
+  max-width: max-content;
+}
+
+.title-underline::after {
+  display: block;
+  content: "";
+  border-bottom: 2px solid var(--color);
+  width: var(--ww);
+  position: relative;
+  right: 1.5rem;
+  bottom: 0rem;
+  margin: 0;
+}

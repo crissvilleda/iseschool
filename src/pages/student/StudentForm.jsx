@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useCreate from "../../hooks/useCreate";
+import TitleUnderline from "../../components/TitleUnderline";
 import {
   InputDate,
   InputText,
@@ -20,7 +21,7 @@ export default function StudentForm(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Datos Personales</label>
+      <TitleUnderline title="Datos Personales" />
       <div className="is-flex is-fle">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
