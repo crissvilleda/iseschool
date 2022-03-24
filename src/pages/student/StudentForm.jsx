@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import useCreate from "../../hooks/useCreate";
 import TitleUnderline from "../../components/TitleUnderline";
 import {
   InputDate,
@@ -8,7 +7,7 @@ import {
   InputSelect,
 } from "../../components/CustomInputs";
 
-export default function StudentForm(props) {
+export default function StudentForm({ onSubmit }) {
   const {
     register,
     handleSubmit,
@@ -16,8 +15,6 @@ export default function StudentForm(props) {
     formState: { errors },
     control,
   } = useForm();
-  const { saveData } = useCreate("users", "/student");
-  const onSubmit = (data) => saveData(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
