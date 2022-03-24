@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useCreate from "../../hooks/useCreate";  
+import TitleUnderline from "../../components/TitleUnderline";
 import {
   InputDate,
   InputText,
@@ -20,7 +21,7 @@ export default function UserForm(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Datos Personales</label>
+      <TitleUnderline title="Datos Personales "/>
       <div className="is-flex is-fle">
         <div className="field column is-6">
             <label htmlFor="test" className="label">
@@ -43,14 +44,15 @@ export default function UserForm(props) {
               <InputText
                 className="input"
                 control={control}
-                name="name"
+                name="lastName"
                 rules={{required: "Este campo es requerido."}}
                 placeholder={"Ingrese apellido"}
               />
             </div>
           </div>
       </div>
-      <div className="is-flex">
+
+      <div className="is-flex is-fle">
         <div className="field column id-6">
           <label htmlFor="test" className="label">
             Fecha de Nacimiento 
@@ -66,49 +68,99 @@ export default function UserForm(props) {
         </div>
 
         <div className="field column is-6">
-        <label htmlFor="test" className="label">
-          Genero
-        </label>
-        <div className="control">
-          <InputSelect
-          className="input"
-          control={control}
-          name="gender"
-          rules={{required: "Este campo es requerido."}}
-          placeholder="Seleccione genero"
-          options={[
-            {value: "M", label: "Masculino"},
-            {value: "F", label: "Femenino"},
-          ]}
+          <label htmlFor="test" className="label">
+            Genero
+          </label>
+          <div className="control">
+            <InputSelect
+            className="input"
+            control={control}
+            name="gender"
+            rules={{required: "Este campo es requerido."}}
+            placeholder="Seleccione genero"
+            options={[
+              {value: "M", label: "Masculino"},
+              {value: "F", label: "Femenino"},
+            ]}
+            />
+          </div>
+        </div>
+      </div>
+        
+      <TitleUnderline title="Datos de Sistema"/>
+      
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Tipo de usuario
+          </label>
+          <div className="control">
+            <InputSelect 
+            className="input"
+            control={control}
+            name="typeUser"
+            rules={{required:"Este campo es requerido."}}
+            placeholder="Seleccione tipo Usuario"
+            options={[
+              {value: "Admin", label: "Administrador"},
+              {value: "Teacher", label: "Catedratico"},
+              {value: "Student", label: "Alumno"}
+            ]}
+            />
+          </div>
+        </div>
+
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Correo
+          </label>
+          <InputText
+            className="input"
+            control={control}
+            name="email"
+            rules={{required: "Este campo es requerido"}}
+            placeholder={"Ingrese Correo"}
           />
         </div>
       </div>
-      </div>
 
-      
-      
-      <div className="field">
-        <label htmlFor="test" className="label">
-          Genero
-        </label>
-        <div className="control">
-          <input
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Nombre Usuario
+          </label>
+          <InputText
             className="input"
-            {...register("gender", { required: true })} placeholder="Select"/>
-          {errors.gender && <span>Este campo es requerido.</span>}
+            control={control}
+            name="nameUser"
+            rules={{required: "Este campo es requerido"}}
+            placeholder="Ingrese nombre"
+          />
         </div>
+
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Contraseña
+          </label>
+          <InputText
+            className="input"
+            control={control}
+            name="password"
+            rules={{required: "Este campo es requerido"}}
+            placeholder="Ingrese contraseña"
+          />
+          <input type="password" id="password" required="true" />
+          
+        </div>
+        
       </div>
 
-      <label>Datos Del Sistema</label>
+      
 
-      <div c lassName="field">
-        <label htmlFor="test" className="label">Tipo de Usuario
-        </label>
-        <div className="control">
-          <input className="input" {...register("name", { required: true })} placeholder="Select" />
-          {errors.name && <span>Este campo es requerido.</span>}
-        </div>
-      </div>
+
+
+
+
 
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">
