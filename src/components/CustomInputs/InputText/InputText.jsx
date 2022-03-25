@@ -6,6 +6,7 @@ export default function InputText({
   rules,
   className,
   placeholder,
+  type = "text",
 }) {
   const {
     field,
@@ -19,7 +20,12 @@ export default function InputText({
 
   return (
     <>
-      <input className={className || ""} placeholder={placeholder} {...field} />
+      <input
+        type={type}
+        className={className || ""}
+        placeholder={placeholder}
+        {...field}
+      />
       {error && <p className="help is-danger">{error.message}</p>}
     </>
   );

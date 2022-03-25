@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import useCreate from "../../hooks/useCreate";  
+import useCreate from "../../hooks/useCreate";
 import TitleUnderline from "../../components/TitleUnderline";
 import {
   InputDate,
@@ -21,48 +21,48 @@ export default function UserForm(props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TitleUnderline title="Datos Personales "/>
+      <TitleUnderline title="Datos Personales " />
       <div className="is-flex is-fle">
         <div className="field column is-6">
-            <label htmlFor="test" className="label">
-              Nombre
-            </label>
+          <label htmlFor="test" className="label">
+            Nombre
+          </label>
+          <InputText
+            className="input"
+            control={control}
+            name="name"
+            rules={{ required: "Este campo es requerido." }}
+            placeholder={"Ingrese nombre"}
+          />
+        </div>
+
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Apellido
+          </label>
+          <div className="control">
             <InputText
               className="input"
               control={control}
-              name="name"
-              rules={{required: "Este campo es requerido."}}
-              placeholder={"Ingrese nombre"}
+              name="lastName"
+              rules={{ required: "Este campo es requerido." }}
+              placeholder={"Ingrese apellido"}
             />
           </div>
-          
-          <div className="field column is-6">
-            <label htmlFor="test" className="label">
-              Apellido
-            </label>
-            <div className="control">
-              <InputText
-                className="input"
-                control={control}
-                name="lastName"
-                rules={{required: "Este campo es requerido."}}
-                placeholder={"Ingrese apellido"}
-              />
-            </div>
-          </div>
+        </div>
       </div>
 
       <div className="is-flex is-fle">
         <div className="field column id-6">
           <label htmlFor="test" className="label">
-            Fecha de Nacimiento 
+            Fecha de Nacimiento
           </label>
           <div className="control">
             <InputDate
               className="input"
               control={control}
               name="bornDate"
-              rules={{required: "Este campo es requerido."}}
+              rules={{ required: "Este campo es requerido." }}
             />
           </div>
         </div>
@@ -73,39 +73,39 @@ export default function UserForm(props) {
           </label>
           <div className="control">
             <InputSelect
-            className="input"
-            control={control}
-            name="gender"
-            rules={{required: "Este campo es requerido."}}
-            placeholder="Seleccione genero"
-            options={[
-              {value: "M", label: "Masculino"},
-              {value: "F", label: "Femenino"},
-            ]}
+              className="input"
+              control={control}
+              name="gender"
+              rules={{ required: "Este campo es requerido." }}
+              placeholder="Seleccione genero"
+              options={[
+                { value: "M", label: "Masculino" },
+                { value: "F", label: "Femenino" },
+              ]}
             />
           </div>
         </div>
       </div>
-        
-      <TitleUnderline title="Datos de Sistema"/>
-      
+
+      <TitleUnderline title="Datos de Sistema" />
+
       <div className="is-flex is-fle">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
             Tipo de usuario
           </label>
           <div className="control">
-            <InputSelect 
-            className="input"
-            control={control}
-            name="typeUser"
-            rules={{required:"Este campo es requerido."}}
-            placeholder="Seleccione tipo Usuario"
-            options={[
-              {value: "Admin", label: "Administrador"},
-              {value: "Teacher", label: "Catedratico"},
-              {value: "Student", label: "Alumno"}
-            ]}
+            <InputSelect
+              className="input"
+              control={control}
+              name="typeUser"
+              rules={{ required: "Este campo es requerido." }}
+              placeholder="Seleccione tipo Usuario"
+              options={[
+                { value: "Admin", label: "Administrador" },
+                { value: "Teacher", label: "Catedratico" },
+                { value: "Student", label: "Alumno" },
+              ]}
             />
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function UserForm(props) {
             className="input"
             control={control}
             name="email"
-            rules={{required: "Este campo es requerido"}}
+            rules={{ required: "Este campo es requerido" }}
             placeholder={"Ingrese Correo"}
           />
         </div>
@@ -133,7 +133,7 @@ export default function UserForm(props) {
             className="input"
             control={control}
             name="nameUser"
-            rules={{required: "Este campo es requerido"}}
+            rules={{ required: "Este campo es requerido" }}
             placeholder="Ingrese nombre"
           />
         </div>
@@ -146,21 +146,12 @@ export default function UserForm(props) {
             className="input"
             control={control}
             name="password"
-            rules={{required: "Este campo es requerido"}}
+            rules={{ required: "Este campo es requerido" }}
             placeholder="Ingrese contraseña"
+            type="password"
           />
-          <input type="password" id="password" required="true" />
-          
         </div>
-        
       </div>
-
-      
-
-
-
-
-
 
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">
@@ -170,9 +161,6 @@ export default function UserForm(props) {
           Registrar
         </button>
       </div>
-
-    
-
     </form>
   );
 }
