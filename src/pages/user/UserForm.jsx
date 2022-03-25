@@ -103,8 +103,7 @@ export default function UserForm(props) {
               placeholder="Seleccione tipo Usuario"
               options={[
                 { value: "Admin", label: "Administrador" },
-                { value: "Teacher", label: "Catedratico" },
-                { value: "Student", label: "Alumno" },
+                { value: "Teacher", label: "Catedrático" },
               ]}
             />
           </div>

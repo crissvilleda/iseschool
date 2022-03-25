@@ -12,7 +12,7 @@ export default function Student() {
     if (body.bornDate) {
       body.bornDate = Timestamp.fromDate(dayjs(body.bornDate).toDate());
     }
-    body.type = "estudiante";
+    body.type = "Student";
     saveData(body);
   };
 

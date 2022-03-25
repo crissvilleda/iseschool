@@ -17,7 +17,7 @@ import { db } from "../../firebase";
 async function getStudents(students) {
   let querySet = query(
     collection(db, "users"),
-    where("type", "==", "estudiante"),
+    where("type", "==", "Student"),
     orderBy("name"),
     limit(25)
   );
