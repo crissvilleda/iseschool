@@ -14,8 +14,10 @@ export default function useDateUtils() {
     if (value && value.seconds && value.nanoseconds) {
       value = new Timestamp(value.seconds, value.nanoseconds).toDate();
       return dayjs(value);
-    } else {
+    } else if (dayjs(value).isValid()) {
       return dayjs(value);
+    } else {
+      return null;
     }
   };
   return { dateAsDayjs, dateAsTimestamp };

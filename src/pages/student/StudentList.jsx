@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
 import StudentIcon from "../../assets/img/student.png";
+import useDelete from "../../hooks/useDelete";
 import {
   collection,
   query,
@@ -29,14 +30,21 @@ async function getStudents(students) {
 }
 export default function StudentList() {
   const [students, setStudents] = useState([]);
+  const { deleteData } = useDelete("users");
   const navigate = useNavigate();
 
   useEffect(() => {
     getStudents(students).then((data) => {
-      console.log(data);
       if (data) setStudents(data);
     });
   }, []);
+
+  const removeData = async (id) => {
+    await deleteData(id);
+    await getStudents(students).then((data) => {
+      if (data) setStudents(data);
+    });
+  };
 
   const columns = useMemo(
     () => [
@@ -44,7 +52,7 @@ export default function StudentList() {
         Header: "Herramientas",
         accessor: tableActions({
           edit: (id) => navigate(`/student/${id}`),
-          remove: (id) => {},
+          remove: (id) => removeData(id),
         }),
       },
       {

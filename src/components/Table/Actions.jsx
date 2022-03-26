@@ -7,26 +7,24 @@ function Actions({ id, edit = undefined, remove = undefined }) {
     edit(id);
   };
   const removeAction = () => {
-    return () => {
-      Swal.fire({
-        title: "¿Eliminar?",
-        text: "¡No podrá revertir esta acción!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "¡Sí, eliminar!",
-        cancelButtonText: "No, cancelar",
-        reverseButtons: true,
-        allowEnterKey: false,
-        customClass: {
-          cancelButton: "button is-secondary",
-          confirmButton: "button is-primary",
-        },
-      }).then((result) => {
-        if (result.value) {
-          remove(id);
-        }
-      });
-    };
+    Swal.fire({
+      title: "¿Eliminar?",
+      text: "¡No podrá revertir esta acción!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "¡Sí, eliminar!",
+      cancelButtonText: "No, cancelar",
+      reverseButtons: true,
+      allowEnterKey: false,
+      customClass: {
+        cancelButton: "button is-secondary",
+        confirmButton: "button is-primary",
+      },
+    }).then((result) => {
+      if (result.value) {
+        remove(id);
+      }
+    });
   };
   return (
     <>
