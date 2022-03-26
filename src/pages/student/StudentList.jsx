@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
 import StudentIcon from "../../assets/img/student.png";
@@ -29,6 +29,7 @@ async function getStudents(students) {
 }
 export default function StudentList() {
   const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getStudents(students).then((data) => {
@@ -41,7 +42,10 @@ export default function StudentList() {
     () => [
       {
         Header: "Herramientas",
-        accessor: tableActions({ edit: () => {}, remove: () => {} }),
+        accessor: tableActions({
+          edit: (id) => navigate(`/student/${id}`),
+          remove: (id) => {},
+        }),
       },
       {
         Header: "Nombres",

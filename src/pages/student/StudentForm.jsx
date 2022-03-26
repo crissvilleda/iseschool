@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import TitleUnderline from "../../components/TitleUnderline";
@@ -7,14 +8,23 @@ import {
   InputSelect,
 } from "../../components/CustomInputs";
 
-export default function StudentForm({ onSubmit }) {
+export default function StudentForm({
+  onSubmit,
+  initialValues = {},
+  isUpdating,
+}) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
     control,
+    reset,
   } = useForm();
+
+  useEffect(() => {
+    reset(initialValues);
+  }, [initialValues]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -128,11 +138,11 @@ export default function StudentForm({ onSubmit }) {
       </div>
 
       <div className="is-flex is-justify-content-space-between">
-        <Link className="button is-secondary " to="/user">
+        <Link className="button is-secondary " to="/student">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
-          Registrar
+          {isUpdating ? "Actualizar" : "Registrar"}
         </button>
       </div>
     </form>

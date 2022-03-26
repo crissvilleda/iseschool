@@ -1,19 +1,22 @@
 import StudentForm from "./StudentForm";
 import StudentIcon from "../../assets/img/student.png";
+import useUpdate from "../../hooks/useUpdate";
 import useCreate from "../../hooks/useCreate";
-import dayjs from "dayjs";
-import { Timestamp } from "firebase/firestore";
+import useDateUtils from "../../hooks/useDateUtils";
 
 export default function Student() {
   const { saveData } = useCreate("users", "/student");
+  const { updateData, data, isUpdating } = useUpdate("users", "/student");
+  const { dateAsTimestamp } = useDateUtils();
 
   const onSubmit = (data) => {
     const body = { ...data };
     if (body.bornDate) {
-      body.bornDate = Timestamp.fromDate(dayjs(body.bornDate).toDate());
+      body.bornDate = dateAsTimestamp(body.bornDate);
     }
     body.type = "Student";
-    saveData(body);
+    if (isUpdating) updateData(body);
+    else saveData(body);
   };
 
   return (
@@ -22,7 +25,11 @@ export default function Student() {
         <img src={StudentIcon} className="title-icon" />
         <h1 className="title is-3 ml-1">Estudiantes</h1>
       </div>
-      <StudentForm onSubmit={onSubmit} />
+      <StudentForm
+        onSubmit={onSubmit}
+        initialValues={data}
+        isUpdating={isUpdating}
+      />
     </>
   );
 }

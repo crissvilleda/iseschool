@@ -3,7 +3,10 @@ import removeIcon from "../../assets/img/delete.svg";
 import Swal from "sweetalert2";
 
 function Actions({ id, edit = undefined, remove = undefined }) {
-  const removeAction = (id) => {
+  const editAction = () => {
+    edit(id);
+  };
+  const removeAction = () => {
     return () => {
       Swal.fire({
         title: "¿Eliminar?",
@@ -32,7 +35,7 @@ function Actions({ id, edit = undefined, remove = undefined }) {
           <a
             className="px-2"
             style={{ cursor: "pointer", color: "#c4183c" }}
-            onClick={edit}
+            onClick={editAction}
           >
             <i className="material-icons">
               <img src={editIcon} className="icon" />
@@ -43,7 +46,7 @@ function Actions({ id, edit = undefined, remove = undefined }) {
           <a
             className="px-2"
             style={{ cursor: "pointer", color: "#c4183c" }}
-            onClick={removeAction(id)}
+            onClick={removeAction}
           >
             <i className="material-icons">
               <img src={removeIcon} className="icon" />
