@@ -2,6 +2,7 @@
 @import url("./private_route.css");
 @import url("antd/dist/antd.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+@import url("../../node_modules/sweetalert2/dist/sweetalert2.min.css");
 
 .is-primary {
   background-color: #f59432 !important;

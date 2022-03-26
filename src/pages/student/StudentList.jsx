@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Table from "../../components/Table";
+import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
 import StudentIcon from "../../assets/img/student.png";
 import {
@@ -41,7 +41,7 @@ export default function StudentList() {
     () => [
       {
         Header: "Herramientas",
-        accessor: "id",
+        accessor: tableActions({ edit: () => {}, remove: () => {} }),
       },
       {
         Header: "Nombres",

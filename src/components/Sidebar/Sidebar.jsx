@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./sidebar.css";
 import UserIcon from "../../assets/img/user.png";
 import StudentIcon from "../../assets/img/student.png";
-import HomeIcon from "../../assets/img/home.png";
+import HomeIcon from "../../assets/img/home.svg";
 import GroupIcon from "../../assets/img/group.png";
 import ResourceIcon from "../../assets/img/books.png";
 import ActivityIcon from "../../assets/img/activities.png";
