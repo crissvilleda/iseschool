@@ -1,7 +1,8 @@
 import { useTable } from "react-table";
+import LoadMask from "../LoadMask";
 import "./table.css";
 
-export default function Table({ columns, data }) {
+export default function Table({ columns, data, loading }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -12,7 +13,7 @@ export default function Table({ columns, data }) {
   } = useTable({ columns, data });
 
   return (
-    <>
+    <LoadMask loading={loading}>
       <div className="table-scroll">
         <table className="table is-narrow is-fullwidth" {...getTableProps()}>
           <thead>
@@ -42,6 +43,6 @@ export default function Table({ columns, data }) {
           </tbody>
         </table>
       </div>
-    </>
+    </LoadMask>
   );
 }

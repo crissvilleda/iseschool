@@ -1,9 +1,10 @@
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
 import StudentIcon from "../../assets/img/student.png";
 import useDelete from "../../hooks/useDelete";
+import LoadingContext from "../../context/LoadingContext";
 import {
   collection,
   query,
@@ -31,19 +32,25 @@ async function getStudents(students) {
 export default function StudentList() {
   const [students, setStudents] = useState([]);
   const { deleteData } = useDelete("users");
+  const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getStudents(students).then((data) => {
-      if (data) setStudents(data);
-    });
+    setLoading(true);
+    getStudents(students)
+      .then((data) => {
+        if (data) setStudents(data);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const removeData = async (id) => {
+    setLoading(true);
     await deleteData(id);
     await getStudents(students).then((data) => {
       if (data) setStudents(data);
     });
+    setLoading(false);
   };
 
   const columns = useMemo(
@@ -95,7 +102,7 @@ export default function StudentList() {
       </div>
       <br />
       <br />
-      <Table columns={columns} data={students} />
+      <Table columns={columns} data={students} loading={loading} />
     </>
   );
 }
