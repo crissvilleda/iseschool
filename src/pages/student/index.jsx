@@ -7,6 +7,7 @@ export default function StudentView() {
     <Routes>
       <Route path="/" element={<StudentList />} />
       <Route path="/create" element={<Student />} />
+      <Route path="/:id" element={<Student />} />
     </Routes>
   );
 }

@@ -21,6 +21,11 @@ export default function InputSelect({
     rules: { ...rules },
   });
 
+  let _value = value;
+  if (_value !== null && _value !== undefined) {
+    _value = options.find((item) => item.value === value);
+  }
+
   return (
     <>
       <Select

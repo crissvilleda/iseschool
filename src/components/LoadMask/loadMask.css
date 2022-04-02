@@ -1,0 +1,11 @@
+.ant-spin-lg .ant-spin-dot {
+  font-size: 4rem;
+}
+.ant-spin-dot-item {
+  background-color: #002d47;
+}
+
+.ant-spin-lg .ant-spin-dot i {
+  width: 1.5rem;
+  height: 1.5rem;
+}
