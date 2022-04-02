@@ -4,6 +4,9 @@ import Table from "../../components/Table";
 import { useList } from "../../hooks";
 import dayjs from "dayjs";
 import UserIcon from "../../assets/img/user.png";
+import{
+  InputSelect,
+} from "../../components/CustomInputs"
 
 export default function () {
   const { getData } = useList("users", "name");
@@ -58,6 +61,30 @@ export default function () {
         <Link to="/user/create" className="button is-secondary">
           Agregar nuevo
         </Link>
+      
+         <div className="is-flex is-fle">
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Filtrar por tipo
+            </label>
+            <div className="control">
+              <InputSelect
+                className="input"
+                control={control}
+                name="filter"
+                rules={{required: "Este campo es requerido"}}
+                placeholder="Seleccione tipo"
+                options={[
+                  {value: "Admin", label: "Administrador"},
+                  {value: "Teacher", label: "Catedratico"},
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+        */
+
+
       </div>
       <br />
       <br />
