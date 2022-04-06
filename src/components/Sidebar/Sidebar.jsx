@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import "./sidebar.css";
 import UserIcon from "../../assets/img/user.png";
 import StudentIcon from "../../assets/img/student.png";
@@ -8,12 +9,19 @@ import ResourceIcon from "../../assets/img/books.png";
 import ActivityIcon from "../../assets/img/activities.png";
 
 function MenuItem({ icon, title, to }) {
+  const [isActive, setIsActive] = useState(false);
+  const location = useLocation();
+  console.log(location);
+  useEffect(() => {
+    if (location.pathname.includes(to) && to != "/") setIsActive(true);
+    else setIsActive(false);
+  }, [location.pathname]);
   return (
     <li className="menu-item my-2">
       <NavLink
         to={to || "/"}
         end
-        className={({ isActive }) => `menu-link ${isActive ? "active" : ""}`}
+        className={`menu-link ${isActive ? "active" : ""}`}
       >
         <div className="menu-icon">
           {icon && <img src={icon} className="" />}

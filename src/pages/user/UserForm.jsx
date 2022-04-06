@@ -1,23 +1,29 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import useCreate from "../../hooks/useCreate";
 import TitleUnderline from "../../components/TitleUnderline";
+
 import {
   InputDate,
   InputText,
   InputSelect,
 } from "../../components/CustomInputs";
 
-export default function UserForm(props) {
+export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
     control,
+    reset,
   } = useForm();
   const { saveData } = useCreate("users", "/user");
-  const onSubmit = (data) => saveData(data);
+
+  useEffect(() => {
+    reset(initialValues);
+  }, [initialValues]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +104,7 @@ export default function UserForm(props) {
             <InputSelect
               className="input"
               control={control}
-              name="typeUser"
+              name="type"
               rules={{ required: "Este campo es requerido." }}
               placeholder="Seleccione tipo Usuario"
               options={[

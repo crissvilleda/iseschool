@@ -7,6 +7,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<UserList />} />
       <Route path="/create" element={<User />} />
+      <Route path="/:id" element={<User />} />
     </Routes>
   );
 }
