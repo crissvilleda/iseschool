@@ -5,6 +5,7 @@ import User from "./user";
 import Student from "./student";
 import PrivateRoute from "./PrivateRoute";
 import LoadingContext from "../context/LoadingContext";
+import Login from "./login";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ export default function App() {
     <>
       <LoadingContext.Provider value={contextLoading}>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route
             path="/"
             element={

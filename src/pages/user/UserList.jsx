@@ -4,9 +4,7 @@ import Table from "../../components/Table";
 import { useList } from "../../hooks";
 import dayjs from "dayjs";
 import UserIcon from "../../assets/img/user.png";
-import{
-  InputSelect,
-} from "../../components/CustomInputs"
+import { InputSelect } from "../../components/CustomInputs";
 
 export default function () {
   const { getData } = useList("users", "name");
@@ -55,20 +53,19 @@ export default function () {
     <>
       <div className="is-flex is-justify-content-space-between my-4">
         <div className="is-flex">
-          <img src={UserIcon} className="title-icon"/>
+          <img src={UserIcon} className="title-icon" />
           <h1 className="title is-3">Usuarios</h1>
         </div>
         <Link to="/user/create" className="button is-secondary">
           Agregar nuevo
         </Link>
-      
-         <div className="is-flex is-fle">
+        <div className="is-flex is-fle">
           <div className="field column is-6">
             <label htmlFor="test" className="label">
               Filtrar por tipo
             </label>
             <div className="control">
-              <InputSelect
+              {/* <InputSelect
                 className="input"
                 control={control}
                 name="filter"
@@ -78,13 +75,11 @@ export default function () {
                   {value: "Admin", label: "Administrador"},
                   {value: "Teacher", label: "Catedratico"},
                 ]}
-              />
+              /> */}
             </div>
           </div>
         </div>
         */
-
-
       </div>
       <br />
       <br />

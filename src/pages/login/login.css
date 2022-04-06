@@ -1,0 +1,14 @@
+.form-container {
+  margin: auto;
+  max-width: 25rem;
+  border-radius: 0.5rem;
+}
+
+.login-container {
+  height: 100vh;
+  margin: auto;
+}
+
+.login-container .input {
+  max-width: unset !important;
+}

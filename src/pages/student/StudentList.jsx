@@ -15,7 +15,6 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { InputSelect } from "../../components/CustomInputs";
 
 async function getStudents(students) {
   let querySet = query(
@@ -101,7 +100,7 @@ export default function StudentList() {
           Agregar nuevo
         </Link>
       </div>
-      
+
       <br />
       <br />
       <Table columns={columns} data={students} loading={loading} />

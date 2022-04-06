@@ -29,7 +29,7 @@ export default function StudentForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos Personales" />
-      <div className="is-flex is-fle">
+      <div className="is-flex">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
             Nombre
