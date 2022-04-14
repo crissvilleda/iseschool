@@ -7,6 +7,13 @@ import {
   InputText,
   InputSelect,
 } from "../../components/CustomInputs";
+import {
+  email,
+  composeValidators,
+  required,
+  date,
+  password,
+} from "../../validations";
 
 export default function StudentForm({
   onSubmit,
@@ -14,9 +21,7 @@ export default function StudentForm({
   isUpdating,
 }) {
   const {
-    register,
     handleSubmit,
-    watch,
     formState: { errors },
     control,
     reset,
@@ -38,7 +43,7 @@ export default function StudentForm({
             className="input"
             control={control}
             name="name"
-            rules={{ required: "Este campo es requerido." }}
+            rules={{ validate: required }}
             placeholder={"Ingrese nombre"}
           />
         </div>
@@ -52,7 +57,7 @@ export default function StudentForm({
               className="input"
               control={control}
               name="lastName"
-              rules={{ required: "Este campo es requerido." }}
+              rules={{ validate: required }}
               placeholder={"Ingrese apellido"}
             />
           </div>
@@ -68,7 +73,7 @@ export default function StudentForm({
               className="input"
               control={control}
               name="bornDate"
-              rules={{ required: "Este campo es requerido." }}
+              rules={{ validate: composeValidators(required, date) }}
             />
           </div>
         </div>
@@ -82,7 +87,7 @@ export default function StudentForm({
               className="input"
               control={control}
               name="gender"
-              rules={{ required: "Este campo es requerido." }}
+              rules={{ validate: required }}
               placeholder="Seleccione genero"
               options={[
                 { value: "M", label: "Masculino" },
@@ -96,45 +101,45 @@ export default function StudentForm({
       <div className="is-flex">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
-            Nombre Usuario
-          </label>
-          <InputText
-            className="input"
-            control={control}
-            name="nameUser"
-            rules={{ required: "Este campo es requerido" }}
-            placeholder="Ingrese nombre"
-          />
-        </div>
-
-        <div className="field column is-6">
-          <label htmlFor="test" className="label">
-            Contraseña
-          </label>
-          <InputText
-            className="input"
-            control={control}
-            name="password"
-            rules={{ required: "Este campo es requerido" }}
-            placeholder="Ingrese contraseña"
-            type="password"
-          />
-        </div>
-      </div>
-      <div className="is-flex">
-        <div className="field column is-6" />
-        <div className="field column is-6">
-          <label htmlFor="test" className="label">
             Correo
           </label>
           <InputText
             className="input"
             control={control}
             name="email"
-            rules={{ required: "Este campo es requerido" }}
+            rules={{ validate: composeValidators(required, email) }}
             placeholder={"Ingrese Correo"}
           />
         </div>
+        {isUpdating ? (
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Contraseña
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="password"
+              rules={{ validate: password }}
+              placeholder="Ingrese contraseña"
+              type="password"
+            />
+          </div>
+        ) : (
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Contraseña
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="password"
+              rules={{ validate: composeValidators(required, password) }}
+              placeholder="Ingrese contraseña"
+              type="password"
+            />
+          </div>
+        )}
       </div>
 
       <div className="is-flex is-justify-content-space-between">
