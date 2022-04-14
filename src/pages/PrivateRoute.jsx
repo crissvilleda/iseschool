@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import SideBar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { useAuthState } from "react-firebase-hooks/auth";
