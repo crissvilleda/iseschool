@@ -13,10 +13,10 @@ export default function useUpdate(
   const { id } = useParams();
   const [data, setData] = useState({});
   const isUpdating = id ? true : false;
-  const {setLoading}= useContext(LoadingContext);
+  const { setLoading } = useContext(LoadingContext);
 
   const updateData = async (docData) => {
-    setLoading(true)
+    setLoading(true);
     const docRef = doc(db, _collection, id);
     await updateDoc(docRef, docData);
     if (redirect) navigate(redirect);
@@ -27,11 +27,13 @@ export default function useUpdate(
     if (id) {
       setLoading(true);
       const docRef = doc(db, _collection, id);
-      getDoc(docRef).then((docSnap) => {
-        if (docSnap.exists()) setData(docSnap.data());
-      }).finally(()=>setLoading(false));
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) setData(docSnap.data());
+        })
+        .finally(() => setLoading(false));
     }
   }, []);
 
-  return { updateData, data, isUpdating };
+  return { updateData, data, isUpdating, id };
 }

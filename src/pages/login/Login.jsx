@@ -1,8 +1,11 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputText } from "../../components/CustomInputs";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { SwalError } from "../../components/SwalAlerts";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 import "./login.css";
 
 export default function Login() {
@@ -14,12 +17,20 @@ export default function Login() {
     control,
     reset,
   } = useForm();
+  const navigate = useNavigate();
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   const onSubmit = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;
