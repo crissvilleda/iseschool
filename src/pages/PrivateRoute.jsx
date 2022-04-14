@@ -9,14 +9,15 @@ import { useNavigate } from "react-router-dom";
 export default function PrivateRoutes(props) {
   const navigate = useNavigate();
 
-  const [user, loading] = useAuthState(auth);
-  useEffect(() => {
-    if (!loading && !user) navigate("/login");
-  }, [user]);
+  const [user, loading] = useAuthState(auth, {
+    onUserChanged: (user) => {
+      if (!user) navigate("/login");
+    },
+  });
 
   return (
     <>
-      {!loading ? (
+      {!loading && user ? (
         <div className="app-main-container">
           <SideBar className="column is-3 is-hidden-mobile p-2" />
           <div className="m-0">
