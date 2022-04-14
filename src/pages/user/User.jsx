@@ -31,16 +31,13 @@ export default function User() {
       SwalSuccess("Éxito", msg);
       navigate("/user");
     } catch (e) {
-      console.log(e);
-      SwalError(
-        "Error",
-        `No se pudo ${isUpdating ? "actualizar" : "crear"} al usuario.`
-      );
+      let msg = `No se pudo ${isUpdating ? "actualizar" : "crear"} al usuario.`;
+      if (e && e.code === "functions/already-exists") msg = e.message;
+      SwalError("Error", `${msg}`);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <>
       <div className="is-flex pt-4">

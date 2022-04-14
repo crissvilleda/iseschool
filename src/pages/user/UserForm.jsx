@@ -133,21 +133,39 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
         </div>
       </div>
 
-      <div className="is-flex">
-        <div className="field column is-6">
-          <label htmlFor="test" className="label">
-            Contraseña
-          </label>
-          <InputText
-            className="input"
-            control={control}
-            name="password"
-            rules={{ validate: composeValidators(required, password) }}
-            placeholder="Ingrese contraseña"
-            type="password"
-          />
+      {isUpdating ? (
+        <div className="is-flex">
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Contraseña
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="password"
+              rules={{ validate: password }}
+              placeholder="Ingrese contraseña"
+              type="password"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="is-flex">
+          <div className="field column is-6">
+            <label htmlFor="test" className="label">
+              Contraseña
+            </label>
+            <InputText
+              className="input"
+              control={control}
+              name="password"
+              rules={{ validate: composeValidators(required, password) }}
+              placeholder="Ingrese contraseña"
+              type="password"
+            />
+          </div>
+        </div>
+      )}
 
       <div className="is-flex is-justify-content-space-between">
         <Link className="button is-secondary " to="/user">

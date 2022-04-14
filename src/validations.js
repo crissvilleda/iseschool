@@ -1,4 +1,6 @@
 import dayjs from "dayjs";
+import useDateUtils from "./hooks/useDateUtils";
+const { dateAsDayjs } = useDateUtils();
 
 const isEmpty = (value) =>
   value === undefined || value === null || value === "";
@@ -45,14 +47,15 @@ export function required(value) {
 export function password(value) {
   const regularExpression =
     /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-  if (!regularExpression.test(value)) {
+  if (!isEmpty(value) && !regularExpression.test(value)) {
     return "La contraseña debe contener al menos un número, un carácter especial y letras.";
   }
   return null;
 }
 
 export function date(value) {
-  if (!isEmpty(value) && !dayjs(value).isValid()) {
+  console.log(value);
+  if (!isEmpty(value) && !dayjs(dateAsDayjs(value)).isValid()) {
     return "Fecha invalida";
   }
   return null;
