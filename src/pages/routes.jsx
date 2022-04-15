@@ -7,15 +7,13 @@ import PrivateRoute from "./PrivateRoute";
 import LoadingContext from "../context/LoadingContext";
 import UserContext from "../context/UserContext";
 import Login from "./login";
-import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import Resource from "./material";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(undefined);
   const contextLoading = useMemo(() => ({ loading, setLoading }), [loading]);
   const contextUser = useMemo(() => ({ user, setUser }), [user]);
-  const navigate = useNavigate();
 
   return (
     <>
@@ -44,6 +42,14 @@ export default function App() {
               element={
                 <PrivateRoute>
                   <Student />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/resource/*"
+              element={
+                <PrivateRoute>
+                  <Resource />
                 </PrivateRoute>
               }
             />

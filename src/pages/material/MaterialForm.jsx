@@ -8,6 +8,7 @@ import {
   InputDate,
   InputText,
   InputSelect,
+  InputEditor,
 } from "../../components/CustomInputs";
 
 export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
@@ -88,6 +89,21 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
                 { value: "M", label: "Masculino" },
                 { value: "F", label: "Femenino" },
               ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="is-flex">
+        <div className="field column id-6">
+          <label htmlFor="test" className="label">
+            Contenido
+          </label>
+          <div className="control">
+            <InputEditor
+              control={control}
+              name="content"
+              rules={{ required: "Este campo es requerido." }}
             />
           </div>
         </div>
