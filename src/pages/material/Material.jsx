@@ -1,15 +1,15 @@
 import { useContext } from "react";
-import UserForm from "./MaterialForm";
-import UserIcon from "../../assets/img/user.png";
+import MaterialForm from "./MaterialForm";
+import MaterialIcon from "../../assets/img/books.png";
 import useUpdate from "../../hooks/useUpdate";
 import useCreate from "../../hooks/useCreate";
 import useDateUtils from "../../hooks/useDateUtils";
 import LoadMask from "../../components/LoadMask";
 import LoadingContext from "../../context/LoadingContext";
 
-export default function User() {
-  const { saveData } = useCreate("users", "/user");
-  const { updateData, data, isUpdating } = useUpdate("users", "/user");
+export default function Material() {
+  const { saveData } = useCreate("materials", "/material");
+  const { updateData, data, isUpdating } = useUpdate("materials", "/material");
   const { dateAsTimestamp } = useDateUtils();
   const { loading } = useContext(LoadingContext);
 
@@ -25,11 +25,11 @@ export default function User() {
   return (
     <>
       <div className="is-flex pt-4">
-        <img src={UserIcon} className="title-icon" />
-        <h1 className="title is-3 ml-1">Usuarios</h1>
+        <img src={MaterialIcon} className="title-icon" />
+        <h1 className="title is-3 ml-1">Material</h1>
       </div>
       <LoadMask loading={loading}>
-        <UserForm
+        <MaterialForm
           onSubmit={onSubmit}
           initialValues={data}
           isUpdating={isUpdating}
