@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import UserIcon from "../../assets/img/user.png";
 import { Select } from "antd";
 import LoadMask from "../../components/LoadMask";
+import useDateUtils from "../../hooks/useDateUtils";
 import {
   collection,
   query,
@@ -25,6 +26,7 @@ export default function () {
   const [typeUser, setTypeUser] = useState(null);
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(LoadingContext);
+  const { dateAsDayjs } = useDateUtils();
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +49,7 @@ export default function () {
     querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
     setUsers(results);
   }
-
+  console.log(users);
   async function removeData(id) {
     setLoading(true);
     await deleteDoc(doc(db, "users", id));
@@ -75,9 +77,9 @@ export default function () {
         Header: "Fecha Nacimiento",
         accessor: (row) => {
           if (row.bornDate) {
-            const bornDate = row.bornDate.toDate();
-            if (!dayjs(bornDate).isValid()) return "";
-            return dayjs(bornDate).format("DD-MM-YYYY");
+            const bornDate = dateAsDayjs(row.bornDate);
+            if (!bornDate.isValid()) return "";
+            return bornDate.format("DD-MM-YYYY");
           }
           return "";
         },
@@ -89,8 +91,6 @@ export default function () {
     ],
     []
   );
-  console.log(typeUser);
-  console.log(users);
 
   return (
     <>

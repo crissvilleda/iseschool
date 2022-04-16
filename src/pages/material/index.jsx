@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Material from "./Material";
-import MaterialList from "./MaterialList";
+import Resource from "./Material";
+import ResourceList from "./MaterialList";
 
 export default function MaterialView() {
   return (
     <Routes>
-      <Route path="/" element={<MaterialList />} />
-      <Route path="/create" element={<Material />} />
-      <Route path="/:id" element={<Material />} />
+      <Route path="/" element={<ResourceList />} />
+      <Route path="/create" element={<Resource />} />
+      <Route path="/:id" element={<Resource />} />
     </Routes>
   );
 }

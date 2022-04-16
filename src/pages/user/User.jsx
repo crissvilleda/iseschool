@@ -1,27 +1,43 @@
 import { useContext } from "react";
 import UserForm from "./UserForm";
 import UserIcon from "../../assets/img/user.png";
-import useUpdate from "../../hooks/useUpdate";
-import useCreate from "../../hooks/useCreate";
 import useDateUtils from "../../hooks/useDateUtils";
 import LoadMask from "../../components/LoadMask";
-import LoadingContext from "../../context/LoadingContext"
+import LoadingContext from "../../context/LoadingContext";
+import useUpdate from "../../hooks/useUpdate";
+import { useNavigate } from "react-router-dom";
+import { SwalError, SwalSuccess } from "../../components/SwalAlerts";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "../../firebase";
 
 export default function User() {
-  const { saveData } = useCreate("users", "/user");
-  const { updateData, data, isUpdating } = useUpdate("users", "/user");
   const { dateAsTimestamp } = useDateUtils();
-  const {loading} = useContext(LoadingContext)
+  const { data, isUpdating, id } = useUpdate("users");
+  const { loading, setLoading } = useContext(LoadingContext);
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    const body = { ...data };
-    if (body.bornDate) {
-      body.bornDate = dateAsTimestamp(body.bornDate);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const body = { ...data, id: id };
+      if (body.bornDate) {
+        body.bornDate = dateAsTimestamp(body.bornDate);
+      }
+      const msg = isUpdating
+        ? "Los datos se an actualizado."
+        : "Los datos se an registrado.";
+      body.isUpdating = isUpdating;
+      const addUser = await httpsCallable(functions, "addUser")(body);
+      SwalSuccess("Éxito", msg);
+      navigate("/user");
+    } catch (e) {
+      let msg = `No se pudo ${isUpdating ? "actualizar" : "crear"} al usuario.`;
+      if (e && e.code === "functions/already-exists") msg = e.message;
+      SwalError("Error", `${msg}`);
+    } finally {
+      setLoading(false);
     }
-    if (isUpdating) updateData(body);
-    else saveData(body);
   };
-
   return (
     <>
       <div className="is-flex pt-4">
@@ -29,13 +45,12 @@ export default function User() {
         <h1 className="title is-3 ml-1">Usuarios</h1>
       </div>
       <LoadMask loading={loading}>
-      <UserForm
-        onSubmit={onSubmit}
-        initialValues={data}
-        isUpdating={isUpdating}
-      />
+        <UserForm
+          onSubmit={onSubmit}
+          initialValues={data}
+          isUpdating={isUpdating}
+        />
       </LoadMask>
-     
     </>
   );
 }

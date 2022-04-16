@@ -10,10 +10,10 @@ export default function useCreate(
   redirect = undefined
 ) {
   const navigate = useNavigate();
-  const{setLoading}= useContext(LoadingContext)
+  const { setLoading } = useContext(LoadingContext);
 
   const saveData = async (docData) => {
-    setLoading(true)
+    setLoading(true);
     await addDoc(collection(db, _collection), docData);
     if (redirect) navigate(redirect);
     setLoading(false);
