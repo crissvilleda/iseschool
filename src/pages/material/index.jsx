@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import User from "./User";
-import UserList from "./UserList";
+import Material from "./Material";
+import MaterialList from "./MaterialList";
 
-export default function App() {
+export default function MaterialView() {
   return (
     <Routes>
-      <Route path="/" element={<UserList />} />
-      <Route path="/create" element={<User />} />
-      <Route path="/:id" element={<User />} />
+      <Route path="/" element={<MaterialList />} />
+      <Route path="/create" element={<Material />} />
+      <Route path="/:id" element={<Material />} />
     </Routes>
   );
 }

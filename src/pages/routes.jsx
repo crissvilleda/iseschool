@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./home/App";
 import User from "./user";
 import Student from "./student";
+import Material from "./material";
 import PrivateRoute from "./PrivateRoute";
 import LoadingContext from "../context/LoadingContext";
 import Login from "./login";
@@ -37,6 +38,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <Student />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/resource/*"
+            element={
+              <PrivateRoute>
+                <Material />
               </PrivateRoute>
             }
           />
