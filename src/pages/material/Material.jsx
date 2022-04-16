@@ -26,7 +26,7 @@ export default function Material() {
     <>
       <div className="is-flex pt-4">
         <img src={MaterialIcon} className="title-icon" />
-        <h1 className="title is-3 ml-1">Material</h1>
+        <h1 className="title is-3 ml-1">Agregar Material</h1>
       </div>
       <LoadMask loading={loading}>
         <MaterialForm
