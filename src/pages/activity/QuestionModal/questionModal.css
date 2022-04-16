@@ -1,0 +1,48 @@
+.questionModal{
+  border-radius: 0.75rem;
+  background-color: #F2F3F0;
+  padding: unset;
+}
+
+.questionModal .input{
+  background-color: #FFFEFE !important;
+  box-shadow: rgb(0 0 0 / 15%) 0px -4px 0px 0px inset;
+
+}
+.questionModal .textarea{
+  background-color: #FFFEFE !important;
+  box-shadow: rgb(0 0 0 / 15%) 0px -4px 0px 0px inset;
+
+}
+
+.formModal{
+  max-height: 90vh;
+  overflow-y: scroll;
+  padding: 1.2rem;
+}
+
+.formModal::-webkit-scrollbar {
+  width: 0.15rem;
+}
+ 
+.formModal::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(129, 129, 129, 0.3);
+}
+.formModal::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+@media screen and (max-width: 768px) {
+  .questionModal {
+    min-width: 90vw !important;
+    margin: 0 !important;
+  }
+  
+}
+
+@media screen and (max-width: 1408px) {
+  .questionModal {
+    min-width: 75vw;
+  }
+}

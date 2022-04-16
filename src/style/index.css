@@ -47,3 +47,17 @@ body {
     Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+.textarea{
+  background-color: #f1f1f0 !important;
+  border-radius: 1rem !important;
+  border: unset !important;
+  color: #878e99 !important;
+}
+
+@media screen and (max-width: 768px) {
+  .is-mobile-direction-column {
+    flex-direction: column !important;
+  }
+  
+}

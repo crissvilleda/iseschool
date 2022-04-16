@@ -2,7 +2,7 @@ import { useTable } from "react-table";
 import LoadMask from "../LoadMask";
 import "./table.css";
 
-export default function Table({ columns, data, loading }) {
+export default function Table({ columns = [], data = [], loading = false }) {
   const {
     getTableProps,
     getTableBodyProps,

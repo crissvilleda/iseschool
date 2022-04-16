@@ -8,6 +8,7 @@ import LoadingContext from "../context/LoadingContext";
 import UserContext from "../context/UserContext";
 import Login from "./login";
 import Resource from "./material";
+import Activity from "./activity";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,14 @@ export default function App() {
               element={
                 <PrivateRoute>
                   <Resource />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/activity/*"
+              element={
+                <PrivateRoute>
+                  <Activity />
                 </PrivateRoute>
               }
             />
