@@ -8,6 +8,7 @@ import {
   InputDate,
   InputText,
   InputSelect,
+  InputEditor,
 } from "../../components/CustomInputs";
 
 export default function MaterialForm({
@@ -63,6 +64,13 @@ export default function MaterialForm({
             />
           </div>
         </div>
+      </div>
+
+      <div className="field column is-12">
+        <label htmlFor="test" className="label">
+          Contenido
+        </label>
+        <InputEditor className="input" control={control} name="content" />
       </div>
 
       <div className="is-flex is-justify-content-space-between">
