@@ -24,7 +24,6 @@ export default function MaterialForm({
     control,
     reset,
   } = useForm();
-  const { saveData } = useCreate("materials", "/material");
 
   useEffect(() => {
     reset(initialValues);
@@ -40,7 +39,7 @@ export default function MaterialForm({
           <InputText
             className="input"
             control={control}
-            name="titulo"
+            name="title"
             rules={{ required: "Este campo es requerido" }}
             placeholder="Ingrese titulo"
           />
@@ -54,7 +53,7 @@ export default function MaterialForm({
             <InputSelect
               className="input"
               control={control}
-              name="type"
+              name="group"
               rules={{ required: "Este campo es requerido." }}
               placeholder="Seleccione"
               options={[

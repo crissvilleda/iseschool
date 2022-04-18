@@ -8,16 +8,14 @@ import LoadMask from "../../components/LoadMask";
 import LoadingContext from "../../context/LoadingContext";
 
 export default function Material() {
-  const { saveData } = useCreate("materials", "/material");
-  const { updateData, data, isUpdating } = useUpdate("materials", "/material");
+  const { saveData } = useCreate("materials", "/resource");
+  const { updateData, data, isUpdating } = useUpdate("materials", "/resource");
   const { dateAsTimestamp } = useDateUtils();
   const { loading } = useContext(LoadingContext);
 
   const onSubmit = (data) => {
     const body = { ...data };
-    if (body.bornDate) {
-      body.bornDate = dateAsTimestamp(body.bornDate);
-    }
+    body.createdAt = dateAsTimestamp();
     if (isUpdating) updateData(body);
     else saveData(body);
   };

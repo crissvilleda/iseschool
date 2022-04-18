@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import MaterialIcon from "../../assets/img/books.png";
 import { Select } from "antd";
 import LoadMask from "../../components/LoadMask";
+import useDateUtils from "../../hooks/useDateUtils";
 import {
   collection,
   query,
@@ -26,22 +27,15 @@ export default function () {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(LoadingContext);
 
+  const { dateAsDayjs } = useDateUtils();
+
   useEffect(() => {
     setLoading(true);
-    getUser().finally(() => setLoading(false));
+    geMaterial().finally(() => setLoading(false));
   }, []);
 
   async function getUser(filterType = null) {
-    let typeUser = ["Admin", "Teacher"];
-    if (filterType != null) {
-      typeUser = typeUser.filter((value) => value == filterType);
-    }
-
-    let querySet = query(
-      collection(db, "users"),
-      where("type", "in", typeUser),
-      limit(25)
-    );
+    let querySet = query(collection(db, "materials"), limit(25));
     const querySnapshot = await getDocs(querySet);
     const results = [];
     querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
@@ -65,25 +59,22 @@ export default function () {
       },
       {
         Header: "Título",
-        accessor: "",
+        accessor: "title",
       },
       {
         Header: "Grupo",
-        accessor: "",
+        accessor: "group",
       },
       {
         Header: "Docente",
-        accessor: "",
+        accessor: "teacher",
       },
       {
         Header: "Fecha",
         accessor: (row) => {
-          //if (row.bornDate) {
-          //  const bornDate = row.bornDate.toDate();
-          //  if (!dayjs(bornDate).isValid()) return "";
-          //  return dayjs(bornDate).format("DD-MM-YYYY");
-          //}
-          return "";
+          const createdAt = dateAsDayjs(row.createdAt);
+          if (!dayjs(createdAt).isValid()) return "";
+          else return createdAt.format("DD-MM-YYYY");
         },
       },
     ],
