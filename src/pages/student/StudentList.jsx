@@ -25,9 +25,9 @@ async function getStudents(students) {
   );
 
   const querySnapshot = await getDocs(querySet);
-  const result = [];
-  querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
-  return result;
+  const results = [];
+  querySnapshot.forEach((doc) => results.push({ ...doc.data(), id: doc.id }));
+  return results;
 }
 export default function StudentList() {
   const [students, setStudents] = useState([]);

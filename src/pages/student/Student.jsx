@@ -29,7 +29,7 @@ export default function Student() {
       body.isUpdating = isUpdating;
       await httpsCallable(functions, "addUser")(body);
       SwalSuccess("Éxito", msg);
-      navigate("/user");
+      navigate("/student");
     } catch (e) {
       let msg = `No se pudo ${
         isUpdating ? "actualizar" : "crear"
