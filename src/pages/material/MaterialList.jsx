@@ -31,10 +31,10 @@ export default function () {
 
   useEffect(() => {
     setLoading(true);
-    geMaterial().finally(() => setLoading(false));
+    getMaterials().finally(() => setLoading(false));
   }, []);
 
-  async function getUser(filterType = null) {
+  async function getMaterials(filterType = null) {
     let querySet = query(collection(db, "materials"), limit(25));
     const querySnapshot = await getDocs(querySet);
     const results = [];
@@ -44,8 +44,8 @@ export default function () {
 
   async function removeData(id) {
     setLoading(true);
-    await deleteDoc(doc(db, "users", id));
-    await getUser(typeUser);
+    await deleteDoc(doc(db, "materials", id));
+    await getMaterials(typeUser);
     setLoading(false);
   }
   const columns = useMemo(
@@ -53,7 +53,7 @@ export default function () {
       {
         Header: "Herramientas",
         accessor: tableActions({
-          edit: (id) => navigate(`/user/${id}`),
+          edit: (id) => navigate(`/resource/${id}`),
           remove: (id) => removeData(id),
         }),
       },
@@ -104,7 +104,7 @@ export default function () {
               className="input"
               onChange={(value) => {
                 setTypeUser(value);
-                getUser(value);
+                getMaterials(value);
               }}
               placeholder="Seleccione Grupo"
               value={typeUser}
