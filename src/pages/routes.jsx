@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./home/App";
 import User from "./user";
 import Student from "./student";
+import Group from "./group";
 import PrivateRoute from "./PrivateRoute";
 import LoadingContext from "../context/LoadingContext";
 import Login from "./login";
@@ -40,6 +41,15 @@ export default function App() {
               </PrivateRoute>
             }
           />
+           <Route
+            path="/group/*"
+            element={
+              <PrivateRoute>
+                <Group />
+              </PrivateRoute>
+            }
+          />
+          
         </Routes>
       </LoadingContext.Provider>
     </>
