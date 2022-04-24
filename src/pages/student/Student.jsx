@@ -11,14 +11,14 @@ import { httpsCallable } from "firebase/functions";
 import { functions } from "../../firebase";
 
 export default function Student() {
-  const { data, isUpdating } = useUpdate("users", "/student");
+  const { data, isUpdating, id } = useUpdate("users", "/student");
   const { dateAsTimestamp } = useDateUtils();
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
-      const body = { ...data };
+      const body = { ...data, id: id };
       if (body.bornDate) {
         body.bornDate = dateAsTimestamp(body.bornDate);
       }
