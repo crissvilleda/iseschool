@@ -17,6 +17,7 @@ export default function Student() {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const body = { ...data, id: id };
       if (body.bornDate) {
