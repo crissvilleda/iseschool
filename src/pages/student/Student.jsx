@@ -6,9 +6,10 @@ import useDateUtils from "../../hooks/useDateUtils";
 import LoadingContext from "../../context/LoadingContext";
 import LoadMask from "../../components/LoadMask";
 import { useNavigate } from "react-router-dom";
-import { SwalError, SwalSuccess } from "../../components/SwalAlerts";
+import { SwalError } from "../../components/SwalAlerts";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../firebase";
+import { notification } from "antd";
 
 export default function Student() {
   const { data, isUpdating, id } = useUpdate("users", "/student");
@@ -29,7 +30,10 @@ export default function Student() {
         : "Los datos se an registrado.";
       body.isUpdating = isUpdating;
       await httpsCallable(functions, "addUser")(body);
-      SwalSuccess("Éxito", msg);
+      notification.success({
+        message: "Éxito",
+        description: msg,
+      });
       navigate("/student");
     } catch (e) {
       let msg = `No se pudo ${

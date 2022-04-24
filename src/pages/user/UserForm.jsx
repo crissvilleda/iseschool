@@ -172,7 +172,7 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
-          Registrar
+          {isUpdating ? "Actualizar" : "Registrar"}
         </button>
       </div>
     </form>
