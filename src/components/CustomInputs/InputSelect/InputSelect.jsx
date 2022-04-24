@@ -1,6 +1,5 @@
 import { useController } from "react-hook-form";
-
-import { Select } from "antd";
+import { Select, Tooltip } from "antd";
 
 const { Option } = Select;
 
@@ -28,23 +27,29 @@ export default function InputSelect({
 
   return (
     <>
-      <Select
-        className={className || ""}
-        onChange={onChange}
-        placeholder={placeholder}
-        value={value}
-        bordered={false}
-        size="large"
+      <Tooltip
+        title={error && error.message ? error.message : ""}
+        visible={error ? true : false}
+        placement="topRight"
+        color={"red"}
       >
-        {Array.from(options).map((item) => {
-          return (
-            <Option key={item.value} value={item.value}>
-              {item.label}{" "}
-            </Option>
-          );
-        })}
-      </Select>
-      {error && <p className="help is-danger">{error.message}</p>}
+        <Select
+          className={className || ""}
+          onChange={onChange}
+          placeholder={placeholder}
+          value={value}
+          bordered={false}
+          size="large"
+        >
+          {Array.from(options).map((item) => {
+            return (
+              <Option key={item.value} value={item.value}>
+                {item.label}{" "}
+              </Option>
+            );
+          })}
+        </Select>
+      </Tooltip>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
-import dayjs from "dayjs";
 import UserIcon from "../../assets/img/user.png";
 import { Select } from "antd";
 import LoadMask from "../../components/LoadMask";
@@ -19,6 +18,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import LoadingContext from "../../context/LoadingContext.js";
+import { SwalError } from "../../components/SwalAlerts";
 const { Option } = Select;
 
 export default function () {
@@ -46,15 +46,20 @@ export default function () {
     );
     const querySnapshot = await getDocs(querySet);
     const results = [];
-    querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
+    querySnapshot.forEach((doc) => results.push({ ...doc.data(), id: doc.id }));
     setUsers(results);
   }
-  console.log(users);
+
   async function removeData(id) {
     setLoading(true);
-    await deleteDoc(doc(db, "users", id));
-    await getUser(typeUser);
-    setLoading(false);
+    try {
+      await deleteDoc(doc(db, "users", id));
+      await getUser(typeUser);
+    } catch (e) {
+      SwalError("Error", "Ocurrió un error al intentar eliminar el registro.");
+    } finally {
+      setLoading(false);
+    }
   }
   const columns = useMemo(
     () => [

@@ -19,8 +19,8 @@ exports.addUser = functions.https.onCall((data, context) => {
   const body = data;
   const success = { msg: "success" };
   const authBody = {};
-  if (password) authBody.password = password;
-  if (email) authBody.email = email;
+  if (password && password !== "") authBody.password = password;
+  if (email && email !== "") authBody.email = email;
   authBody.displayName = displayName;
 
   //Parse date

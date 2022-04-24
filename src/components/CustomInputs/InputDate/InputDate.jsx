@@ -1,6 +1,7 @@
 import { useController } from "react-hook-form";
 import DatePicker from "../../DatePicker";
 import useDateUtils from "../../../hooks/useDateUtils";
+import { Tooltip } from "antd";
 
 export default function InputDate({ name, control, rules, className }) {
   const { dateAsDayjs } = useDateUtils();
@@ -15,16 +16,22 @@ export default function InputDate({ name, control, rules, className }) {
 
   return (
     <>
-      <DatePicker
-        className={className || ""}
-        onChange={onChange}
-        format="DD/MM/YYYY"
-        placeholder="DD/MM/YYYY"
-        value={dateAsDayjs(value)}
-        ref={ref}
-        size="large"
-      />
-      {error && <p className="help is-danger">{error.message}</p>}
+      <Tooltip
+        title={error && error.message ? error.message : ""}
+        visible={error ? true : false}
+        placement="topRight"
+        color={"red"}
+      >
+        <DatePicker
+          className={className || ""}
+          onChange={onChange}
+          format="DD/MM/YYYY"
+          placeholder="DD/MM/YYYY"
+          value={dateAsDayjs(value)}
+          ref={ref}
+          size="large"
+        />
+      </Tooltip>
     </>
   );
 }

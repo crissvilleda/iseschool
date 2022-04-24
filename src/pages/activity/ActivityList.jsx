@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
-import StudentIcon from "../../assets/img/student.png";
+import ActivityIcon from "../../assets/img/activities.png";
 import useDelete from "../../hooks/useDelete";
 import LoadingContext from "../../context/LoadingContext";
 import {
@@ -16,30 +16,31 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
-async function getStudents(students) {
+async function getActivities(activities = []) {
   let querySet = query(
-    collection(db, "users"),
-    where("type", "==", "Student"),
-    orderBy("name"),
-    limit(25)
+    collection(db, "activities"),
+    startAfter(activities),
+    limit(25),
+    orderBy("createdAt")
   );
 
   const querySnapshot = await getDocs(querySet);
-  const results = [];
-  querySnapshot.forEach((doc) => results.push({ ...doc.data(), id: doc.id }));
-  return results;
+  const result = [];
+  querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
+  return result;
 }
-export default function StudentList() {
-  const [students, setStudents] = useState([]);
+
+export default function ActivityList() {
+  const [activities, setActivities] = useState([]);
   const { deleteData } = useDelete("users");
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    getStudents(students)
+    getActivities(activities)
       .then((data) => {
-        if (data) setStudents(data);
+        if (data) setActivities(data);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -47,42 +48,30 @@ export default function StudentList() {
   const removeData = async (id) => {
     setLoading(true);
     await deleteData(id);
-    await getStudents(students).then((data) => {
-      if (data) setStudents(data);
+    await getActivities(activities).then((data) => {
+      if (data) setActivities(data);
     });
     setLoading(false);
   };
-
   const columns = useMemo(
     () => [
       {
         Header: "Herramientas",
         accessor: tableActions({
-          edit: (id) => navigate(`/student/${id}`),
+          edit: (id) => navigate(`/activity/${id}`),
           remove: (id) => removeData(id),
         }),
       },
       {
-        Header: "Nombres",
+        Header: "Actividad",
         accessor: "name",
       },
       {
-        Header: "Apellidos",
+        Header: "Tipo",
         accessor: "lastName",
       },
       {
-        Header: "Fecha Nacimiento",
-        accessor: (row) => {
-          if (row.bornDate) {
-            const bornDate = row.bornDate.toDate();
-            if (!dayjs(bornDate).isValid()) return "";
-            return dayjs(bornDate).format("DD-MM-YYYY");
-          }
-          return "";
-        },
-      },
-      {
-        Header: "Genero",
+        Header: "Creado",
         accessor: "gender",
       },
     ],
@@ -93,17 +82,17 @@ export default function StudentList() {
     <>
       <div className="is-flex is-justify-content-space-between my-4">
         <div className="is-flex">
-          <img src={StudentIcon} className="title-icon" />
-          <h1 className="title is-3 ml-2">Estudiantes</h1>
+          <img src={ActivityIcon} className="title-icon" />
+          <h1 className="title is-3 ml-2">Actividades</h1>
         </div>
-        <Link to="/student/create" className="button is-secondary">
+        <Link to="/activity/create" className="button is-secondary">
           Agregar nuevo
         </Link>
       </div>
 
       <br />
       <br />
-      <Table columns={columns} data={students} loading={loading} />
+      <Table columns={columns} data={activities} loading={loading} />
     </>
   );
 }

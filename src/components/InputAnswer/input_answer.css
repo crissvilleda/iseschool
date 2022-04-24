@@ -1,0 +1,28 @@
+.answer-card {
+  height: 7.5rem;
+  background: #FFFFFF;
+  box-shadow: 4px 4px 4px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  border-radius: 0.75rem;
+  border-left: 20px solid #F59432;
+}
+
+.check-circle-container{
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+
+}
+
+.check-circle{
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid #845EC2;
+  border-radius: 50%;
+}
+
+.answer-card input,textarea {
+  width: 100%;
+  outline: unset;
+  border: unset;
+}

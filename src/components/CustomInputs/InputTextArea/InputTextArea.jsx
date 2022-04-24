@@ -1,13 +1,13 @@
 import { useController } from "react-hook-form";
 import { Tooltip } from "antd";
 
-export default function InputText({
+export default function InputTextArea({
   name,
   control,
   rules,
   className,
   placeholder,
-  type = "text",
+  rows = 3,
 }) {
   const {
     field,
@@ -27,8 +27,8 @@ export default function InputText({
         placement="topRight"
         color={"red"}
       >
-        <input
-          type={type}
+        <textarea
+          rows={rows}
           className={className || ""}
           placeholder={placeholder}
           {...field}

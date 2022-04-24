@@ -1,26 +1,24 @@
 import { useContext } from "react";
-import StudentForm from "./StudentForm";
-import StudentIcon from "../../assets/img/student.png";
+import ActivityForm from "./ActivityForm";
+import ActivityIcon from "../../assets/img/activities.png";
 import useUpdate from "../../hooks/useUpdate";
 import useDateUtils from "../../hooks/useDateUtils";
 import LoadingContext from "../../context/LoadingContext";
 import LoadMask from "../../components/LoadMask";
 import { useNavigate } from "react-router-dom";
-import { SwalError } from "../../components/SwalAlerts";
+import { SwalError, SwalSuccess } from "../../components/SwalAlerts";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../firebase";
-import { notification } from "antd";
 
-export default function Student() {
-  const { data, isUpdating, id } = useUpdate("users", "/student");
+export default function Activity() {
+  const { data, isUpdating } = useUpdate("users", "/student");
   const { dateAsTimestamp } = useDateUtils();
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
-      const body = { ...data, id: id };
+      const body = { ...data };
       if (body.bornDate) {
         body.bornDate = dateAsTimestamp(body.bornDate);
       }
@@ -30,11 +28,8 @@ export default function Student() {
         : "Los datos se an registrado.";
       body.isUpdating = isUpdating;
       await httpsCallable(functions, "addUser")(body);
-      notification.success({
-        message: "Éxito",
-        description: msg,
-      });
-      navigate("/student");
+      SwalSuccess("Éxito", msg);
+      navigate("/user");
     } catch (e) {
       let msg = `No se pudo ${
         isUpdating ? "actualizar" : "crear"
@@ -49,11 +44,11 @@ export default function Student() {
   return (
     <>
       <div className="is-flex pt-4">
-        <img src={StudentIcon} className="title-icon" />
-        <h1 className="title is-3 ml-1">Estudiantes</h1>
+        <img src={ActivityIcon} className="title-icon" />
+        <h1 className="title is-3 ml-1">Actividad Interactiva</h1>
       </div>
       <LoadMask loading={loading}>
-        <StudentForm
+        <ActivityForm
           onSubmit={onSubmit}
           initialValues={data}
           isUpdating={isUpdating}

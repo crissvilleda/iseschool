@@ -6,9 +6,10 @@ import LoadMask from "../../components/LoadMask";
 import LoadingContext from "../../context/LoadingContext";
 import useUpdate from "../../hooks/useUpdate";
 import { useNavigate } from "react-router-dom";
-import { SwalError, SwalSuccess } from "../../components/SwalAlerts";
+import { SwalError } from "../../components/SwalAlerts";
 import { httpsCallable } from "firebase/functions";
 import { functions } from "../../firebase";
+import { notification } from "antd";
 
 export default function User() {
   const { dateAsTimestamp } = useDateUtils();
@@ -28,7 +29,11 @@ export default function User() {
         : "Los datos se an registrado.";
       body.isUpdating = isUpdating;
       const addUser = await httpsCallable(functions, "addUser")(body);
-      SwalSuccess("Éxito", msg);
+      notification.success({
+        message: "Éxito",
+        description: msg,
+      });
+
       navigate("/user");
     } catch (e) {
       let msg = `No se pudo ${isUpdating ? "actualizar" : "crear"} al usuario.`;
