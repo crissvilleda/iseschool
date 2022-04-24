@@ -11,7 +11,7 @@ import ActivityIcon from "../../assets/img/activities.png";
 function MenuItem({ icon, title, to }) {
   const [isActive, setIsActive] = useState(false);
   const location = useLocation();
-  console.log(location);
+
   useEffect(() => {
     if (location.pathname.includes(to) && to != "/") setIsActive(true);
     else setIsActive(false);

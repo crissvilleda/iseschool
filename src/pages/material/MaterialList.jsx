@@ -2,9 +2,10 @@ import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
-import UserIcon from "../../assets/img/user.png";
+import MaterialIcon from "../../assets/img/books.png";
 import { Select } from "antd";
 import LoadMask from "../../components/LoadMask";
+import useDateUtils from "../../hooks/useDateUtils";
 import {
   collection,
   query,
@@ -26,22 +27,15 @@ export default function () {
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(LoadingContext);
 
+  const { dateAsDayjs } = useDateUtils();
+
   useEffect(() => {
     setLoading(true);
-    getUser().finally(() => setLoading(false));
+    geMaterial().finally(() => setLoading(false));
   }, []);
 
   async function getUser(filterType = null) {
-    let typeUser = ["Admin", "Teacher"];
-    if (filterType != null) {
-      typeUser = typeUser.filter((value) => value == filterType);
-    }
-
-    let querySet = query(
-      collection(db, "users"),
-      where("type", "in", typeUser),
-      limit(25)
-    );
+    let querySet = query(collection(db, "materials"), limit(25));
     const querySnapshot = await getDocs(querySet);
     const results = [];
     querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
@@ -64,27 +58,24 @@ export default function () {
         }),
       },
       {
-        Header: "Nombres",
-        accessor: "name",
+        Header: "Título",
+        accessor: "title",
       },
       {
-        Header: "Apellidos",
-        accessor: "lastName",
+        Header: "Grupo",
+        accessor: "group",
       },
       {
-        Header: "Fecha Nacimiento",
+        Header: "Docente",
+        accessor: "teacher",
+      },
+      {
+        Header: "Fecha",
         accessor: (row) => {
-          if (row.bornDate) {
-            const bornDate = row.bornDate.toDate();
-            if (!dayjs(bornDate).isValid()) return "";
-            return dayjs(bornDate).format("DD-MM-YYYY");
-          }
-          return "";
+          const createdAt = dateAsDayjs(row.createdAt);
+          if (!dayjs(createdAt).isValid()) return "";
+          else return createdAt.format("DD-MM-YYYY");
         },
-      },
-      {
-        Header: "Genero",
-        accessor: "gender",
       },
     ],
     []
@@ -96,17 +87,17 @@ export default function () {
     <>
       <div className="is-flex is-justify-content-space-between my-4">
         <div className="is-flex">
-          <img src={UserIcon} className="title-icon" />
-          <h1 className="title is-3">Usuarios</h1>
+          <img src={MaterialIcon} className="title-icon" />
+          <h1 className="title is-3">Material</h1>
         </div>
-        <Link to="/user/create" className="button is-secondary">
+        <Link to="/resource/create" className="button is-secondary">
           Agregar nuevo
         </Link>
       </div>
       <div className="is-flex is-fle">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
-            Filtrar por tipo
+            Filtrar por grupo
           </label>
           <div className="control">
             <Select
@@ -115,7 +106,7 @@ export default function () {
                 setTypeUser(value);
                 getUser(value);
               }}
-              placeholder="Seleccione Tipo"
+              placeholder="Seleccione Grupo"
               value={typeUser}
               bordered={false}
               size="large"

@@ -2,8 +2,10 @@ import { Timestamp } from "firebase/firestore";
 import dayjs from "dayjs";
 
 export default function useDateUtils() {
-  const dateAsTimestamp = (value) => {
-    if (value && value.seconds && value.nanoseconds) {
+  const dateAsTimestamp = (value = undefined) => {
+    if(value === undefined){
+      return Timestamp.fromDate(dayjs().toDate());
+    }else if (value && value.seconds && value.nanoseconds) {
       return new Timestamp(value.seconds, value.nanoseconds);
     } else {
       return Timestamp.fromDate(dayjs(value).toDate());
