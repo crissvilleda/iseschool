@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import Group from "./group";
+import Group from "./Group";
 import GroupList from "./GroupList";
 
 export default function GroupView() {
