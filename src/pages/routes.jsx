@@ -10,6 +10,7 @@ import UserContext from "../context/UserContext";
 import Login from "./login";
 import Resource from "./material";
 import Activity from "./activity";
+import ActivityStudent from "./activity-student";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -71,7 +72,15 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-          </Routes>
+          <Route
+            path="/activity-student/*"
+            element={
+              <PrivateRoute>
+                <ActivityStudent />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
         </UserContext.Provider>
       </LoadingContext.Provider>
     </>
