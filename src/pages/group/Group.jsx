@@ -1,4 +1,4 @@
-import GroupForm from "./groupForm";
+import GroupForm from "./GroupForm";
 import GroupIcon from "../../assets/img/group.png";
 import useUpdate from "../../hooks/useUpdate";
 import useCreate from "../../hooks/useCreate";
@@ -33,4 +33,3 @@ export default function group() {
     </>
   );
 }
-
