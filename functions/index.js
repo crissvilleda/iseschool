@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const _ = require("lodash");
 
 admin.initializeApp(functions.config().firebase);
 
@@ -90,3 +91,97 @@ exports.addUser = functions.https.onCall((data, context) => {
       });
   }
 });
+
+exports.onAddedUser = functions.firestore
+  .document("users/{userId}")
+  .onCreate((snap) => {
+    const data = snap.data();
+
+    if (data.type !== "Student") return;
+    return db
+      .collection("statistics")
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .get()
+      .then((snap) => {
+        if (snap.empty) {
+          const record = {};
+          if (data.gender === "M") {
+            _.set(record, "students.boys", 1);
+          } else if (data.gender == "F") {
+            _.set(record, "students.girls", 1);
+          } else return;
+
+          return db.collection("statistics").add({
+            ...record,
+            createdAt: new Date(),
+          });
+        } else {
+          const lastDoc = snap.docs[0].data();
+          let currentCount = 0;
+          const record = { ...lastDoc };
+          if (data.gender === "M") {
+            currentCount = _.get(lastDoc, "students.boys", 0);
+            _.set(record, "students.boys", ++currentCount);
+          } else if (data.gender === "F") {
+            currentCount = _.get(lastDoc, "students.girls", 0);
+            _.set(record, "students.girls", ++currentCount);
+          } else return;
+
+          return db.collection("statistics").add({
+            ...record,
+            createdAt: new Date(),
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  });
+
+exports.onDeletedUser = functions.firestore
+  .document("users/{userId}")
+  .onDelete((snap) => {
+    const data = snap.data();
+
+    if (data.type !== "Student") return;
+    return db
+      .collection("statistics")
+      .orderBy("createdAt", "desc")
+      .limit(1)
+      .get()
+      .then((snap) => {
+        if (snap.empty) {
+          const record = {};
+          if (data.gender === "M") {
+            _.set(record, "students.boys", 0);
+          } else if (data.gender === "F") {
+            _.set(record, "students.girls", 0);
+          } else return;
+
+          return db.collection("statistics").add({
+            ...record,
+            createdAt: new Date(),
+          });
+        } else {
+          const lastDoc = snap.docs[0].data();
+          let currentCount = 1;
+          const record = { ...lastDoc };
+          if (data.gender === "M") {
+            currentCount = _.get(lastDoc, "students.boys", 1);
+            _.set(record, "students.boys", --currentCount);
+          } else if (data.gender === "F") {
+            currentCount = _.get(lastDoc, "students.girls", 1);
+            _.set(record, "students.girls", --currentCount);
+          } else return;
+
+          return db.collection("statistics").add({
+            ...record,
+            createdAt: new Date(),
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  });

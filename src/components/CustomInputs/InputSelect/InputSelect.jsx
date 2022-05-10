@@ -32,6 +32,7 @@ export default function InputSelect({
         visible={error ? true : false}
         placement="topRight"
         color={"red"}
+        getPopupContainer={(trigger) => trigger.parentElement}
       >
         <Select
           className={className || ""}

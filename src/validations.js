@@ -2,8 +2,9 @@ import dayjs from "dayjs";
 import useDateUtils from "./hooks/useDateUtils";
 const { dateAsDayjs } = useDateUtils();
 
-const isEmpty = (value) =>
-  value === undefined || value === null || value === "";
+export function isEmpty(value) {
+  return value === undefined || value === null || value === "";
+}
 
 export function email(value) {
   // Let's not start a debate on email regex! This one is quite standard

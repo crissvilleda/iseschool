@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./home/App";
+import Home from "./home";
 import User from "./user";
 import Student from "./student";
 import PrivateRoute from "./PrivateRoute";

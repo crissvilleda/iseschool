@@ -1,5 +1,6 @@
 import CheckCircle from "../../assets/img/check-circle.png";
 import { useController } from "react-hook-form";
+import { Tooltip } from "antd";
 import "./input_answer.css";
 
 export default function InputAnswer({
@@ -9,6 +10,8 @@ export default function InputAnswer({
   className,
   placeholder,
   borderLeftColor = "#F59432",
+  disabled = false,
+  defaultValue = null,
 }) {
   const {
     field: { value, onChange, ref },
@@ -17,6 +20,7 @@ export default function InputAnswer({
     name,
     control,
     rules: { ...rules },
+    defaultValue,
   });
 
   const onCheck = () => {
@@ -27,24 +31,37 @@ export default function InputAnswer({
 
   return (
     <>
-      <div
-        className="answer-card p-3"
-        style={{ borderLeftColor: borderLeftColor }}
+      <Tooltip
+        title={error && error.message ? error.message : ""}
+        visible={error ? true : false}
+        placement="topRight"
+        color={"red"}
       >
-        <div className="check-circle-container">
-          <div className="check-circle" onClick={onCheck}>
-            {value && value.isRight && <img src={CheckCircle} />}
+        <div
+          className="answer-card p-3"
+          style={{ borderLeftColor: borderLeftColor }}
+        >
+          <div className="check-circle-container">
+            <button
+              type="button"
+              disabled={value?.value ? false : true}
+              className="check-circle"
+              onClick={onCheck}
+            >
+              {value && value.isRight && <img src={CheckCircle} />}
+            </button>
           </div>
+          <textarea
+            ref={ref}
+            rows={2}
+            className={className || ""}
+            placeholder={placeholder}
+            disabled={disabled}
+            value={value && value.value ? value.value : ""}
+            onChange={(e) => onChange({ value: e.target.value })}
+          />
         </div>
-        <textarea
-          ref={ref}
-          rows={2}
-          className={className || ""}
-          placeholder={placeholder}
-          value={value && value.value ? value.value : ""}
-          onChange={(e) => onChange({ value: e.target.value })}
-        />
-      </div>
+      </Tooltip>
     </>
   );
 }

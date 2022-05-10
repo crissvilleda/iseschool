@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Link } from "react-router-dom";
 import TitleUnderline from "../../components/TitleUnderline";
-import { InputText, InputTextArea } from "../../components/CustomInputs";
+import {
+  InputText,
+  InputTextArea,
+  InputDate,
+} from "../../components/CustomInputs";
 import { required } from "../../validations";
 import Table, { tableActions } from "../../components/Table";
 import QuestionModal from "./QuestionModal/QuestionModal";
@@ -60,7 +64,7 @@ export default function ActivityForm({
     console.log(question);
     setVisible(false);
   };
-  console.log(fields);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos de actividad" />
@@ -92,6 +96,21 @@ export default function ActivityForm({
             />
           </div>
         </div>
+      </div>
+      <div className="is-flex">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Ultima fecha entrega
+          </label>
+          <InputDate
+            className="input"
+            control={control}
+            name="expirationDate"
+            rules={{ validate: required }}
+            placeholder={"Selección fecha"}
+          />
+        </div>
+        <div className="field column is-6"></div>
       </div>
       <div className="is-flex">
         <div className="field column is-12">

@@ -1,12 +1,53 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import {
   InputTextArea,
   InputSelect,
   InputUpload,
 } from "../../../components/CustomInputs";
-import { required } from "../../../validations";
+import { required, isEmpty } from "../../../validations";
 import QuizType from "./QuizType";
 import TrueFalseType from "./TrueFalseType";
+import { Tooltip } from "antd";
+
+const resolver = (data, context) => {
+  const errors = {};
+  if (!data.question)
+    errors.question = { type: "required", message: required(data.question) };
+  if (!data.type)
+    errors.type = { type: "required", message: required(data.type) };
+  if (data.type && data.answers) {
+    const hasAnswer = Object.values(data.answers).reduce(
+      (error, answer) => error || !isEmpty(answer?.value),
+      false
+    );
+    const hasRightAnswer = Object.values(data.answers).reduce(
+      (error, answer) => error || answer?.isRight === true,
+      false
+    );
+    if (!hasAnswer) {
+      errors.answers = {
+        type: "required",
+        message: "Debe agregar una respuesta.",
+      };
+    } else if (!hasRightAnswer) {
+      errors.answers = {
+        type: "required",
+        message: "Debe seleccionar al menos una respuesta correcta.",
+      };
+    } else if (data.type === "true_or_false") {
+      const answerOne = data?.answers?.one?.isRight || false;
+      const answerTwo = data?.answers?.two?.isRight || false;
+      if (answerOne && answerTwo) {
+        errors.answers = {
+          type: "",
+          message: "Solo debe seleccionar una respuesta correcta.",
+        };
+      }
+    }
+  }
+  console.log(data);
+  return { values: data, errors: errors };
+};
 
 export default function QuestionForm({
   onSubmit = () => {},
@@ -16,12 +57,14 @@ export default function QuestionForm({
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
-    watch,
-    reset,
-  } = useForm();
+    clearErrors,
+    setValue,
+  } = useForm({ resolver });
 
-  const watchType = watch("type");
+  const watchType = useWatch({
+    control,
+    name: "type",
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="formModal">
@@ -69,8 +112,29 @@ export default function QuestionForm({
           />
         </div>
       </div>
-      <QuizType control={control} />
-      <TrueFalseType control={control} />
+      <Tooltip
+        title={errors?.answers?.message || ""}
+        visible={errors?.answers?.message || false}
+        placement="topRight"
+        color={"red"}
+        autoAdjustOverflow={true}
+        getPopupContainer={(trigger) => trigger.parentElement}
+      >
+        {watchType == "quiz" && (
+          <QuizType
+            control={control}
+            clearErrors={clearErrors}
+            setValue={setValue}
+          />
+        )}
+        {watchType == "true_or_false" && (
+          <TrueFalseType
+            control={control}
+            clearErrors={clearErrors}
+            setValue={setValue}
+          />
+        )}
+      </Tooltip>
       <div className="is-flex is-justify-content-space-between pt-4">
         <button
           type="button"

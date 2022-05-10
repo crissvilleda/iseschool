@@ -1,31 +1,51 @@
+import { useEffect } from "react";
 import InputAnswer from "../../../components/InputAnswer";
 import { useWatch } from "react-hook-form";
 
-export default function TrueFalseType({ control }) {
-  const watchType = useWatch({
+export default function TrueFalseType({
+  control,
+  setValue,
+  clearErrors,
+  resetField,
+}) {
+  const watchAnswers = useWatch({
     control,
-    name: "type",
+    name: "answers",
   });
+
+  useEffect(() => {
+    setValue("answers.one", { value: "Verdadero" });
+    setValue("answers.two", { value: "Falso" });
+  }, []);
+
+  useEffect(() => {
+    if (watchAnswers) {
+      clearErrors("answers");
+    }
+    return () => clearErrors("answers");
+  }, [watchAnswers]);
+
   return (
     <>
-      {watchType === "true_or_false" && (
-        <div className="is-flex">
-          <div className="field column is-6">
-            <InputAnswer
-              name="answers.one"
-              control={control}
-              placeholder="Verdadero"
-            />
-          </div>
-          <div className="field column is-6">
-            <InputAnswer
-              name="answers.two"
-              control={control}
-              placeholder="Falso"
-            />
-          </div>
+      <div className="is-flex">
+        <div className="field column is-6">
+          <InputAnswer
+            name="answers.one"
+            control={control}
+            placeholder="Verdadero"
+            borderLeftColor="#002D47"
+            disabled={true}
+          />
         </div>
-      )}
+        <div className="field column is-6">
+          <InputAnswer
+            name="answers.two"
+            control={control}
+            placeholder="Falso"
+            disabled={true}
+          />
+        </div>
+      </div>
     </>
   );
 }

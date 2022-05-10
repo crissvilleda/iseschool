@@ -26,6 +26,7 @@ export default function InputTextArea({
         visible={error ? true : false}
         placement="topRight"
         color={"red"}
+        getPopupContainer={(trigger) => trigger.parentElement}
       >
         <textarea
           rows={rows}

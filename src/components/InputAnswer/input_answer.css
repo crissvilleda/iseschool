@@ -1,7 +1,7 @@
 .answer-card {
   height: 7.5rem;
   background: #FFFFFF;
-  box-shadow: 4px 4px 4px 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.15);
   border-radius: 20px;
   border-radius: 0.75rem;
   border-left: 20px solid #F59432;
@@ -12,6 +12,12 @@
   justify-content: flex-end;
   cursor: pointer;
 
+}
+.check-circle-container button{
+  cursor: pointer;
+}
+.check-circle-container button:disabled{
+  cursor: unset;
 }
 
 .check-circle{

@@ -16,6 +16,7 @@
 }
 
 .formModal{
+  position: relative;
   max-height: 90vh;
   overflow-y: scroll;
   padding: 1.2rem;
@@ -46,3 +47,7 @@
     min-width: 75vw;
   }
 }
+.formModal .field input::placeholder{
+  font-size: 1.2rem;
+  font-weight: bolder;
+} 

@@ -24,9 +24,9 @@ let auth = getAuth(app);
 let functions = getFunctions(app);
 
 // Todo: Remove this in production
-// connectFunctionsEmulator(functions, "localhost", 5001);
-// connectAuthEmulator(auth, "http://localhost:9099");
-// connectFirestoreEmulator(db, "localhost", 8088);
+connectFunctionsEmulator(functions, "localhost", 5001);
+connectAuthEmulator(auth, "http://localhost:9099");
+connectFirestoreEmulator(db, "localhost", 8088);
 
 // Subsequent queries will use persistence, if it was enabled successfully
 
