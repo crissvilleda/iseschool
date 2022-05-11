@@ -52,6 +52,11 @@ export default function SideBar({ className }) {
               icon={ActivityIcon}
             />
             <MenuItem title="Material" to="/resource" icon={ResourceIcon} />
+            <MenuItem
+              title="Material"
+              to="/resource-student"
+              icon={ResourceIcon}
+            />
           </ul>
         </div>
       </aside>

@@ -9,8 +9,9 @@ import LoadingContext from "../context/LoadingContext";
 import UserContext from "../context/UserContext";
 import Login from "./login";
 import Resource from "./material";
+import ResourceStudent from "./materialStudent";
 import Activity from "./activity";
-import ActivityStudent from "./activity-student";
+import ActivityStudent from "./activityStudent";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -56,14 +57,22 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-             <Route
-            path="/group/*"
-            element={
-              <PrivateRoute>
-                <Group />
-              </PrivateRoute>
-            }
-          />
+            <Route
+              path="/resource-student/*"
+              element={
+                <PrivateRoute>
+                  <ResourceStudent />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/group/*"
+              element={
+                <PrivateRoute>
+                  <Group />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/activity/*"
               element={
@@ -72,15 +81,15 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-          <Route
-            path="/activity-student/*"
-            element={
-              <PrivateRoute>
-                <ActivityStudent />
-              </PrivateRoute>
-            }
-          />
-        </Routes>
+            <Route
+              path="/activity-student/*"
+              element={
+                <PrivateRoute>
+                  <ActivityStudent />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
         </UserContext.Provider>
       </LoadingContext.Provider>
     </>
