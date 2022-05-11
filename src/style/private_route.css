@@ -7,7 +7,7 @@
   margin: auto;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
   .app-main-container main {
     margin-left: 12.5rem;
   }

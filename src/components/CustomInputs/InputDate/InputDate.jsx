@@ -3,7 +3,15 @@ import DatePicker from "../../DatePicker";
 import useDateUtils from "../../../hooks/useDateUtils";
 import { Tooltip } from "antd";
 
-export default function InputDate({ name, control, rules, className }) {
+export default function InputDate({
+  name,
+  control,
+  rules,
+  className,
+  picker = "date",
+  format = "DD/MM/YYYY",
+  placeholder = "DD/MM/YYYY",
+}) {
   const { dateAsDayjs } = useDateUtils();
   const {
     field: { onChange, value, ref },
@@ -25,9 +33,10 @@ export default function InputDate({ name, control, rules, className }) {
         <DatePicker
           className={className || ""}
           onChange={onChange}
-          format="DD/MM/YYYY"
-          placeholder="DD/MM/YYYY"
+          format={format}
+          placeholder={placeholder}
           value={dateAsDayjs(value)}
+          picker={picker}
           ref={ref}
           size="large"
         />
