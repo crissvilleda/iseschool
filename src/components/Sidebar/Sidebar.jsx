@@ -40,13 +40,17 @@ export default function SideBar({ className }) {
         <br />
         <br />
         <div className="menu">
-          <ul>
+          <ul className="p-0">
             <MenuItem title="Inicio" to="/" icon={HomeIcon} />
             <MenuItem title="Usuarios" to="/user" icon={UserIcon} />
             <MenuItem title="Estudiantes" to="/student" icon={StudentIcon} />
             <MenuItem title="Grupos" to="/group" icon={GroupIcon} />
             <MenuItem title="Actividades" to="/activity" icon={ActivityIcon} />
-            <MenuItem title="Mis Actividades" to="/activity-student" icon={ActivityIcon} />
+            <MenuItem
+              title="Mis Actividades"
+              to="/activity-student"
+              icon={ActivityIcon}
+            />
             <MenuItem title="Material" to="/resource" icon={ResourceIcon} />
           </ul>
         </div>
