@@ -7,6 +7,8 @@ import {
   InputText,
   InputSelect,
 } from "../../components/CustomInputs";
+import { required } from "../../validations";
+import dayjs from "dayjs";
 
 export default function GroupForm({
   onSubmit,
@@ -23,7 +25,7 @@ export default function GroupForm({
   } = useForm();
 
   useEffect(() => {
-    reset(initialValues);
+    reset({ active: true, year: dayjs(), ...initialValues });
   }, [initialValues]);
 
   return (
@@ -38,47 +40,51 @@ export default function GroupForm({
             className="input"
             control={control}
             name="name"
-            rules={{ required: "Este campo es requerido." }}
+            rules={{ validate: required }}
             placeholder={"Ingrese nombre"}
           />
         </div>
 
         <div className="field column is-6">
           <label htmlFor="test" className="label">
-            Fecha de Nacimiento
+            Año
           </label>
           <div className="control">
             <InputDate
               className="input"
               control={control}
-              name="bornDate"
-              rules={{ required: "Este campo es requerido." }}
+              picker="year"
+              name="year"
+              placeholder=""
+              format="YYYY"
+              rules={{ validate: required }}
             />
           </div>
         </div>
       </div>
-      
-      <TitleUnderline title="Estudiantes" />
       <div className="is-flex">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
-            Nombre Usuario
+            Estado
           </label>
-          <InputText
+          <InputSelect
             className="input"
             control={control}
-            name="nameUser"
-            rules={{ required: "Este campo es requerido" }}
-            placeholder="Ingrese nombre"
+            name="active"
+            type="radio"
+            rules={{ validate: required }}
+            options={[
+              { value: true, label: "Activo" },
+              { value: false, label: "Desactivado" },
+            ]}
+            placeholder={"Seleccione estado"}
           />
         </div>
-
-      
+        <div className="field column is-6"></div>
       </div>
-      
 
       <div className="is-flex is-justify-content-space-between">
-        <Link className="button is-secondary " to="/student">
+        <Link className="button is-secondary " to="/group">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
