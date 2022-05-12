@@ -14,11 +14,12 @@ import {
   getDocs,
   where,
 } from "firebase/firestore";
-import { db  } from "../../firebase";
+import { db } from "../../firebase";
 
 async function getGroups(groups) {
   let querySet = query(
     collection(db, "groups"),
+    orderBy("createdAt", "desc"),
     limit(25)
   );
 
@@ -28,16 +29,16 @@ async function getGroups(groups) {
   return result;
 }
 export default function GroupList() {
-  const [students, setStudents] = useState([]);
+  const [groups, setGroups] = useState([]);
   const { deleteData } = useDelete("users");
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    getGroups(students)
+    getGroups(groups)
       .then((data) => {
-        if (data) setStudents(data);
+        if (data) setGroups(data);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -45,8 +46,8 @@ export default function GroupList() {
   const removeData = async (id) => {
     setLoading(true);
     await deleteData(id);
-    await getStudents(students).then((data) => {
-      if (data) setStudents(data);
+    await getGroups(groups).then((data) => {
+      if (data) setGroups(data);
     });
     setLoading(false);
   };
@@ -56,7 +57,7 @@ export default function GroupList() {
       {
         Header: "Herramientas",
         accessor: tableActions({
-          edit: (id) => navigate(`/student/${id}`),
+          edit: (id) => navigate(`/group/${id}`),
           remove: (id) => removeData(id),
         }),
       },
@@ -64,19 +65,11 @@ export default function GroupList() {
         Header: "Grupo",
         accessor: "name",
       },
-    
+
       {
         Header: "Año",
-        accessor: (row) => {
-          if (row.bornDate) {
-            const bornDate = row.bornDate.toDate();
-            if (!dayjs(bornDate).isValid()) return "";
-            return dayjs(bornDate).format("DD-MM-YYYY");
-          }
-          return "";
-        },
+        accessor: "year",
       },
-     
     ],
     []
   );
@@ -92,10 +85,9 @@ export default function GroupList() {
           Agregar nuevo
         </Link>
       </div>
-
       <br />
       <br />
-      <Table columns={columns} data={students} loading={loading} />
+      <Table columns={columns} data={groups} loading={loading} />
     </>
   );
 }
