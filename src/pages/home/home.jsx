@@ -36,7 +36,6 @@ const getStats = async () => {
   data.students.push(["Niñas", stats?.students?.girls || 0]);
   return data;
 };
-
 export default function Home() {
   const [stats, setStats] = useState({});
   const { setLoading, loading } = useContext(LoadingContext);
@@ -44,7 +43,6 @@ export default function Home() {
     setLoading(true);
     getStats()
       .then((data) => setStats(data))
-      .catch(() => SwalError("ERROR", "No se pudieron obtener los datos."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -60,17 +58,21 @@ export default function Home() {
           <div className="column is-6">
             <Card className="p-4 mb-5">
               <h2>Estudiantes</h2>
-              <Chart
-                chartType="PieChart"
-                width="100%"
-                height="350px"
-                data={stats?.students}
-                options={{
-                  title: "Cantidad de estudiantes",
-                  pieHole: 0.4,
-                  is3D: false,
-                }}
-              />
+              {stats?.students ? (
+                <Chart
+                  chartType="PieChart"
+                  width="100%"
+                  height="350px"
+                  data={stats?.students}
+                  options={{
+                    title: "Cantidad de estudiantes",
+                    pieHole: 0.4,
+                    is3D: false,
+                  }}
+                />
+              ) : (
+                <span>No hay datos</span>
+              )}
             </Card>
             <Card className="p-4 mb-5" borderLeftColor="#002D47">
               <h2>Cantidad de maestros</h2>
