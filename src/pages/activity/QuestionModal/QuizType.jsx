@@ -9,11 +9,6 @@ export default function QuizType({ control, clearErrors, setValue }) {
   });
 
   useEffect(() => {
-    setValue("answers.one", { value: "" });
-    setValue("answers.two", { value: "" });
-  }, []);
-
-  useEffect(() => {
     if (watchAnswers) {
       clearErrors("answers");
     }

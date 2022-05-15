@@ -9,6 +9,7 @@ import { required, isEmpty } from "../../../validations";
 import QuizType from "./QuizType";
 import TrueFalseType from "./TrueFalseType";
 import { Tooltip } from "antd";
+import { get } from "../../../helpers";
 
 const resolver = (data, context) => {
   const errors = {};
@@ -46,7 +47,7 @@ const resolver = (data, context) => {
       }
     }
   }
-  console.log(data);
+
   return { values: data, errors: errors };
 };
 
@@ -67,8 +68,42 @@ export default function QuestionForm({
 
   useEffect(() => {
     reset(initialValues);
-    console.log(initialValues);
   }, [initialValues]);
+
+  const onChangeType = (value) => {
+    if (
+      value === "true_or_false" &&
+      get(initialValues, "type") === "true_or_false"
+    ) {
+      setValue(
+        "answers.one",
+        get(initialValues, "answers.one", { value: "Verdadero" })
+      );
+      setValue(
+        "answers.two",
+        get(initialValues, "answers.two", { value: "Falso" })
+      );
+    } else if (value == "quiz" && get(initialValues, "type") === "quiz") {
+      setValue("answers.one", get(initialValues, "answers.one", { value: "" }));
+      setValue("answers.two", get(initialValues, "answers.two", { value: "" }));
+      setValue(
+        "answers.tree",
+        get(initialValues, "answers.tree", { value: "" })
+      );
+      setValue(
+        "answers.four",
+        get(initialValues, "answers.four", { value: "" })
+      );
+    } else if (value === "true_or_false") {
+      setValue("answers.one", { value: "Verdadero" });
+      setValue("answers.two", { value: "Falso" });
+    } else {
+      setValue("answers.one", { value: "" });
+      setValue("answers.two", { value: "" });
+      setValue("answers.tree", { value: "" });
+      setValue("answers.four", { value: "" });
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="formModal">
@@ -101,6 +136,7 @@ export default function QuestionForm({
             className="input"
             control={control}
             name="type"
+            onChangeField={onChangeType}
             options={[
               {
                 value: "quiz",

@@ -14,11 +14,6 @@ export default function TrueFalseType({
   });
 
   useEffect(() => {
-    setValue("answers.one", { value: "Verdadero" });
-    setValue("answers.two", { value: "Falso" });
-  }, []);
-
-  useEffect(() => {
     if (watchAnswers) {
       clearErrors("answers");
     }

@@ -10,6 +10,7 @@ export default function InputSelect({
   className,
   placeholder,
   options = [],
+  onChangeField = () => {},
 }) {
   const {
     field: { onChange, value },
@@ -36,7 +37,10 @@ export default function InputSelect({
       >
         <Select
           className={className || ""}
-          onChange={onChange}
+          onChange={(value) => {
+            onChange(value);
+            onChangeField(value);
+          }}
           placeholder={placeholder}
           value={value}
           bordered={false}
