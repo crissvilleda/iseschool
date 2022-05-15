@@ -17,9 +17,9 @@ import { db } from "../../firebase";
 async function getMaterials(materials = []) {
   let querySet = query(
     collection(db, "materials"),
-    // startAfter(materials),
-    limit(25),
-    orderBy("createdAt")
+    orderBy("createdAt", "desc"),
+    startAfter(materials),
+    limit(25)
   );
 
   const querySnapshot = await getDocs(querySet);

@@ -17,11 +17,12 @@ import {
 import { db } from "../../firebase";
 
 async function getActivities(activities = []) {
+  console.log(activities);
   let querySet = query(
     collection(db, "activities"),
+    orderBy("createdAt", "desc"),
     startAfter(activities),
-    limit(25),
-    orderBy("createdAt")
+    limit(25)
   );
 
   const querySnapshot = await getDocs(querySet);
@@ -32,7 +33,7 @@ async function getActivities(activities = []) {
 
 export default function ActivityList() {
   const [activities, setActivities] = useState([]);
-  const { deleteData } = useDelete("users");
+  const { deleteData } = useDelete("activities");
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ export default function ActivityList() {
       },
       {
         Header: "Actividad",
-        accessor: "name",
+        accessor: "title",
       },
       {
         Header: "Tipo",

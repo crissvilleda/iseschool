@@ -13,14 +13,13 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import InputAnswer from "../../components/InputAnswer";
 
 async function getActivities(activities = []) {
   let querySet = query(
     collection(db, "activities"),
-    // startAfter(activities),
-    limit(25),
-    orderBy("createdAt")
+    orderBy("createdAt", "desc"),
+    startAfter(activities),
+    limit(25)
   );
 
   const querySnapshot = await getDocs(querySet);
