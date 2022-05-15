@@ -2,9 +2,9 @@ import editIcon from "../../assets/img/edit.svg";
 import removeIcon from "../../assets/img/delete.svg";
 import Swal from "sweetalert2";
 
-function Actions({ id, edit = undefined, remove = undefined }) {
+function Actions({ id, edit = undefined, remove = undefined, row = {} }) {
   const editAction = () => {
-    edit(id);
+    edit(id, row);
   };
   const removeAction = () => {
     Swal.fire({

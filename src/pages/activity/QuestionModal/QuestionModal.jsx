@@ -3,7 +3,12 @@ import "react-responsive-modal/styles.css";
 import "./questionModal.css";
 import QuestionForm from "./QuestionForm";
 
-export default function QuestionModal({ isVisible, setVisible, onSubmit }) {
+export default function QuestionModal({
+  isVisible,
+  setVisible,
+  onSubmit,
+  initialValues = {},
+}) {
   return (
     <>
       <Modal
@@ -15,7 +20,11 @@ export default function QuestionModal({ isVisible, setVisible, onSubmit }) {
         focusTrapped={false}
         styles={{ modalContainer: { overflowY: "hidden", maxHeight: "100vh" } }}
       >
-        <QuestionForm onSubmit={onSubmit} onCancel={() => setVisible(false)} />
+        <QuestionForm
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          onCancel={() => setVisible(false)}
+        />
         <br />
       </Modal>
     </>

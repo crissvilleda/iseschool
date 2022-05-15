@@ -6,10 +6,20 @@ import {
   InputText,
   InputTextArea,
   InputDate,
+  InputSelect,
 } from "../../components/CustomInputs";
 import { required } from "../../validations";
 import Table, { tableActions } from "../../components/Table";
 import QuestionModal from "./QuestionModal/QuestionModal";
+import { db } from "../../firebase";
+import {
+  query,
+  collection,
+  limit,
+  orderBy,
+  getDocs,
+  where,
+} from "firebase/firestore";
 
 export default function ActivityForm({
   onSubmit,
@@ -17,6 +27,8 @@ export default function ActivityForm({
   isUpdating,
 }) {
   const [visible, setVisible] = useState(false);
+  const [question, setQuestion] = useState({});
+  const [groupOptions, setGroupOptions] = useState([]);
   const {
     handleSubmit,
     formState: { errors },
@@ -25,10 +37,28 @@ export default function ActivityForm({
     reset,
   } = useForm();
 
-  const { fields, append, prepend, remove } = useFieldArray({
+  const { fields, append, prepend, remove, update } = useFieldArray({
     control,
     name: "questions",
   });
+
+  useEffect(() => {
+    let querySet = query(
+      collection(db, "groups"),
+      where("active", "==", true),
+      limit(25),
+      orderBy("createdAt")
+    );
+
+    getDocs(querySet).then((querySnapshot) => {
+      querySnapshot.forEach((doc) =>
+        results.push({ value: doc.id, label: doc.data().name })
+      );
+      console.log(results);
+      setGroupOptions(results);
+    });
+    const results = [];
+  }, []);
 
   useEffect(() => {
     reset(initialValues);
@@ -39,7 +69,7 @@ export default function ActivityForm({
       {
         Header: "Herramientas",
         accessor: tableActions({
-          edit: (id) => navigate(`/activity/${id}`),
+          edit: (id, row) => setQuestion(row),
           remove: (id) => remove(id),
         }),
       },
@@ -61,7 +91,6 @@ export default function ActivityForm({
 
   const onAddQuestion = (question) => {
     append(question);
-    console.log(question);
     setVisible(false);
   };
 
@@ -87,7 +116,7 @@ export default function ActivityForm({
             Grupo
           </label>
           <div className="control">
-            <InputText
+            <InputSelect
               className="input"
               control={control}
               name="group"
@@ -156,6 +185,17 @@ export default function ActivityForm({
         isVisible={visible}
         setVisible={setVisible}
       />
+      {question && question.id && (
+        <QuestionModal
+          onSubmit={(data) => {
+            update(question.id, data);
+            setQuestion({});
+          }}
+          isVisible={true}
+          initialValues={question}
+          setVisible={() => setQuestion({})}
+        />
+      )}
     </form>
   );
 }

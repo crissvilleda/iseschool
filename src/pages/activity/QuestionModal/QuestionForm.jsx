@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import {
   InputTextArea,
@@ -52,6 +53,7 @@ const resolver = (data, context) => {
 export default function QuestionForm({
   onSubmit = () => {},
   onCancel = () => {},
+  initialValues = {},
 }) {
   const {
     handleSubmit,
@@ -59,7 +61,12 @@ export default function QuestionForm({
     control,
     clearErrors,
     setValue,
+    reset,
   } = useForm({ resolver });
+
+  useEffect(() => {
+    reset(initialValues);
+  }, [initialValues]);
 
   const watchType = useWatch({
     control,
