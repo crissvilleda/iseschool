@@ -1,40 +1,92 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import ActivityForm from "./ActivityForm";
 import ActivityIcon from "../../assets/img/activities.png";
-import useUpdate from "../../hooks/useUpdate";
-import useCreate from "../../hooks/useCreate";
 import useDateUtils from "../../hooks/useDateUtils";
 import LoadingContext from "../../context/LoadingContext";
 import LoadMask from "../../components/LoadMask";
 import UserContext from "../../context/UserContext";
 import { SwalError } from "../../components/SwalAlerts";
 import { notification } from "antd";
+import { storage, db } from "../../firebase";
+import { ref, uploadBytes, listAll } from "firebase/storage";
+import { useNavigate, useParams } from "react-router-dom";
+import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { get } from "../../helpers";
+import { v4 as uuidv4 } from "uuid";
+
+const uploadImages = async (body) => {
+  let questions = get(body, "questions", []);
+  const _questions = [];
+
+  for (const item of questions) {
+    const file = get(item, "questionFile");
+    if (file instanceof File) {
+      const storageRef = ref(
+        storage,
+        `questions/${body.storageId}/${item.id}-${file.name}`
+      );
+      const snapshot = await uploadBytes(storageRef, file);
+      _questions.push({ ...item, questionFile: snapshot.ref.fullPath });
+    } else {
+      _questions.push(item);
+    }
+  }
+  return { ...body, questions: _questions };
+};
 
 export default function Activity() {
-  const { data, isUpdating, updateData } = useUpdate("activities", "/activity");
-  const { saveData } = useCreate("activities", "/activity");
   const { dateAsTimestamp } = useDateUtils();
   const { loading, setLoading } = useContext(LoadingContext);
   const { user } = useContext(UserContext);
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const isUpdating = id ? true : false;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      const docRef = doc(db, "activities", id);
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) setData(docSnap.data());
+        })
+        .finally(() => setLoading(false));
+    }
+  }, []);
 
   const onSubmit = async (data) => {
     try {
-      const body = { ...data };
+      setLoading(true);
+      let body = { ...data };
       body.createdAt = new Date();
       body.createdBy = user;
+      body.storageId = get(body, "storageId", uuidv4());
+
       if (body.expirationDate)
         body.expirationDate = dateAsTimestamp(body.expirationDate);
       const msg = isUpdating
         ? "Los datos se an actualizado."
         : "Los datos se an registrado.";
 
-      if (isUpdating) await updateData(body);
-      else await saveData(body);
+      const listRef = ref(storage, `questions/${body.storageId}`);
+      const { items: listObjects } = await listAll(listRef);
+      console.log(body);
+      body = await uploadImages(body);
+      console.log(body);
+      if (isUpdating) {
+        const docRef = doc(db, "activities", id);
+        await updateDoc(docRef, body);
+      } else {
+        await addDoc(collection(db, "activities"), body);
+      }
       notification.success({
         message: "Éxito",
         description: msg,
       });
+      navigate("/activity");
     } catch (e) {
+      console.log(e);
       let msg = `No se pudo ${
         isUpdating ? "actualizar" : "crear"
       } el registro.`;

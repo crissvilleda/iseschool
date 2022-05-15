@@ -6,6 +6,7 @@ import {
 } from "firebase/firestore";
 import { getAuth, connectAuthEmulator } from "firebase/auth";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -22,6 +23,7 @@ const app = initializeApp(firebaseConfig);
 let db = getFirestore(app);
 let auth = getAuth(app);
 let functions = getFunctions(app);
+let storage = getStorage(app);
 
 // Todo: Remove this in production
 // connectFunctionsEmulator(functions, "localhost", 5001);
@@ -30,6 +32,6 @@ let functions = getFunctions(app);
 
 // Subsequent queries will use persistence, if it was enabled successfully
 
-export { db, auth, functions };
+export { db, auth, functions, storage };
 
 export default app;
