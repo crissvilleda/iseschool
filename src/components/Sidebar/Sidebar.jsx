@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./sidebar.css";
 import UserIcon from "../../assets/img/user.png";
@@ -7,11 +7,13 @@ import HomeIcon from "../../assets/img/home.svg";
 import GroupIcon from "../../assets/img/group.png";
 import ResourceIcon from "../../assets/img/books.png";
 import ActivityIcon from "../../assets/img/activities.png";
+import UserContext from "../../context/UserContext";
 
-function MenuItem({ icon, title, to }) {
+function MenuItem({ icon, title, to, user, allowTo = [] }) {
   const [isActive, setIsActive] = useState(false);
   const location = useLocation();
 
+  if (!allowTo.includes(user.type)) return <></>;
   useEffect(() => {
     if (location.pathname.includes(to) && to != "/") setIsActive(true);
     else setIsActive(false);
@@ -33,6 +35,7 @@ function MenuItem({ icon, title, to }) {
 }
 
 export default function SideBar({ className }) {
+  const { user } = useContext(UserContext);
   return (
     <>
       <aside className={`${className || ""} sidebar-container`}>
@@ -41,22 +44,64 @@ export default function SideBar({ className }) {
         <br />
         <div className="menu">
           <ul className="p-0">
-            <MenuItem title="Inicio" to="/" icon={HomeIcon} />
-            <MenuItem title="Usuarios" to="/user" icon={UserIcon} />
-            <MenuItem title="Estudiantes" to="/student" icon={StudentIcon} />
-            <MenuItem title="Grupos" to="/group" icon={GroupIcon} />
-            <MenuItem title="Actividades" to="/activity" icon={ActivityIcon} />
-            <MenuItem
-              title="Mis Actividades"
-              to="/activity-student"
-              icon={ActivityIcon}
-            />
-            <MenuItem title="Material" to="/resource" icon={ResourceIcon} />
-            <MenuItem
-              title="Material"
-              to="/resource-student"
-              icon={ResourceIcon}
-            />
+            <>
+              <MenuItem
+                title="Inicio"
+                to="/"
+                icon={HomeIcon}
+                user={user}
+                allowTo={["Admin", "Teacher"]}
+              />
+              <MenuItem
+                title="Usuarios"
+                to="/user"
+                icon={UserIcon}
+                user={user}
+                allowTo={["Admin"]}
+              />
+              <MenuItem
+                title="Estudiantes"
+                to="/student"
+                icon={StudentIcon}
+                user={user}
+                allowTo={["Admin", "Teacher"]}
+              />
+              <MenuItem
+                title="Grupos"
+                to="/group"
+                icon={GroupIcon}
+                user={user}
+                allowTo={["Admin", "Teacher"]}
+              />
+              <MenuItem
+                title="Actividades"
+                to="/activity"
+                icon={ActivityIcon}
+                user={user}
+                allowTo={["Admin", "Teacher"]}
+              />
+              <MenuItem
+                title="Mis Actividades"
+                to="/activity-student"
+                icon={ActivityIcon}
+                user={user}
+                allowTo={["Student"]}
+              />
+              <MenuItem
+                title="Material"
+                to="/resource"
+                icon={ResourceIcon}
+                user={user}
+                allowTo={["Admin", "Teacher"]}
+              />
+              <MenuItem
+                title="Material"
+                to="/resource-student"
+                icon={ResourceIcon}
+                user={user}
+                allowTo={["Student"]}
+              />
+            </>
           </ul>
         </div>
       </aside>
