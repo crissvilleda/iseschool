@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   InputTextArea,
   InputSelect,
@@ -61,17 +61,14 @@ export default function QuestionForm({
     control,
     clearErrors,
     setValue,
+    watch,
     reset,
   } = useForm({ resolver });
 
   useEffect(() => {
     reset(initialValues);
+    console.log(initialValues);
   }, [initialValues]);
-
-  const watchType = useWatch({
-    control,
-    name: "type",
-  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="formModal">
@@ -92,7 +89,7 @@ export default function QuestionForm({
         <InputUpload
           name="questionFile"
           control={control}
-          placeholder="Agregar imagen o fotografiá"
+          placeholder="Agregar imagen o fotografía"
         />
       </div>
       <div className="is-flex">
@@ -127,14 +124,14 @@ export default function QuestionForm({
         autoAdjustOverflow={true}
         getPopupContainer={(trigger) => trigger.parentElement}
       >
-        {watchType == "quiz" && (
+        {watch("type") == "quiz" && (
           <QuizType
             control={control}
             clearErrors={clearErrors}
             setValue={setValue}
           />
         )}
-        {watchType == "true_or_false" && (
+        {watch("type") == "true_or_false" && (
           <TrueFalseType
             control={control}
             clearErrors={clearErrors}

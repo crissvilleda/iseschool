@@ -6,7 +6,7 @@ import useCreate from "../../hooks/useCreate";
 import useDateUtils from "../../hooks/useDateUtils";
 import LoadingContext from "../../context/LoadingContext";
 import LoadMask from "../../components/LoadMask";
-import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 import { SwalError } from "../../components/SwalAlerts";
 import { notification } from "antd";
 
@@ -15,12 +15,13 @@ export default function Activity() {
   const { saveData } = useCreate("activities", "/activity");
   const { dateAsTimestamp } = useDateUtils();
   const { loading, setLoading } = useContext(LoadingContext);
-  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const onSubmit = async (data) => {
     try {
       const body = { ...data };
       body.createdAt = new Date();
+      body.createdBy = user;
       if (body.expirationDate)
         body.expirationDate = dateAsTimestamp(body.expirationDate);
       const msg = isUpdating
@@ -35,7 +36,6 @@ export default function Activity() {
         description: msg,
       });
     } catch (e) {
-      console.log(e);
       let msg = `No se pudo ${
         isUpdating ? "actualizar" : "crear"
       } el registro.`;
