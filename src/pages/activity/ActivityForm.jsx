@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Link } from "react-router-dom";
 import TitleUnderline from "../../components/TitleUnderline";
@@ -37,7 +37,7 @@ export default function ActivityForm({
     reset,
   } = useForm();
 
-  const { fields, append, prepend, remove, update } = useFieldArray({
+  const { fields, append, replace } = useFieldArray({
     control,
     name: "questions",
   });
@@ -69,7 +69,7 @@ export default function ActivityForm({
         Header: "Herramientas",
         accessor: tableActions({
           edit: (id, row) => setQuestion(row),
-          remove: (id) => remove(id),
+          remove: (id) => replace(fields.filter((i) => i.id !== id)),
         }),
       },
       {
@@ -85,7 +85,7 @@ export default function ActivityForm({
         },
       },
     ],
-    []
+    [fields]
   );
 
   const onAddQuestion = (question) => {
@@ -188,7 +188,14 @@ export default function ActivityForm({
       {question && question.id && (
         <QuestionModal
           onSubmit={(data) => {
-            update(question.id, data);
+            replace(
+              fields.map((i) => {
+                if (i.id == question.id) {
+                  return { id: i.id, ...data };
+                }
+                return i;
+              })
+            );
             setQuestion({});
           }}
           isVisible={true}
