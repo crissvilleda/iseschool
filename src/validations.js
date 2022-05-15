@@ -55,7 +55,6 @@ export function password(value) {
 }
 
 export function date(value) {
-  console.log(value);
   if (!isEmpty(value) && !dayjs(dateAsDayjs(value)).isValid()) {
     return "Fecha invalida";
   }

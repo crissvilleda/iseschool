@@ -28,7 +28,6 @@ export default function Activity() {
         ? "Los datos se an actualizado."
         : "Los datos se an registrado.";
 
-      console.log(body);
       if (isUpdating) await updateData(body);
       else await saveData(body);
       notification.success({

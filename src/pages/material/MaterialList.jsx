@@ -80,8 +80,6 @@ export default function () {
     ],
     []
   );
-  console.log(typeUser);
-  console.log(users);
 
   return (
     <>

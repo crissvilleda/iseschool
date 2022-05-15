@@ -46,7 +46,6 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  console.log(stats);
   return (
     <>
       <div className="is-flex pt-4">

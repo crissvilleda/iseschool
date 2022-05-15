@@ -17,7 +17,6 @@ import {
 import { db } from "../../firebase";
 
 async function getActivities(activities = []) {
-  console.log(activities);
   let querySet = query(
     collection(db, "activities"),
     orderBy("createdAt", "desc"),
