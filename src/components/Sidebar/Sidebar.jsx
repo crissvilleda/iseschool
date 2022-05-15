@@ -94,6 +94,13 @@ export default function SideBar({ className }) {
                 user={user}
                 allowTo={["Admin", "Teacher"]}
               />
+              <MenuItem
+                title="Material"
+                to="/resource-student"
+                icon={ResourceIcon}
+                user={user}
+                allowTo={["Student"]}
+              />
             </>
           </ul>
         </div>

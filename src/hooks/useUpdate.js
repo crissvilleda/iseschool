@@ -33,7 +33,7 @@ export default function useUpdate(
         })
         .finally(() => setLoading(false));
     }
-  }, []);
+  }, []); 
 
   return { updateData, data, isUpdating, id };
 }

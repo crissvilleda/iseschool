@@ -5,6 +5,7 @@ import {
   startAfter,
   limit,
   getDocs,
+  updateDoc
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -26,5 +27,9 @@ export default function useList(
     querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
     return result;
   };
+
   return { getData };
+
+
 }
+ 
