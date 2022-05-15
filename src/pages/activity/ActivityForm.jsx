@@ -173,7 +173,7 @@ export default function ActivityForm({
       <Table data={fields} columns={columns}></Table>
       <br />
       <div className="is-flex is-justify-content-space-between pt-4">
-        <Link className="button is-secondary " to="/student">
+        <Link className="button is-secondary " to="/activity">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">

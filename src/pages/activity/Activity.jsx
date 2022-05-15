@@ -8,7 +8,7 @@ import UserContext from "../../context/UserContext";
 import { SwalError } from "../../components/SwalAlerts";
 import { notification } from "antd";
 import { storage, db } from "../../firebase";
-import { ref, uploadBytes, listAll } from "firebase/storage";
+import { ref, uploadBytes, listAll, deleteObject } from "firebase/storage";
 import { useNavigate, useParams } from "react-router-dom";
 import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { get } from "../../helpers";
@@ -71,7 +71,7 @@ export default function Activity() {
 
       const listRef = ref(storage, `questions/${body.storageId}`);
       const { items: listObjects } = await listAll(listRef);
-      console.log(body);
+      console.log(listObjects);
       body = await uploadImages(body);
       console.log(body);
       if (isUpdating) {
@@ -80,6 +80,17 @@ export default function Activity() {
       } else {
         await addDoc(collection(db, "activities"), body);
       }
+      const questions = get(body, "questions", []);
+      const oldFiles = listObjects.map((item) => item.fullPath);
+      const urlNewFiles = questions.map((item) => get(item, "questionFile"));
+      oldFiles.forEach((urlRef) => {
+        if (!urlNewFiles.includes(urlRef)) {
+          const desertRef = ref(storage, urlRef);
+          deleteObject(desertRef)
+            .then(() => {})
+            .catch((error) => {});
+        }
+      });
       notification.success({
         message: "Éxito",
         description: msg,
