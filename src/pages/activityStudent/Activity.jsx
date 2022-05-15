@@ -16,16 +16,19 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
+import { data } from "./data";
 
 export default function Activity() {
-  const { id, title, description, expirationDate } = {
-    id: 1,
-    title:
-      "n 1ion lorem loaasdj lkasjdf kj asdlfion lorem loaasdj lkasjdf kj asdlf",
-    description:
-      "description lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf 1",
-    expirationDate: "10 de mayo de 2020",
-  };
+  // const { id, title, description, expirationDate } = {
+  //   id: 1,
+  //   title:
+  //     "n 1ion lorem loaasdj lkasjdf kj asdlfion lorem loaasdj lkasjdf kj asdlf",
+  //   description:
+  //     "description lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf 1",
+  //   expirationDate: "10 de mayo de 2020",
+  // };
+  const { id, title, description, expirationDate } = data;
+
   return (
     <>
       <div className="is-flex is-justify-content-space-between my-4 flex-column">
@@ -39,7 +42,7 @@ export default function Activity() {
         </p>
         <p className="mx-2 mx-sm-4">
           <span className=" fw-bold">Fecha de vencimiento </span>
-          {expirationDate}
+          {expirationDate.nanoseconds}
         </p>
       </div>
       <div className="is-flex justify-content-evenly pt-4">

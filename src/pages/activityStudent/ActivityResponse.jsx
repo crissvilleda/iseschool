@@ -16,92 +16,122 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
+import { data } from "./data";
 
 export default function ActivityResponse() {
-  const description =
-    "description loremsdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf lorem asdf qwef gbadgwgsdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf lorem asdf qwef gbadgwg loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf 4";
+  const [numberCuestions, setNumberCuestions] = useState(0);
+  const [question, setQuestion] = useState({});
+  const [allResponse, setallResponse] = useState([]);
 
-  const { respuestaArray, question, id } = {
-    respuestaArray: [
-      { id: 1, description },
-      { id: 2, description: "hola como te va" },
-      { id: 3, description },
-      { id: 4, description },
-    ],
-    question:
-      "n 1ion lorem loaasdj lkasjdf kj asdlfion lorem loaasdj lkasjdf kj asdlf???",
-    id: 1,
-  };
-  const respuestaArray2 = [
-    { id: 1, description: "Verdadero" },
-    { id: 0, description: "Falso" },
-  ];
+  useEffect(() => {
+    if (data) {
+      setQuestion(data.questions[numberCuestions]);
+    }
+  }, [numberCuestions]);
 
-  const selectedResponse = 2;
+  useEffect(() => {
+    console.log(allResponse);
+  }, [allResponse]);
 
   return (
     <>
-      <h5 className=" ml-2">
-        <span className="fw-bold d-inline">Pregunta: </span>
-        {question}:
-      </h5>
-      <h5 className=" fw-bold ml-2">Respuestas:</h5>
+      <div>
+        <h5 className=" ml-2">
+          <span className="fw-bold d-inline">Pregunta: </span>
+          {question.question}:
+        </h5>
+        <h5 className=" fw-bold ml-2">Responde:</h5>
+      </div>
 
       <div className="row">
-        {respuestaArray2.map(
-          ({ title, description, expirationDate, id }, index) => (
-            <div className={`p-0 m-0 col-${false ? "12" : "6"}`} key={id}>
+        {Object.keys(question?.answers || {}).map((clave) => {
+          if (!question.answers[clave]) {
+            return;
+          }
+          return (
+            <div
+              className={`p-0 m-0 col-${
+                question?.type !== "true_or_false" ? "12" : "6"
+              }`}
+              key={clave}
+            >
               <div
                 className=" bg-white p-3 m-3 cursor-pointer"
                 style={{
                   border: `15px solid ${
-                    selectedResponse == id ? "#F59432" : "rgb(0 45 71 / 10%)"
+                    !!allResponse[numberCuestions]?.[clave]
+                      ? "#F59432"
+                      : "rgb(0 45 71 / 10%)"
                   }  `,
                   borderRadius: "15px",
                   minHeight: "20px",
                 }}
-              >
-                {false ? (
-                  <p className=" text-line-5">{description}</p>
-                ) : (
-                  <h4 className=" fw-bold text-center my-auto">
-                    {description}
-                  </h4>
-                )}
-              </div>
-            </div>
-          )
-        )}
-        {respuestaArray.map(
-          ({ title, description, expirationDate, id }, index) => (
-            <div className={`p-0 m-0 col-${true ? "12" : "6"}`} key={id}>
-              <div
-                className=" bg-white p-3 m-3 cursor-pointer"
-                style={{
-                  border: `15px solid ${
-                    selectedResponse == id ? "#F59432" : "rgb(0 45 71 / 10%)"
-                  }  `,
-                  borderRadius: "15px",
-                  minHeight: "20px",
+                onClick={() => {
+                  const _data = [...allResponse];
+                  if (question?.type === "true_or_false") {
+                    _data[numberCuestions] = {
+                      [clave]: !_data[numberCuestions]?.[clave] || true,
+                    };
+                  } else {
+                    _data[numberCuestions] = {
+                      ..._data[numberCuestions],
+                      [clave]: !_data[numberCuestions]?.[clave],
+                    };
+                  }
+                  setallResponse(_data);
                 }}
               >
-                {true ? (
-                  <p className=" text-line-5">{description}</p>
+                {question?.type !== "true_or_false" ? (
+                  <p className=" text-line-5">
+                    {question.answers[clave]?.value}
+                  </p>
                 ) : (
                   <h4 className=" fw-bold text-center my-auto">
-                    {description}
+                    {question.answers[clave]?.value}
                   </h4>
                 )}
               </div>
             </div>
-          )
-        )}
+          );
+        })}
       </div>
 
       <div className="is-flex justify-content-center pt-4">
-        <button className="button is-primary" type="submit">
-          Siguiente
-        </button>
+        {numberCuestions > 0 && (
+          <button
+            className="button is-primary mx-3"
+            type="button"
+            onClick={() => {
+              setNumberCuestions((n) => n - 1);
+            }}
+          >
+            Anterior
+          </button>
+        )}
+        {numberCuestions + 1 < data.questions.length && (
+          <button
+            className="button is-primary mx-3"
+            type="button"
+            onClick={() => {
+              setNumberCuestions((n) => n + 1);
+            }}
+          >
+            Siguiente
+          </button>
+        )}
+        {numberCuestions + 1 == data.questions.length && (
+          <button
+            className="button is-secondary mx-3"
+            type="button"
+            onClick={() => {
+              console.log("--- enviando las respustas ingresadas ---");
+              console.log(allResponse);
+              console.log("--- --------------------------------- ---");
+            }}
+          >
+            Enviar
+          </button>
+        )}
       </div>
     </>
   );
