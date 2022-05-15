@@ -54,7 +54,6 @@ export default function ActivityForm({
       querySnapshot.forEach((doc) =>
         results.push({ value: doc.id, label: doc.data().name })
       );
-      console.log(results);
       setGroupOptions(results);
     });
     const results = [];
@@ -120,6 +119,7 @@ export default function ActivityForm({
               className="input"
               control={control}
               name="group"
+              options={groupOptions}
               rules={{ validate: required }}
               placeholder={"Seleccione grupo"}
             />
