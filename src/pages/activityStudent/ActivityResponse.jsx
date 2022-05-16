@@ -13,6 +13,7 @@ import {
   limit,
   getDocs,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
@@ -20,7 +21,9 @@ import InputAnswer from "../../components/InputAnswer";
 export default function ActivityResponse({ data }) {
   const [numberCuestions, setNumberCuestions] = useState(0);
   const [question, setQuestion] = useState({});
-  const [allResponse, setallResponse] = useState([]);
+  const [response, setResponse] = useState({});
+  const [errorSelect, setErrorSelect] = useState(false);
+  let newData = data;
 
   useEffect(() => {
     if (data) {
@@ -28,9 +31,42 @@ export default function ActivityResponse({ data }) {
     }
   }, [numberCuestions]);
 
-  useEffect(() => {
-    console.log(allResponse);
-  }, [allResponse]);
+  const checkSelect = (callBack) => {
+    if (Object.keys(response).some((clave) => response[clave])) {
+      setResponse({});
+      setErrorSelect(false);
+      callBack();
+    } else {
+      setErrorSelect(true);
+      setTimeout(() => {
+        setErrorSelect(false);
+      }, 2000);
+    }
+  };
+
+  const checkAnswer = () => {
+    Object.keys(response).map((clave) => {
+      if (!!response[clave]) {
+        newData.questions[numberCuestions].answers[clave].selectStudent =
+          !!response[clave];
+      }
+    });
+    const isIncorrect = Object.keys(
+      newData.questions[numberCuestions].answers
+    ).some((clave) => {
+      const _answer = newData.questions[numberCuestions].answers[clave];
+      return !!_answer.selectStudent !== !!_answer.isRight;
+    });
+    newData.questions[numberCuestions].isCorrect = !isIncorrect;
+  };
+
+  const checkTotalCorrect = () => {
+    newData.totalQuestions = newData.questions.length;
+    newData.totalQuestionsCorrect = newData.questions.reduce((prev, obj) => {
+      return obj.isCorrect ? prev + 1 : prev;
+    }, 0);
+    newData.complete = true;
+  };
 
   return (
     <>
@@ -58,26 +94,24 @@ export default function ActivityResponse({ data }) {
                 className=" bg-white p-3 m-3 cursor-pointer"
                 style={{
                   border: `15px solid ${
-                    !!allResponse[numberCuestions]?.[clave]
-                      ? "#F59432"
-                      : "rgb(0 45 71 / 10%)"
+                    !!response?.[clave] ? "#F59432" : "rgb(0 45 71 / 10%)"
                   }  `,
                   borderRadius: "15px",
                   minHeight: "20px",
                 }}
                 onClick={() => {
-                  const _data = [...allResponse];
+                  let _data = { ...response };
                   if (question?.type === "true_or_false") {
-                    _data[numberCuestions] = {
-                      [clave]: !_data[numberCuestions]?.[clave] || true,
+                    _data = {
+                      [clave]: !_data?.[clave] || true,
                     };
                   } else {
-                    _data[numberCuestions] = {
-                      ..._data[numberCuestions],
-                      [clave]: !_data[numberCuestions]?.[clave],
+                    _data = {
+                      ..._data,
+                      [clave]: !_data?.[clave],
                     };
                   }
-                  setallResponse(_data);
+                  setResponse(_data);
                 }}
               >
                 {question?.type !== "true_or_false" ? (
@@ -112,7 +146,10 @@ export default function ActivityResponse({ data }) {
             className="button is-primary mx-3"
             type="button"
             onClick={() => {
-              setNumberCuestions((n) => n + 1);
+              checkSelect(() => {
+                setNumberCuestions((n) => n + 1);
+                checkAnswer();
+              });
             }}
           >
             Siguiente
@@ -123,15 +160,24 @@ export default function ActivityResponse({ data }) {
             className="button is-secondary mx-3"
             type="button"
             onClick={() => {
-              console.log("--- enviando las respustas ingresadas ---");
-              console.log(allResponse);
-              console.log("--- --------------------------------- ---");
+              checkSelect(() => {
+                checkAnswer();
+                checkTotalCorrect();
+                console.log("------ enviar data --- ---");
+                console.log(newData);
+                console.log("------- ---");
+              });
             }}
           >
             Enviar
           </button>
         )}
       </div>
+      {errorSelect && (
+        <div className="alert alert-danger mt-4 py-2" role="alert">
+          !Debes seleccionar una respuesta!
+        </div>
+      )}
     </>
   );
 }
