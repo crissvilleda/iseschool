@@ -16,9 +16,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
-import { data } from "./data";
 
-export default function ActivityResponse() {
+export default function ActivityResponse({ data }) {
   const [numberCuestions, setNumberCuestions] = useState(0);
   const [question, setQuestion] = useState({});
   const [allResponse, setallResponse] = useState([]);
@@ -45,7 +44,7 @@ export default function ActivityResponse() {
 
       <div className="row">
         {Object.keys(question?.answers || {}).map((clave) => {
-          if (!question.answers[clave]) {
+          if (!question.answers[clave] || !question.answers[clave].value) {
             return;
           }
           return (
