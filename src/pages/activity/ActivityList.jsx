@@ -1,10 +1,10 @@
 import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
-import dayjs from "dayjs";
 import ActivityIcon from "../../assets/img/activities.png";
 import useDelete from "../../hooks/useDelete";
 import LoadingContext from "../../context/LoadingContext";
+import useDateUtils from "../../hooks/useDateUtils";
 import {
   collection,
   query,
@@ -15,6 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { get } from "../../helpers";
 
 async function getActivities(activities = []) {
   let querySet = query(
@@ -34,6 +35,7 @@ export default function ActivityList() {
   const [activities, setActivities] = useState([]);
   const { deleteData } = useDelete("activities");
   const { loading, setLoading } = useContext(LoadingContext);
+  const { dateAsDayjs } = useDateUtils();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,12 +69,24 @@ export default function ActivityList() {
         accessor: "title",
       },
       {
-        Header: "Tipo",
-        accessor: "lastName",
+        Header: "Creado por",
+        accessor: (row) => {
+          const name = get(row, "createdBy.name", undefined);
+          const lastName = get(row, "createdBy.lastName", undefined);
+
+          if (name && lastName) return `${name} ${lastName}`;
+          if (name) return name;
+          if (lastName) return lastName;
+          return "Desconocido";
+        },
       },
       {
-        Header: "Creado",
-        accessor: "gender",
+        Header: "Ultimo dia entrega",
+        accessor: (row) => {
+          const date = dateAsDayjs(row.expirationDate);
+          if (date) return date.format("DD/MM/YYYY");
+          return "";
+        },
       },
     ],
     []
