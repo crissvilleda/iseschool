@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import TitleUnderline from "../../components/TitleUnderline";
@@ -14,12 +14,22 @@ import {
   date,
   password,
 } from "../../validations";
+import { db } from "../../firebase";
+import {
+  query,
+  collection,
+  limit,
+  orderBy,
+  getDocs,
+  where,
+} from "firebase/firestore";
 
 export default function StudentForm({
   onSubmit,
   initialValues = {},
   isUpdating,
 }) {
+  const [groupOptions, setGroupOptions] = useState([]);
   const {
     handleSubmit,
     formState: { errors },
@@ -28,14 +38,31 @@ export default function StudentForm({
   } = useForm();
 
   useEffect(() => {
+    let querySet = query(
+      collection(db, "groups"),
+      where("active", "==", true),
+      orderBy("createdAt"),
+      limit(25)
+    );
+
+    getDocs(querySet).then((querySnapshot) => {
+      querySnapshot.forEach((doc) =>
+        results.push({ value: doc.id, label: doc.data().name })
+      );
+      setGroupOptions(results);
+    });
+    const results = [];
+  }, []);
+
+  useEffect(() => {
     reset(initialValues);
   }, [initialValues]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos Personales" />
-      <div className="is-flex">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Nombre
           </label>
@@ -63,8 +90,8 @@ export default function StudentForm({
           </div>
         </div>
       </div>
-      <div className="is-flex">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Fecha de Nacimiento
           </label>
@@ -78,7 +105,7 @@ export default function StudentForm({
           </div>
         </div>
 
-        <div className="field column is-6">
+        <div className="field column is-6 mb-2">
           <label htmlFor="test" className="label">
             Genero
           </label>
@@ -98,8 +125,27 @@ export default function StudentForm({
         </div>
       </div>
       <TitleUnderline title="Datos del sistema" />
-      <div className="is-flex">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
+          <label htmlFor="test" className="label">
+            Grupo
+          </label>
+          <div className="control">
+            <InputSelect
+              className="input"
+              control={control}
+              name="group"
+              options={groupOptions}
+              rules={{ validate: required }}
+              placeholder={"Seleccione grupo"}
+            />
+          </div>
+        </div>
+        <div className="d-none d-sm-flex is-6" />
+      </div>
+
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Correo
           </label>
@@ -112,7 +158,7 @@ export default function StudentForm({
           />
         </div>
         {isUpdating ? (
-          <div className="field column is-6">
+          <div className="field column is-6 m-0">
             <label htmlFor="test" className="label">
               Contraseña
             </label>
@@ -126,7 +172,7 @@ export default function StudentForm({
             />
           </div>
         ) : (
-          <div className="field column is-6">
+          <div className="field column is-6 m-0">
             <label htmlFor="test" className="label">
               Contraseña
             </label>
@@ -142,8 +188,8 @@ export default function StudentForm({
         )}
       </div>
 
-      <div className="is-flex is-justify-content-space-between">
-        <Link className="button is-secondary " to="/student">
+      <div className="d-flex flex-column-reverse flex-sm-row mt-4 justify-content-between">
+        <Link className="button is-secondary mt-4 mb-mt-0" to="/student">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">

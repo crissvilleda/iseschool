@@ -46,8 +46,8 @@ export default function ActivityForm({
     let querySet = query(
       collection(db, "groups"),
       where("active", "==", true),
-      limit(25),
-      orderBy("createdAt")
+      orderBy("createdAt"),
+      limit(25)
     );
 
     getDocs(querySet).then((querySnapshot) => {
