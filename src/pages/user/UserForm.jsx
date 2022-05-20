@@ -31,8 +31,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos Personales " />
-      <div className="is-flex is-fle">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Nombre
           </label>
@@ -61,8 +61,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
         </div>
       </div>
 
-      <div className="is-flex is-fle">
-        <div className="field column id-6">
+      <div className="d-flex flex-column flex-sm-row  mb-2">
+        <div className="field column id-6  m-0">
           <label htmlFor="test" className="label">
             Fecha de Nacimiento
           </label>
@@ -98,8 +98,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
 
       <TitleUnderline title="Datos de Sistema" />
 
-      <div className="is-flex is-fle">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6  m-0">
           <label htmlFor="test" className="label">
             Tipo de usuario
           </label>
@@ -134,8 +134,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
       </div>
 
       {isUpdating ? (
-        <div className="is-flex">
-          <div className="field column is-6">
+        <div className="d-flex flex-column flex-sm-row">
+          <div className="field column is-6  m-0">
             <label htmlFor="test" className="label">
               Contraseña
             </label>
@@ -150,8 +150,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
           </div>
         </div>
       ) : (
-        <div className="is-flex">
-          <div className="field column is-6">
+        <div className="d-flex flex-column flex-sm-row">
+          <div className="field column is-6  m-0">
             <label htmlFor="test" className="label">
               Contraseña
             </label>
@@ -167,8 +167,8 @@ export default function UserForm({ onSubmit, initialValues = {}, isUpdating }) {
         </div>
       )}
 
-      <div className="is-flex is-justify-content-space-between">
-        <Link className="button is-secondary " to="/user">
+      <div className="d-flex flex-column-reverse flex-sm-row mt-4 justify-content-between">
+        <Link className="button is-secondary mt-4 mb-mt-0" to="/user">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
