@@ -96,7 +96,7 @@ export default function ActivityForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos de actividad" />
-      <div className="is-flex">
+      <div className="d-flex flex-column flex-sm-row">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
             Titulo
@@ -126,7 +126,7 @@ export default function ActivityForm({
           </div>
         </div>
       </div>
-      <div className="is-flex">
+      <div className="d-flex flex-column flex-sm-row">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
             Ultima fecha entrega
@@ -172,8 +172,8 @@ export default function ActivityForm({
       <br />
       <Table data={fields} columns={columns}></Table>
       <br />
-      <div className="is-flex is-justify-content-space-between pt-4">
-        <Link className="button is-secondary " to="/activity">
+      <div className="d-flex flex-column-reverse flex-sm-row mt-4 justify-content-between">
+        <Link className="button is-secondary mt-4 mb-mt-0" to="/activity">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
