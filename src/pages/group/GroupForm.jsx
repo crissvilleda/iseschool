@@ -31,8 +31,8 @@ export default function GroupForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos de Grupo" />
-      <div className="is-flex">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Nombre
           </label>
@@ -62,8 +62,8 @@ export default function GroupForm({
           </div>
         </div>
       </div>
-      <div className="is-flex">
-        <div className="field column is-6">
+      <div className="d-flex flex-column flex-sm-row">
+        <div className="field column is-6 m-0">
           <label htmlFor="test" className="label">
             Estado
           </label>
@@ -80,11 +80,11 @@ export default function GroupForm({
             placeholder={"Seleccione estado"}
           />
         </div>
-        <div className="field column is-6"></div>
+        <div className="d-none d-sm-flex is-6"></div>
       </div>
 
-      <div className="is-flex is-justify-content-space-between">
-        <Link className="button is-secondary " to="/group">
+      <div className="d-flex flex-column-reverse flex-sm-row mt-4 justify-content-between">
+        <Link className="button is-secondary mt-4 mb-mt-0" to="/group">
           Regresar
         </Link>
         <button className="button is-primary" type="submit">
