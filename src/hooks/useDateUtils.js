@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 
 export default function useDateUtils() {
   const dateAsTimestamp = (value = undefined) => {
-    if(value === undefined){
+    if (value === undefined) {
       return Timestamp.fromDate(dayjs().toDate());
-    }else if (value && value.seconds && value.nanoseconds) {
+    } else if (value && value.seconds && value.nanoseconds) {
       return new Timestamp(value.seconds, value.nanoseconds);
     } else {
       return Timestamp.fromDate(dayjs(value).toDate());
@@ -22,5 +22,10 @@ export default function useDateUtils() {
       return null;
     }
   };
-  return { dateAsDayjs, dateAsTimestamp };
+  const getDate = (value) => {
+    const date = dateAsDayjs(value);
+    if (date) return date.format("DD/MM/YYYY");
+    return "";
+  };
+  return { dateAsDayjs, dateAsTimestamp, getDate };
 }

@@ -7,8 +7,7 @@ export default function ActivityRoutes() {
   return (
     <Routes>
       <Route path="/" element={<ActivityList />} />
-      <Route path="/:id/description" element={<Activity />} />
-      <Route path="/:id/response" element={<ActivityResponse />} />
+      <Route path="/:id" element={<Activity />} />
     </Routes>
   );
 }

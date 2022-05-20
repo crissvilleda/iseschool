@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import Table, { tableActions } from "../../components/Table";
 import dayjs from "dayjs";
 import ActivityIcon from "../../assets/img/activities.png";
@@ -12,22 +12,44 @@ import {
   startAfter,
   limit,
   getDocs,
+  getDoc,
   where,
+  doc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
 import { data } from "./data";
+import useDateUtils from "../../hooks/useDateUtils";
+import UserContext from "../../context/UserContext";
+import ActivityResponse from "./ActivityResponse";
 
 export default function Activity() {
-  // const { id, title, description, expirationDate } = {
-  //   id: 1,
-  //   title:
-  //     "n 1ion lorem loaasdj lkasjdf kj asdlfion lorem loaasdj lkasjdf kj asdlf",
-  //   description:
-  //     "description lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kcription lorem loaasdj lkasjdf kj asdlfj l;ajsdfl kjasld;kfj alk;sdjfk;alsj dlfkjasdl;kfj l;askdjf;lk asjdfqiwfopwoefjnwefnwf 1",
-  //   expirationDate: "10 de mayo de 2020",
-  // };
-  const { id, title, description, expirationDate } = data;
+  const { dateAsTimestamp, getDate } = useDateUtils();
+  const { loading, setLoading } = useContext(LoadingContext);
+  const { user } = useContext(UserContext);
+  const { id } = useParams();
+  const [data, setData] = useState({});
+  const isUpdating = id ? true : false;
+  const navigate = useNavigate();
+
+  const [isRespond, setIsRespond] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      const docRef = doc(db, "activities", id);
+      getDoc(docRef)
+        .then((docSnap) => {
+          if (docSnap.exists()) setData(docSnap.data());
+        })
+        .finally(() => setLoading(false));
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+  const { title, description, expirationDate } = data || {};
 
   return (
     <>
@@ -36,27 +58,38 @@ export default function Activity() {
           <img src={ActivityIcon} className="title-icon" />
           <h2 className="title is-3 ml-2">{title}</h2>
         </div>
-        <p className="mx-2 mx-sm-4">
-          <span className=" fw-bold">Descripción </span>
-          {description}
-        </p>
-        <p className="mx-2 mx-sm-4">
-          <span className=" fw-bold">Fecha de vencimiento </span>
-          {expirationDate.nanoseconds}
-        </p>
+
+        {!isRespond ? (
+          <>
+            <p className="mx-2 mx-sm-4">
+              <span className=" fw-bold">Descripción </span>
+              {description}
+            </p>
+            <p className="mx-2 mx-sm-4">
+              <span className=" fw-bold">Fecha de vencimiento </span>
+              {getDate(expirationDate)}
+            </p>
+          </>
+        ) : (
+          <ActivityResponse data={data} />
+        )}
       </div>
-      <div className="is-flex justify-content-evenly pt-4">
-        <Link className="button is-secondary " to="/activity-student">
-          Regresar
-        </Link>
-        <Link
-          to={`/activity-student/2/response`}
-          className="button is-primary"
-          type="submit"
-        >
-          Iniciar
-        </Link>
-      </div>
+      {!isRespond && (
+        <div className="is-flex justify-content-evenly pt-4">
+          <Link className="button is-secondary " to="/activity-student">
+            Regresar
+          </Link>
+          <button
+            className="button is-primary"
+            type="button"
+            onClick={() => {
+              setIsRespond(true);
+            }}
+          >
+            Iniciar
+          </button>
+        </div>
+      )}
     </>
   );
 }
