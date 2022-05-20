@@ -71,9 +71,7 @@ export default function Activity() {
 
       const listRef = ref(storage, `questions/${body.storageId}`);
       const { items: listObjects } = await listAll(listRef);
-      console.log(listObjects);
       body = await uploadImages(body);
-      console.log(body);
       if (isUpdating) {
         const docRef = doc(db, "activities", id);
         await updateDoc(docRef, body);
