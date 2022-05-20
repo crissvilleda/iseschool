@@ -13,11 +13,14 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
+import UserContext from "../../context/UserContext";
 
-async function getActivities(activities = []) {
+async function getActivities(activities = [], group) {
   let querySet = query(
     collection(db, "activities"),
-    orderBy("createdAt", "desc"),
+    where("expirationDate", "<", new Date()),
+    where("group", "==", group),
+    orderBy("expirationDate", "desc"),
     startAfter(activities),
     limit(25)
   );
@@ -31,12 +34,13 @@ async function getActivities(activities = []) {
 export default function ActivityList() {
   const [activities, setActivities] = useState([]);
   const { loading, setLoading } = useContext(LoadingContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { getDate } = useDateUtils();
 
   useEffect(() => {
     setLoading(true);
-    getActivities(activities)
+    getActivities(activities, user.group)
       .then((data) => {
         if (data) setActivities(data);
       })

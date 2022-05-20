@@ -65,6 +65,23 @@ export default function MaterialForm({
         </div>
       </div>
 
+      <div className="is-flex is-fle">
+        <div className="field column is-6">
+          <label htmlFor="test" className="label">
+            Titulo
+          </label>
+          <InputText
+            className="input"
+            control={control}
+            name="title"
+            rules={{ required: "Este campo es requerido" }}
+            placeholder="Ingrese titulo"
+          />
+        </div>
+
+        <div></div>
+      </div>
+
       <div className="field column is-12">
         <label htmlFor="test" className="label">
           Contenido
