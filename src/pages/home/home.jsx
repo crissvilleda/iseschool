@@ -7,7 +7,8 @@ import { db } from "../../firebase";
 import { query, orderBy, limit, collection, getDocs } from "firebase/firestore";
 import LoadingContext from "../../context/LoadingContext";
 import LoadMask from "../../components/LoadMask";
-import { SwalError } from "../../components/SwalAlerts";
+import UserContext from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const dataChart1 = [
   ["Género", "Cantidad"],
@@ -39,11 +40,16 @@ const getStats = async () => {
 export default function Home() {
   const [stats, setStats] = useState({});
   const { setLoading, loading } = useContext(LoadingContext);
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   useEffect(() => {
-    setLoading(true);
-    getStats()
-      .then((data) => setStats(data))
-      .finally(() => setLoading(false));
+    if (user.type == "Student") navigate("/activity-student");
+    else {
+      setLoading(true);
+      getStats()
+        .then((data) => setStats(data))
+        .finally(() => setLoading(false));
+    }
   }, []);
 
   return (

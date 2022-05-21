@@ -1,11 +1,19 @@
 .sidebar-container {
-  height: 100%;
   background-color: #00b0bd;
   max-width: 12.5rem;
   z-index: 150;
   position: fixed;
   border-end-end-radius: 1rem;
   border-start-end-radius: 1rem;
+  top: 0;
+  position: fixed;
+  height: 100vh;
+  will-change: transform;
+  transition: -webkit-transform 0.2s ease-in-out;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+  overflow-x: hidden !important;
 }
 
 .menu-item {
@@ -30,4 +38,26 @@
 .menu-icon {
   max-width: 1rem;
   margin: 0rem;
+}
+
+
+.sidebar-container,
+.sidebar-container.open {
+  box-shadow: 0 4rem 9.375rem rgba(90, 97, 105, 0.1),
+      0 4rem 0.5rem rgba(90, 97, 105, 0.12),
+      0 4rem 1.375rem rgba(90, 97, 105, 0.1),
+      0 4rem 2.1875rem rgba(165, 182, 201, 0.1);
+}
+
+.sidebar-container.open {
+  display: flex !important;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar-container{
+    -webkit-transform: translateX(-300px);
+    transform: translateX(-300px);
+  }
 }

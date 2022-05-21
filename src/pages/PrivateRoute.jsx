@@ -32,7 +32,7 @@ export default function PrivateRoutes(props) {
     <>
       {user && user.uid ? (
         <div className="app-main-container">
-          <SideBar className="column is-3 is-hidden-mobile p-2" />
+          <SideBar className="column is-3 p-2" />
           <div className="m-0">
             <Navbar />
             <main className="column is-9 p-4">{props.children}</main>

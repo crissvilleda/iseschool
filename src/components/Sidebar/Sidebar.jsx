@@ -13,13 +13,20 @@ function MenuItem({ icon, title, to, user, allowTo = [] }) {
   const [isActive, setIsActive] = useState(false);
   const location = useLocation();
 
+  const onClickItem = () => {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) sidebar.classList.remove("open");
+    const burgerMenu = document.getElementById("burger-menu");
+    if (burgerMenu) burgerMenu.classList.remove("change");
+  };
+
   if (!allowTo.includes(user.type)) return <></>;
   useEffect(() => {
     if (location.pathname.includes(to) && to != "/") setIsActive(true);
     else setIsActive(false);
   }, [location.pathname]);
   return (
-    <li className="menu-item my-2">
+    <li className="menu-item my-2" onClick={onClickItem}>
       <NavLink
         to={to || "/"}
         end
@@ -38,11 +45,11 @@ export default function SideBar({ className }) {
   const { user } = useContext(UserContext);
   return (
     <>
-      <aside className={`${className || ""} sidebar-container`}>
-        <br />
-        <br />
-        <br />
-        <div className="menu">
+      <aside
+        id="sidebar"
+        className={`${className || ""} sidebar-container pt-5`}
+      >
+        <div className="menu mt-4">
           <ul className="p-0">
             <>
               <MenuItem
