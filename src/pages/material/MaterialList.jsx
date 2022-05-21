@@ -22,10 +22,11 @@ import LoadingContext from "../../context/LoadingContext.js";
 const { Option } = Select;
 
 export default function () {
-  const [users, setUsers] = useState([]);
-  const [typeUser, setTypeUser] = useState(null);
+  const [materials, setMaterials] = useState([]);
+  const [group, setGroup] = useState(null);
   const navigate = useNavigate();
   const { loading, setLoading } = useContext(LoadingContext);
+  const [groupOptions, setGroupOptions] = useState([]);
 
   const { dateAsDayjs } = useDateUtils();
 
@@ -34,12 +35,36 @@ export default function () {
     getMaterials().finally(() => setLoading(false));
   }, []);
 
-  async function getMaterials(filterType = null) {
+  useEffect(() => {
+    let querySet = query(
+      collection(db, "groups"),
+      where("active", "==", true),
+      orderBy("createdAt"),
+      limit(25)
+    );
+
+    getDocs(querySet).then((querySnapshot) => {
+      querySnapshot.forEach((doc) =>
+        results.push({ value: doc.id, label: doc.data().name })
+      );
+      setGroupOptions(results);
+    });
+    const results = [];
+  }, []);
+
+  async function getMaterials(filterGroup = null) {
     let querySet = query(collection(db, "materials"), limit(25));
+    if (filterGroup) {
+      querySet = query(
+        collection(db, "materials"),
+        where("group", "==", filterGroup),
+        limit(25)
+      );
+    }
     const querySnapshot = await getDocs(querySet);
     const results = [];
     querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
-    setUsers(results);
+    setMaterials(results);
   }
 
   async function removeData(id) {
@@ -61,14 +86,10 @@ export default function () {
         Header: "Título",
         accessor: "title",
       },
-      {
-        Header: "Grupo",
-        accessor: "group",
-      },
-      {
-        Header: "Docente",
-        accessor: "teacher",
-      },
+      // {
+      //   Header: "Docente",
+      //   accessor: "teacher",
+      // },
       {
         Header: "Fecha",
         accessor: (row) => {
@@ -101,20 +122,22 @@ export default function () {
             <Select
               className="input"
               onChange={(value) => {
-                setTypeUser(value);
+                setGroup(value);
                 getMaterials(value);
               }}
               placeholder="Seleccione Grupo"
-              value={typeUser}
+              allowClear={true}
+              value={group}
               bordered={false}
               size="large"
             >
-              <Option key="Admin" value="Admin">
-                Administrador
-              </Option>
-              <Option key="Teacher" value="Teacher">
-                Catedrático
-              </Option>
+              {groupOptions.map((i) => {
+                return (
+                  <Option key={i.value} value={i.value}>
+                    {i.label}
+                  </Option>
+                );
+              })}
             </Select>
           </div>
         </div>
@@ -122,7 +145,7 @@ export default function () {
       <br />
       <br />
       <LoadMask loading={loading}>
-        <Table columns={columns} data={users} />
+        <Table columns={columns} data={materials} />
       </LoadMask>
     </>
   );

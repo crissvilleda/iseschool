@@ -79,10 +79,6 @@ export default function Home() {
                 <span>No hay datos</span>
               )}
             </Card>
-            <Card className="p-4 mb-5" borderLeftColor="#002D47">
-              <h2>Cantidad de maestros</h2>
-              <p>20</p>
-            </Card>
           </div>
           <div className="column is-6">
             <Card className="p-4 mb-5" borderLeftColor="#00B0BD">
@@ -98,10 +94,6 @@ export default function Home() {
                   },
                 }}
               />
-            </Card>
-            <Card className="p-4 mb-5" borderLeftColor="#00B0BD">
-              <h2>Grupos de estudiantes</h2>
-              <p>15</p>
             </Card>
           </div>
         </div>

@@ -62,13 +62,16 @@ export default function GroupList() {
         }),
       },
       {
-        Header: "Grupo",
-        accessor: "name",
+        Header: "Nombre de grupo",
+        accessor: (row) => row.name,
       },
-
       {
         Header: "Año",
         accessor: "year",
+      },
+      {
+        Header: "Estado",
+        accessor: (row) => (row.active ? "Activo" : "Inactivo"),
       },
     ],
     []

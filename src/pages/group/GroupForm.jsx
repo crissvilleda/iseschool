@@ -75,7 +75,7 @@ export default function GroupForm({
             rules={{ validate: required }}
             options={[
               { value: true, label: "Activo" },
-              { value: false, label: "Desactivado" },
+              { value: false, label: "Inactivo" },
             ]}
             placeholder={"Seleccione estado"}
           />
