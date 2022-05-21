@@ -83,7 +83,7 @@ export default function StudentList() {
       },
       {
         Header: "Genero",
-        accessor: "gender",
+        accessor: (row) => (row.gender === "M" ? "Masculino" : "Femenino"),
       },
     ],
     []
