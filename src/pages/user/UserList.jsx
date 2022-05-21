@@ -120,6 +120,7 @@ export default function () {
                 setTypeUser(value);
                 getUser(value);
               }}
+              allowClear={true}
               placeholder="Seleccione Tipo"
               value={typeUser}
               bordered={false}
