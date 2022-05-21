@@ -12,6 +12,7 @@ import Resource from "./material";
 import ResourceStudent from "./materialStudent";
 import Activity from "./activity";
 import ActivityStudent from "./activityStudent";
+import { registerSW } from "virtual:pwa-register";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,10 @@ export default function App() {
   const contextLoading = useMemo(() => ({ loading, setLoading }), [loading]);
   const contextUser = useMemo(() => ({ user, setUser }), [user]);
 
+  const updateSW = registerSW({
+    onNeedRefresh() {},
+    onOfflineReady() {},
+  });
   return (
     <>
       <LoadingContext.Provider value={contextLoading}>
