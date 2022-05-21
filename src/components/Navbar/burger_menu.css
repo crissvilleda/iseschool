@@ -1,7 +1,8 @@
 .burger-container {
   display: none;
   cursor: pointer;
-  width: 50px;
+  width: 30px;
+  height: 30px;
 }
 
 .bar1{

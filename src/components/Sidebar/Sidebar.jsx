@@ -49,7 +49,7 @@ export default function SideBar({ className }) {
         id="sidebar"
         className={`${className || ""} sidebar-container pt-5`}
       >
-        <div className="menu mt-4">
+        <div className="menu mt-4 w-100">
           <ul className="p-0">
             <>
               <MenuItem

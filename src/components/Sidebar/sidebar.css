@@ -53,6 +53,8 @@
   display: flex !important;
   -webkit-transform: translateX(0);
   transform: translateX(0);
+  width: 15rem;
+  max-width: 15rem;
 }
 
 @media screen and (max-width: 768px) {
