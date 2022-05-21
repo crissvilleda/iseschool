@@ -113,7 +113,7 @@ export default function () {
           Agregar nuevo
         </Link>
       </div>
-      <div className="is-flex is-fle">
+      <div className="is-flex">
         <div className="field column is-6">
           <label htmlFor="test" className="label">
             Filtrar por grupo
