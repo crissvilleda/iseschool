@@ -1,31 +1,14 @@
 import { useMemo, useEffect, useState, useContext } from "react";
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
-import Table, { tableActions } from "../../components/Table";
-import dayjs from "dayjs";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ActivityIcon from "../../assets/img/activities.png";
-import useDelete from "../../hooks/useDelete";
 import LoadingContext from "../../context/LoadingContext";
-import {
-  collection,
-  query,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
-  getDoc,
-  where,
-  doc,
-  addDoc,
-  updateDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
 import ActivityResponse from "./ActivityResponse";
 import LoadMask from "../../components/LoadMask";
 import { get } from "../../helpers";
-import { async } from "@firebase/util";
 
 export default function Activity() {
   const { dateAsTimestamp, getDate } = useDateUtils();
