@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function ActivityResponse({ data, onSubmit }) {
-  const [numberCuestions, setNumberCuestions] = useState(0);
+  const [numberQuestions, setNumberQuestions] = useState(0);
   const [question, setQuestion] = useState({});
   const [response, setResponse] = useState({});
   const [errorSelect, setErrorSelect] = useState(false);
@@ -9,9 +9,9 @@ export default function ActivityResponse({ data, onSubmit }) {
 
   useEffect(() => {
     if (data) {
-      setQuestion(data.questions[numberCuestions]);
+      setQuestion(data.questions[numberQuestions]);
     }
-  }, [numberCuestions]);
+  }, [numberQuestions]);
 
   const checkSelect = (callBack) => {
     if (Object.keys(response).some((clave) => response[clave])) {
@@ -29,17 +29,17 @@ export default function ActivityResponse({ data, onSubmit }) {
   const checkAnswer = () => {
     Object.keys(response).map((clave) => {
       if (!!response[clave]) {
-        newData.questions[numberCuestions].answers[clave].selectStudent =
+        newData.questions[numberQuestions].answers[clave].selectStudent =
           !!response[clave];
       }
     });
     const isIncorrect = Object.keys(
-      newData.questions[numberCuestions].answers
+      newData.questions[numberQuestions].answers
     ).some((clave) => {
-      const _answer = newData.questions[numberCuestions].answers[clave];
+      const _answer = newData.questions[numberQuestions].answers[clave];
       return !!_answer.selectStudent !== !!_answer.isRight;
     });
-    newData.questions[numberCuestions].isCorrect = !isIncorrect;
+    newData.questions[numberQuestions].isCorrect = !isIncorrect;
   };
 
   const checkTotalCorrect = () => {
@@ -112,13 +112,13 @@ export default function ActivityResponse({ data, onSubmit }) {
       </div>
 
       <div className="is-flex justify-content-center pt-4">
-        {numberCuestions + 1 < data.questions.length && (
+        {numberQuestions + 1 < data.questions.length && (
           <button
             className="button is-primary mx-3"
             type="button"
             onClick={() => {
               checkSelect(() => {
-                setNumberCuestions((n) => n + 1);
+                setNumberQuestions((n) => n + 1);
                 checkAnswer();
               });
             }}
@@ -126,7 +126,7 @@ export default function ActivityResponse({ data, onSubmit }) {
             Siguiente
           </button>
         )}
-        {numberCuestions + 1 == data.questions.length && (
+        {numberQuestions + 1 == data.questions.length && (
           <button
             className="button is-secondary mx-3"
             type="button"
