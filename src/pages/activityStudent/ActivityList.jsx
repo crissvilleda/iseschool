@@ -81,10 +81,10 @@ export default function ActivityList() {
                   <h6 className="fw-bold text-line-1">{title}</h6>
                   <p className=" text-line-5">{description}</p>
                   <span className="ml-auto mt-auto p-0">
-                    <span className="fw-bold">Vence:</span>{" "}
+                    <span className="fw-bold">Vence: </span>
                     {getDate(expirationDate)}
                   </span>
-                  <span className="mt-auto mr-auto badge bg-danger d-inline">
+                  <span className="mt-0 mr-auto badge bg-danger d-inline">
                     {complete ? "Actividad resuelta" : "Actividad no resuelta"}
                   </span>
                 </div>

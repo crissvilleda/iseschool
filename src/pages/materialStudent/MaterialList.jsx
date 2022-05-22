@@ -12,6 +12,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import useDateUtils from "../../hooks/useDateUtils";
 
 async function getMaterials(materials = []) {
   let querySet = query(
@@ -30,6 +31,7 @@ async function getMaterials(materials = []) {
 export default function MaterialList() {
   const [materials, setMaterials] = useState([]);
   const { loading, setLoading } = useContext(LoadingContext);
+  const { getDate } = useDateUtils();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,7 +68,10 @@ export default function MaterialList() {
               >
                 <h6 className="fw-bold text-line-1">{title}</h6>
                 <p className=" text-line-5">{description}</p>
-                <span className="ml-auto mt-auto p-0">{createdAt.seconds}</span>
+                <span className="ml-auto mt-auto p-0">
+                  <span className="fw-bold">Publicado: </span>
+                  {getDate(createdAt)}
+                </span>
               </div>
             </div>
           ))}

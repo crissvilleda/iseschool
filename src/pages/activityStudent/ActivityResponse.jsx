@@ -130,17 +130,6 @@ export default function ActivityResponse({ data, onSubmit }) {
       </div>
 
       <div className="is-flex justify-content-center pt-4">
-        {numberCuestions > 0 && (
-          <button
-            className="button is-primary mx-3"
-            type="button"
-            onClick={() => {
-              setNumberCuestions((n) => n - 1);
-            }}
-          >
-            Anterior
-          </button>
-        )}
         {numberCuestions + 1 < data.questions.length && (
           <button
             className="button is-primary mx-3"
