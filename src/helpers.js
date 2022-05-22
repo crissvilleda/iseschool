@@ -10,3 +10,7 @@ export const get = (obj, path, defaultValue = undefined) => {
   const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/);
   return result === undefined || result === obj ? defaultValue : result;
 };
+
+export function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

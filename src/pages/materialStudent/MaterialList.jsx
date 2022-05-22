@@ -13,6 +13,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
+import { getRandomInt } from "../../helpers";
+const listColors = ["#002D47", "#00B0BD", "#296073", "#F59432"];
 
 async function getMaterials(materials = []) {
   let querySet = query(
@@ -58,9 +60,9 @@ export default function MaterialList() {
               <div
                 className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
                 style={{
-                  borderLeft: "15px solid #F59432",
+                  borderLeft: `15px solid ${listColors.at(getRandomInt(0, 3))}`,
                   borderRadius: "15px",
-                  height: "220px",
+                  height: "125px",
                 }}
                 onClick={() => {
                   navigate(`/resource-student/${id}`);

@@ -14,8 +14,8 @@ import {
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
-import { get } from "../../helpers";
-
+import { get, getRandomInt } from "../../helpers";
+const listColors = ["#002D47", "#00B0BD", "#296073", "#F59432"];
 export default function ActivityList() {
   const [activities, setActivities] = useState([]);
   const { loading, setLoading } = useContext(LoadingContext);
@@ -70,9 +70,11 @@ export default function ActivityList() {
                 <div
                   className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
                   style={{
-                    borderLeft: `15px solid ${complete ? "#6c757d" : "red"}`,
+                    borderLeft: `15px solid ${
+                      complete ? "#6c757d" : listColors.at(getRandomInt(0, 3))
+                    }`,
                     borderRadius: "15px",
-                    height: "220px",
+                    height: "150px",
                   }}
                   onClick={() => {
                     navigate(`/activity-student/${id}`);
