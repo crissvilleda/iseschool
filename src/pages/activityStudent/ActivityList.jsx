@@ -50,7 +50,6 @@ export default function ActivityList() {
       activity.complete = responses.includes(user.uid);
       result.push(activity);
     });
-    console.log("re", result);
     return result;
   }
   return (

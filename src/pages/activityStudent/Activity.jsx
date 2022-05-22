@@ -30,7 +30,7 @@ export default function Activity() {
           const activity = { ...docSnap.data() };
           const responses = Array.from(get(activity, "studentsResponse", []));
           activity.complete = responses.includes(user.uid);
-          setData(docSnap.data());
+          setData(activity);
         }
       })
       .finally(() => setLoading(false));
