@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ActivityIcon from "../../assets/img/activities.png";
 import LoadingContext from "../../context/LoadingContext";
-import { getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, setDoc, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
@@ -22,39 +22,18 @@ export default function Activity() {
   const [isRespond, setIsRespond] = useState(false);
 
   useEffect(() => {
-    const consultar = async () => {
-      let activity = false;
-      if (id) {
-        setLoading(true);
-        try {
-          const docRef2 = doc(db, "activitiesResponses", id);
-          await getDoc(docRef2).then((docSnap) => {
-            if (docSnap.exists()) {
-              activity = { ...docSnap.data() };
-              activity.complete = true;
-            }
-          });
-
-          if (!activity) {
-            const docRef = doc(db, "activities", id);
-            await getDoc(docRef).then((docSnap) => {
-              if (docSnap.exists()) {
-                activity = { ...docSnap.data() };
-                const responses = Array.from(
-                  get(activity, "studentsResponse", [])
-                );
-                activity.complete = false;
-              }
-            });
-          }
-          setLoading(false);
-          setData(activity);
-        } catch (error) {
-          setLoading(false);
+    setLoading(true);
+    const docRef = doc(db, "activities", id);
+    getDoc(docRef)
+      .then((docSnap) => {
+        if (docSnap.exists()) {
+          const activity = { ...docSnap.data() };
+          const responses = Array.from(get(activity, "studentsResponse", []));
+          activity.complete = responses.includes(user.uid);
+          setData(docSnap.data());
         }
-      }
-    };
-    consultar();
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const { title, description, expirationDate } = data || {};
@@ -76,10 +55,13 @@ export default function Activity() {
         studentsResponse: [...studentsResponse, user.uid],
       });
       delete newData.studentsResponse;
-      await setDoc(doc(db, "activitiesResponses", id), {
+      await addDoc(doc(db, "activitiesResponses", id), {
         ...newData,
-        studentResponse: user.uid,
+        studentId: user.uid,
+        studentData: user,
+        activityId: id,
       });
+      setData({ ...data, studentsResponse: [...studentsResponse, user.uid] });
       setLoading(false);
     }
   };
