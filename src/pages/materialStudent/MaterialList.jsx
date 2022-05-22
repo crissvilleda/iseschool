@@ -48,7 +48,7 @@ export default function MaterialList() {
       <div className="is-flex is-justify-content-space-between my-4">
         <div className="is-flex">
           <img src={MaterialIcon} className="title-icon" />
-          <h1 className="title is-3 ml-2">Mis Materiales</h1>
+          <h1 className="title is-3 ml-2">Mis Materiales De Apoyo</h1>
         </div>
       </div>
       <LoadMask loading={loading}>
