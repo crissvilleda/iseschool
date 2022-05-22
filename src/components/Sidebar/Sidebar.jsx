@@ -7,7 +7,10 @@ import HomeIcon from "../../assets/img/home.svg";
 import GroupIcon from "../../assets/img/group.png";
 import ResourceIcon from "../../assets/img/books.png";
 import ActivityIcon from "../../assets/img/activities.png";
+import LogOut from "../../assets/img/logout.png";
 import UserContext from "../../context/UserContext";
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 
 function MenuItem({ icon, title, to, user, allowTo = [] }) {
   const [isActive, setIsActive] = useState(false);
@@ -108,6 +111,20 @@ export default function SideBar({ className }) {
                 user={user}
                 allowTo={["Student"]}
               />
+
+              <li
+                className="menu-item my-2"
+                onClick={() => {
+                  signOut(auth).then();
+                }}
+              >
+                <div className={`menu-link`}>
+                  <div className="menu-icon">
+                    <img src={LogOut} className="" />
+                  </div>
+                  <span className="pl-2 is-align-self-center">Salir</span>
+                </div>
+              </li>
             </>
           </ul>
         </div>

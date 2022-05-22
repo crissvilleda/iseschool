@@ -14,32 +14,14 @@ import {
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
-
-async function getActivities(activities = [], user) {
-  let querySet = query(
-    collection(db, "activities"),
-    where("expirationDate", "<", new Date()),
-    where("group", "==", user.group),
-    // hay que arreglar esto
-    where("studentsResponse", "array-contains", user.uid),
-    orderBy("expirationDate", "desc"),
-    startAfter(activities),
-    limit(25)
-  );
-
-  const querySnapshot = await getDocs(querySet);
-  const result = [];
-  querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
-  console.log("re", result);
-  return result;
-}
+import { get } from "../../helpers";
 
 export default function ActivityList() {
   const [activities, setActivities] = useState([]);
   const { loading, setLoading } = useContext(LoadingContext);
+  const { getDate } = useDateUtils();
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const { getDate } = useDateUtils();
 
   useEffect(() => {
     setLoading(true);
@@ -50,6 +32,27 @@ export default function ActivityList() {
       .finally(() => setLoading(false));
   }, []);
 
+  async function getActivities(activities = [], user) {
+    let querySet = query(
+      collection(db, "activities"),
+      orderBy("expirationDate", "desc"),
+      where("expirationDate", ">", new Date()),
+      where("group", "==", user.group),
+      startAfter(activities),
+      limit(25)
+    );
+
+    const querySnapshot = await getDocs(querySet);
+    const result = [];
+    querySnapshot.forEach((doc) => {
+      const activity = { id: doc.id, ...doc.data() };
+      const responses = Array.from(get(activity, "studentsResponse", []));
+      activity.complete = responses.includes(user.uid);
+      result.push(activity);
+    });
+    console.log("re", result);
+    return result;
+  }
   return (
     <>
       <div className="is-flex is-justify-content-space-between my-4">
@@ -61,31 +64,33 @@ export default function ActivityList() {
 
       <div className="row">
         {!loading &&
-          activities.map(({ title, description, expirationDate, id }) => (
-            <div className="p-0 m-0 col-12 col-sm-6" key={id}>
-              <div
-                className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
-                style={{
-                  borderLeft: "15px solid red",
-                  borderRadius: "15px",
-                  height: "220px",
-                }}
-                onClick={() => {
-                  navigate(`/activity-student/${id}`);
-                }}
-              >
-                <h6 className="fw-bold text-line-1">{title}</h6>
-                <p className=" text-line-5">{description}</p>
-                <span className="ml-auto mt-auto p-0">
-                  <span className="fw-bold">Vence:</span>{" "}
-                  {getDate(expirationDate)}
-                </span>
-                <span className="mt-auto mr-auto badge bg-danger d-inline">
-                  Sin completar
-                </span>
+          activities.map(
+            ({ title, description, expirationDate, id, complete }) => (
+              <div className="p-0 m-0 col-12 col-sm-6" key={id}>
+                <div
+                  className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
+                  style={{
+                    borderLeft: "15px solid red",
+                    borderRadius: "15px",
+                    height: "220px",
+                  }}
+                  onClick={() => {
+                    navigate(`/activity-student/${id}`);
+                  }}
+                >
+                  <h6 className="fw-bold text-line-1">{title}</h6>
+                  <p className=" text-line-5">{description}</p>
+                  <span className="ml-auto mt-auto p-0">
+                    <span className="fw-bold">Vence:</span>{" "}
+                    {getDate(expirationDate)}
+                  </span>
+                  <span className="mt-auto mr-auto badge bg-danger d-inline">
+                    {complete ? "Actividad resuelta" : "Actividad no resuelta"}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
       </div>
     </>
   );

@@ -19,11 +19,11 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import InputAnswer from "../../components/InputAnswer";
-import { data } from "./data";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
 import ActivityResponse from "./ActivityResponse";
+import LoadMask from "../../components/LoadMask";
+import { get } from "../../helpers";
 
 export default function Activity() {
   const { dateAsTimestamp, getDate } = useDateUtils();
@@ -42,7 +42,12 @@ export default function Activity() {
       const docRef = doc(db, "activities", id);
       getDoc(docRef)
         .then((docSnap) => {
-          if (docSnap.exists()) setData(docSnap.data());
+          if (docSnap.exists()) {
+            const activity = { ...docSnap.data() };
+            const responses = Array.from(get(activity, "studentsResponse", []));
+            activity.complete = responses.includes(user.uid);
+            setData(docSnap.data());
+          }
         })
         .finally(() => setLoading(false));
     }
@@ -85,38 +90,39 @@ export default function Activity() {
           <img src={ActivityIcon} className="title-icon" />
           <h2 className="title is-3 ml-2">{title}</h2>
         </div>
-
-        {!isRespond ? (
-          <>
-            <p className="mx-2 mx-sm-4">
-              <span className=" fw-bold">Descripción </span>
-              {description}
-            </p>
-            <p className="mx-2 mx-sm-4">
-              <span className=" fw-bold">Fecha de vencimiento </span>
-              {getDate(expirationDate)}
-            </p>
-          </>
-        ) : (
-          <ActivityResponse data={data} onSubmit={onSubmit} />
-        )}
+        <LoadMask loading={loading}>
+          {!isRespond ? (
+            <>
+              <p className="mx-2 mx-sm-4">
+                <span className=" fw-bold">Descripción </span>
+                {description}
+              </p>
+              <p className="mx-2 mx-sm-4">
+                <span className=" fw-bold">Fecha de vencimiento </span>
+                {getDate(expirationDate)}
+              </p>
+            </>
+          ) : (
+            <ActivityResponse data={data} onSubmit={onSubmit} />
+          )}
+          {!isRespond && (
+            <div className="is-flex justify-content-evenly pt-4">
+              <Link className="button is-secondary " to="/activity-student">
+                Regresar
+              </Link>
+              <button
+                className="button is-primary"
+                type="button"
+                onClick={() => {
+                  setIsRespond(true);
+                }}
+              >
+                Iniciar
+              </button>
+            </div>
+          )}
+        </LoadMask>
       </div>
-      {!isRespond && (
-        <div className="is-flex justify-content-evenly pt-4">
-          <Link className="button is-secondary " to="/activity-student">
-            Regresar
-          </Link>
-          <button
-            className="button is-primary"
-            type="button"
-            onClick={() => {
-              setIsRespond(true);
-            }}
-          >
-            Iniciar
-          </button>
-        </div>
-      )}
     </>
   );
 }

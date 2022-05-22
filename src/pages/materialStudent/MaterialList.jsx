@@ -1,9 +1,8 @@
-import { useMemo, useEffect, useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import Table, { tableActions } from "../../components/Table";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import MaterialIcon from "../../assets/img/books.png";
-import useDelete from "../../hooks/useDelete";
 import LoadingContext from "../../context/LoadingContext";
+import LoadMask from "../../components/LoadMask";
 import {
   collection,
   query,
@@ -50,28 +49,29 @@ export default function MaterialList() {
           <h1 className="title is-3 ml-2">Mis Materiales</h1>
         </div>
       </div>
-
-      <div className="row">
-        {materials.map(({ title, description, createdAt, id }) => (
-          <div className="p-0 m-0 col-12 col-sm-6" key={id}>
-            <div
-              className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
-              style={{
-                borderLeft: "15px solid #F59432",
-                borderRadius: "15px",
-                height: "220px",
-              }}
-              onClick={() => {
-                navigate(`/resource-student/${id}`);
-              }}
-            >
-              <h6 className="fw-bold text-line-1">{title}</h6>
-              <p className=" text-line-5">{description}</p>
-              <span className="ml-auto mt-auto p-0">{createdAt.seconds}</span>
+      <LoadMask loading={loading}>
+        <div className="row">
+          {materials.map(({ title, description, createdAt, id }) => (
+            <div className="p-0 m-0 col-12 col-sm-6" key={id}>
+              <div
+                className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
+                style={{
+                  borderLeft: "15px solid #F59432",
+                  borderRadius: "15px",
+                  height: "220px",
+                }}
+                onClick={() => {
+                  navigate(`/resource-student/${id}`);
+                }}
+              >
+                <h6 className="fw-bold text-line-1">{title}</h6>
+                <p className=" text-line-5">{description}</p>
+                <span className="ml-auto mt-auto p-0">{createdAt.seconds}</span>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </LoadMask>
     </>
   );
 }
