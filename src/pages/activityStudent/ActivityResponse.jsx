@@ -1,22 +1,4 @@
-import { useMemo, useEffect, useState, useContext } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import Table, { tableActions } from "../../components/Table";
-import dayjs from "dayjs";
-import ActivityIcon from "../../assets/img/activities.png";
-import useDelete from "../../hooks/useDelete";
-import LoadingContext from "../../context/LoadingContext";
-import {
-  collection,
-  query,
-  orderBy,
-  startAfter,
-  limit,
-  getDocs,
-  where,
-  Timestamp,
-} from "firebase/firestore";
-import { db } from "../../firebase";
-import InputAnswer from "../../components/InputAnswer";
+import { useEffect, useState } from "react";
 
 export default function ActivityResponse({ data, onSubmit }) {
   const [numberCuestions, setNumberCuestions] = useState(0);
