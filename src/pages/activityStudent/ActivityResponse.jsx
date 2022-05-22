@@ -18,7 +18,7 @@ import {
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
 
-export default function ActivityResponse({ data }) {
+export default function ActivityResponse({ data, onSubmit }) {
   const [numberCuestions, setNumberCuestions] = useState(0);
   const [question, setQuestion] = useState({});
   const [response, setResponse] = useState({});
@@ -163,9 +163,7 @@ export default function ActivityResponse({ data }) {
               checkSelect(() => {
                 checkAnswer();
                 checkTotalCorrect();
-                console.log("------ enviar data --- ---");
-                console.log(newData);
-                console.log("------- ---");
+                onSubmit(newData);
               });
             }}
           >
