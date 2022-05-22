@@ -15,6 +15,8 @@ import {
   getDoc,
   where,
   doc,
+  addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import InputAnswer from "../../components/InputAnswer";
@@ -51,6 +53,31 @@ export default function Activity() {
   }, [data]);
   const { title, description, expirationDate } = data || {};
 
+  const onSubmit = async (newData) => {
+    if (id) {
+      setLoading(true);
+      if (data?.studentsResponse?.length > 0) {
+        if (data.studentsResponse.includes(user.uid)) {
+          return;
+        }
+      }
+      const docRef = doc(db, "activities", id);
+      const studentsResponse =
+        data?.studentsResponse?.length > 0 ? [...data?.studentsResponse] : [];
+
+      await updateDoc(docRef, {
+        ...data,
+        studentsResponse: [...studentsResponse, user.uid],
+      });
+      delete newData.studentsResponse;
+      await addDoc(collection(db, "activitiesResponses"), {
+        ...newData,
+        studentResponse: user.uid,
+      });
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="is-flex is-justify-content-space-between my-4 flex-column">
@@ -71,7 +98,7 @@ export default function Activity() {
             </p>
           </>
         ) : (
-          <ActivityResponse data={data} />
+          <ActivityResponse data={data} onSubmit={onSubmit} />
         )}
       </div>
       {!isRespond && (

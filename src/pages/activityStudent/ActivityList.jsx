@@ -15,11 +15,13 @@ import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
 
-async function getActivities(activities = [], group) {
+async function getActivities(activities = [], user) {
   let querySet = query(
     collection(db, "activities"),
     where("expirationDate", "<", new Date()),
-    where("group", "==", group),
+    where("group", "==", user.group),
+    // hay que arreglar esto
+    where("studentsResponse", "array-contains", user.uid),
     orderBy("expirationDate", "desc"),
     startAfter(activities),
     limit(25)
@@ -28,6 +30,7 @@ async function getActivities(activities = [], group) {
   const querySnapshot = await getDocs(querySet);
   const result = [];
   querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
+  console.log("re", result);
   return result;
 }
 
@@ -40,7 +43,7 @@ export default function ActivityList() {
 
   useEffect(() => {
     setLoading(true);
-    getActivities(activities, user.group)
+    getActivities(activities, user)
       .then((data) => {
         if (data) setActivities(data);
       })
