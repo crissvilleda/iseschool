@@ -17,6 +17,7 @@ import {
   doc,
   addDoc,
   updateDoc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
@@ -24,6 +25,7 @@ import UserContext from "../../context/UserContext";
 import ActivityResponse from "./ActivityResponse";
 import LoadMask from "../../components/LoadMask";
 import { get } from "../../helpers";
+import { async } from "@firebase/util";
 
 export default function Activity() {
   const { dateAsTimestamp, getDate } = useDateUtils();
@@ -37,25 +39,41 @@ export default function Activity() {
   const [isRespond, setIsRespond] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      setLoading(true);
-      const docRef = doc(db, "activities", id);
-      getDoc(docRef)
-        .then((docSnap) => {
-          if (docSnap.exists()) {
-            const activity = { ...docSnap.data() };
-            const responses = Array.from(get(activity, "studentsResponse", []));
-            activity.complete = responses.includes(user.uid);
-            setData(docSnap.data());
+    const consultar = async () => {
+      let activity = false;
+      if (id) {
+        setLoading(true);
+        try {
+          const docRef2 = doc(db, "activitiesResponses", id);
+          await getDoc(docRef2).then((docSnap) => {
+            if (docSnap.exists()) {
+              activity = { ...docSnap.data() };
+              activity.complete = true;
+            }
+          });
+
+          if (!activity) {
+            const docRef = doc(db, "activities", id);
+            await getDoc(docRef).then((docSnap) => {
+              if (docSnap.exists()) {
+                activity = { ...docSnap.data() };
+                const responses = Array.from(
+                  get(activity, "studentsResponse", [])
+                );
+                activity.complete = false;
+              }
+            });
           }
-        })
-        .finally(() => setLoading(false));
-    }
+          setLoading(false);
+          setData(activity);
+        } catch (error) {
+          setLoading(false);
+        }
+      }
+    };
+    consultar();
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   const { title, description, expirationDate } = data || {};
 
   const onSubmit = async (newData) => {
@@ -75,7 +93,7 @@ export default function Activity() {
         studentsResponse: [...studentsResponse, user.uid],
       });
       delete newData.studentsResponse;
-      await addDoc(collection(db, "activitiesResponses"), {
+      await setDoc(doc(db, "activitiesResponses", id), {
         ...newData,
         studentResponse: user.uid,
       });
@@ -110,15 +128,17 @@ export default function Activity() {
               <Link className="button is-secondary " to="/activity-student">
                 Regresar
               </Link>
-              <button
-                className="button is-primary"
-                type="button"
-                onClick={() => {
-                  setIsRespond(true);
-                }}
-              >
-                Iniciar
-              </button>
+              {!data.complete && (
+                <button
+                  className="button is-primary"
+                  type="button"
+                  onClick={() => {
+                    setIsRespond(true);
+                  }}
+                >
+                  Iniciar
+                </button>
+              )}
             </div>
           )}
         </LoadMask>

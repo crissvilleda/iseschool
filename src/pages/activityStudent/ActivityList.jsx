@@ -70,7 +70,7 @@ export default function ActivityList() {
                 <div
                   className=" p-3 m-3 d-flex flex-column cursor-pointer bg-light shadow"
                   style={{
-                    borderLeft: "15px solid red",
+                    borderLeft: `15px solid ${complete ? "#6c757d" : "red"}`,
                     borderRadius: "15px",
                     height: "220px",
                   }}
@@ -81,12 +81,18 @@ export default function ActivityList() {
                   <h6 className="fw-bold text-line-1">{title}</h6>
                   <p className=" text-line-5">{description}</p>
                   <span className="ml-auto mt-auto p-0">
-                    <span className="fw-bold">Vence: </span>
+                    <span className="fw-bold">Vencimiento: </span>
                     {getDate(expirationDate)}
                   </span>
-                  <span className="mt-0 mr-auto badge bg-danger d-inline">
-                    {complete ? "Actividad resuelta" : "Actividad no resuelta"}
-                  </span>
+                  {complete ? (
+                    <span className="mt-0 mr-auto badge bg-secondary d-inline">
+                      Actividad resuelta{" "}
+                    </span>
+                  ) : (
+                    <span className="mt-0 mr-auto badge bg-danger d-inline">
+                      Actividad no resuelta
+                    </span>
+                  )}
                 </div>
               </div>
             )

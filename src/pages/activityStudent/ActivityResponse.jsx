@@ -23,7 +23,7 @@ export default function ActivityResponse({ data, onSubmit }) {
   const [question, setQuestion] = useState({});
   const [response, setResponse] = useState({});
   const [errorSelect, setErrorSelect] = useState(false);
-  let newData = data;
+  let newData = JSON.parse(JSON.stringify(data));
 
   useEffect(() => {
     if (data) {
