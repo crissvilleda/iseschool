@@ -107,10 +107,6 @@ export default function Activity() {
     }
   };
 
-  useEffect(() => {
-    console.log("dataa", data);
-  }, [data]);
-
   return Object.keys(data).length === 0 ? (
     <></>
   ) : (
