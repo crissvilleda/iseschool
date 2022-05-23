@@ -79,6 +79,7 @@ export default function ActivityList() {
         accessor: tableActions({
           edit: (id) => navigate(`/activity/${id}`),
           remove: (id) => removeData(id),
+          result: (id) => navigate(`/activity/${id}/results`),
         }),
       },
       {
