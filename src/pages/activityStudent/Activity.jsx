@@ -56,7 +56,6 @@ export default function Activity() {
         await getDoc(docRef).then((docSnap) => {
           if (docSnap.exists()) {
             activity = { ...docSnap.data() };
-            const responses = Array.from(get(activity, "studentsResponse", []));
             activity.complete = false;
           }
         });
