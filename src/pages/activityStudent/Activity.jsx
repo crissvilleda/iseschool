@@ -95,6 +95,7 @@ export default function Activity() {
         studentId: user.uid,
         studentData: user,
         activityId: id,
+        createdAt: new Date(),
       });
       setData({ ...data, studentsResponse: [...responses, user.uid] });
       setLoading(false);
