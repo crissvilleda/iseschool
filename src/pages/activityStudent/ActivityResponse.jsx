@@ -68,12 +68,7 @@ export default function ActivityResponse({ data, onSubmit }) {
             return;
           }
           return (
-            <div
-              className={`p-0 m-0 col-${
-                question?.type !== "true_or_false" ? "12" : "6"
-              }`}
-              key={clave}
-            >
+            <div className="p-0 m-0 col-sm-6" key={clave}>
               <div
                 className=" bg-white p-3 m-3 cursor-pointer"
                 style={{

@@ -9,6 +9,10 @@ import {
   setDoc,
   addDoc,
   collection,
+  where,
+  limit,
+  query,
+  getDocs,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
@@ -16,6 +20,8 @@ import UserContext from "../../context/UserContext";
 import ActivityResponse from "./ActivityResponse";
 import LoadMask from "../../components/LoadMask";
 import { get } from "../../helpers";
+
+import confetti from "canvas-confetti";
 
 export default function Activity() {
   const { dateAsTimestamp, getDate } = useDateUtils();
@@ -27,20 +33,43 @@ export default function Activity() {
   const navigate = useNavigate();
 
   const [isRespond, setIsRespond] = useState(false);
+  const getData = async () => {
+    setLoading(true);
+    let activity = {};
+
+    try {
+      let querySet = query(
+        collection(db, "activitiesResponses"),
+        where("activityId", "==", id),
+        where("studentId", "==", user.uid),
+        limit(1)
+      );
+
+      await getDocs(querySet).then((docSnap) => {
+        docSnap.forEach((item) => {
+          activity = { ...item.data() };
+        });
+      });
+
+      if (!activity?.complete) {
+        const docRef = doc(db, "activities", id);
+        await getDoc(docRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            activity = { ...docSnap.data() };
+            const responses = Array.from(get(activity, "studentsResponse", []));
+            activity.complete = false;
+          }
+        });
+      }
+      setData(activity);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    const docRef = doc(db, "activities", id);
-    getDoc(docRef)
-      .then((docSnap) => {
-        if (docSnap.exists()) {
-          const activity = { ...docSnap.data() };
-          const responses = Array.from(get(activity, "studentsResponse", []));
-          activity.complete = responses.includes(user.uid);
-          setData(activity);
-        }
-      })
-      .finally(() => setLoading(false));
+    getData();
   }, []);
 
   const { title, description, expirationDate, complete } = data || {};
@@ -70,10 +99,22 @@ export default function Activity() {
       setData({ ...data, studentsResponse: [...responses, user.uid] });
       setLoading(false);
       setIsRespond(false);
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+      getData();
     }
   };
 
-  return (
+  useEffect(() => {
+    console.log("dataa", data);
+  }, [data]);
+
+  return Object.keys(data).length === 0 ? (
+    <></>
+  ) : (
     <>
       <div className="is-flex is-justify-content-space-between my-4 flex-column">
         <div className="is-flex ">
@@ -95,11 +136,25 @@ export default function Activity() {
                 <span className=" fw-bold">Estado de la actividad: </span>
                 {complete ? "Resuelta" : "No resuelta"}
               </p>
-              {!complete && (
+
+              {!complete ? (
                 <p className="mx-2 mx-sm-4 text-center">
                   Al terminar la actividad ya no podrá volver a responderla de
                   nuevo
                 </p>
+              ) : (
+                <>
+                  <p className="mx-2 mx-sm-4">
+                    <span className=" fw-bold">Total de preguntas: </span>
+                    {data.totalQuestions}
+                  </p>
+                  <p className="mx-2 mx-sm-4">
+                    <span className=" fw-bold">
+                      Total de respuestas correctas:{" "}
+                    </span>
+                    {data.totalQuestionsCorrect}
+                  </p>
+                </>
               )}
             </>
           ) : (
