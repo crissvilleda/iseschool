@@ -1,11 +1,23 @@
 import editIcon from "../../assets/img/edit.svg";
 import removeIcon from "../../assets/img/delete.svg";
+import resultIcon from "../../assets/img/result.png";
 import Swal from "sweetalert2";
 
-function Actions({ id, edit = undefined, remove = undefined, row = {} }) {
+function Actions({
+  id,
+  edit = undefined,
+  remove = undefined,
+  result = undefined,
+  row = {},
+}) {
   const editAction = () => {
     edit(id, row);
   };
+
+  const resultAction = () => {
+    result(id, row);
+  };
+
   const removeAction = () => {
     Swal.fire({
       title: "¿Eliminar?",
@@ -28,12 +40,13 @@ function Actions({ id, edit = undefined, remove = undefined, row = {} }) {
   };
   return (
     <>
-      <div>
+      <div style={{ width: "125px" }}>
         {edit && (
           <a
             className="px-2"
             style={{ cursor: "pointer", color: "#c4183c" }}
             onClick={editAction}
+            title="Editar"
           >
             <i className="material-icons">
               <img src={editIcon} className="icon" />
@@ -45,9 +58,22 @@ function Actions({ id, edit = undefined, remove = undefined, row = {} }) {
             className="px-2"
             style={{ cursor: "pointer", color: "#c4183c" }}
             onClick={removeAction}
+            title="Eliminar"
           >
             <i className="material-icons">
               <img src={removeIcon} className="icon" />
+            </i>
+          </a>
+        )}
+        {result && (
+          <a
+            className="px-2"
+            style={{ cursor: "pointer", color: "#c4183c" }}
+            onClick={resultAction}
+            title="Ver resultados"
+          >
+            <i className="material-icons">
+              <img src={resultIcon} className="icon" />
             </i>
           </a>
         )}
