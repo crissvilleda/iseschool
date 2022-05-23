@@ -2,6 +2,7 @@ import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ActivityIcon from "../../assets/img/activities.png";
 import LoadingContext from "../../context/LoadingContext";
+import { notification } from "antd";
 import {
   getDoc,
   doc,
@@ -100,8 +101,12 @@ export default function Activity() {
       setIsRespond(false);
       confetti({
         particleCount: 100,
-        spread: 70,
+        spread: 120,
         origin: { y: 0.6 },
+      });
+      notification.success({
+        message: "Éxito",
+        description: "Actividad finalizada.",
       });
       getData();
     }
