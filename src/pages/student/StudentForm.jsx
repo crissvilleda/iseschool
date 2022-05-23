@@ -45,13 +45,13 @@ export default function StudentForm({
       limit(25)
     );
 
+    const results = [];
     getDocs(querySet).then((querySnapshot) => {
       querySnapshot.forEach((doc) =>
         results.push({ value: doc.id, label: doc.data().name })
       );
       setGroupOptions(results);
     });
-    const results = [];
   }, []);
 
   useEffect(() => {
