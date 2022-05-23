@@ -1,16 +1,24 @@
-import { useTable } from "react-table";
+import React from "react";
+import { useTable, useExpanded } from "react-table";
 import LoadMask from "../LoadMask";
 import "./table.css";
 
-export default function Table({ columns = [], data = [], loading = false }) {
+export default function Table({
+  columns = [],
+  data = [],
+  loading = false,
+  renderRowSubComponent,
+}) {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     headers,
     rows,
+    state: { expanded },
     prepareRow,
-  } = useTable({ columns, data });
+    visibleColumns,
+  } = useTable({ columns, data }, useExpanded);
 
   return (
     <LoadMask loading={loading}>
@@ -30,14 +38,24 @@ export default function Table({ columns = [], data = [], loading = false }) {
           <tbody {...getTableBodyProps()}>
             {rows.map((row, i) => {
               prepareRow(row);
+              const rowProps = row.getRowProps();
               return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
+                <React.Fragment key={rowProps.key}>
+                  <tr {...rowProps}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                  {row.isExpanded ? (
+                    <tr>
+                      <td colSpan={visibleColumns.length}>
+                        {renderRowSubComponent({ row })}
+                      </td>
+                    </tr>
+                  ) : null}
+                </React.Fragment>
               );
             })}
           </tbody>
