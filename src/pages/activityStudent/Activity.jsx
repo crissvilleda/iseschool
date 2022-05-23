@@ -2,7 +2,14 @@ import { useMemo, useEffect, useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ActivityIcon from "../../assets/img/activities.png";
 import LoadingContext from "../../context/LoadingContext";
-import { getDoc, doc, updateDoc, setDoc, addDoc } from "firebase/firestore";
+import {
+  getDoc,
+  doc,
+  updateDoc,
+  setDoc,
+  addDoc,
+  collection,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import useDateUtils from "../../hooks/useDateUtils";
 import UserContext from "../../context/UserContext";
@@ -36,33 +43,33 @@ export default function Activity() {
       .finally(() => setLoading(false));
   }, []);
 
-  const { title, description, expirationDate } = data || {};
+  const { title, description, expirationDate, complete } = data || {};
 
   const onSubmit = async (newData) => {
     if (id) {
       setLoading(true);
-      if (data?.studentsResponse?.length > 0) {
-        if (data.studentsResponse.includes(user.uid)) {
-          return;
-        }
+      const responses = Array.from(get(data, "studentsResponse", []));
+      if (responses.includes(user.uid)) {
+        setIsRespond(false);
+        setLoading(false);
+        return;
       }
-      const docRef = doc(db, "activities", id);
-      const studentsResponse =
-        data?.studentsResponse?.length > 0 ? [...data?.studentsResponse] : [];
 
+      const docRef = doc(db, "activities", id);
       await updateDoc(docRef, {
         ...data,
-        studentsResponse: [...studentsResponse, user.uid],
+        studentsResponse: [...responses, user.uid],
       });
       delete newData.studentsResponse;
-      await addDoc(doc(db, "activitiesResponses", id), {
+      await addDoc(collection(db, "activitiesResponses"), {
         ...newData,
         studentId: user.uid,
         studentData: user,
         activityId: id,
       });
-      setData({ ...data, studentsResponse: [...studentsResponse, user.uid] });
+      setData({ ...data, studentsResponse: [...responses, user.uid] });
       setLoading(false);
+      setIsRespond(false);
     }
   };
 
@@ -77,13 +84,23 @@ export default function Activity() {
           {!isRespond ? (
             <>
               <p className="mx-2 mx-sm-4">
-                <span className=" fw-bold">Descripción </span>
+                <span className=" fw-bold">Descripción: </span>
                 {description}
               </p>
               <p className="mx-2 mx-sm-4">
-                <span className=" fw-bold">Fecha de vencimiento </span>
+                <span className=" fw-bold">Fecha de vencimiento: </span>
                 {getDate(expirationDate)}
               </p>
+              <p className="mx-2 mx-sm-4">
+                <span className=" fw-bold">Estado de la actividad: </span>
+                {complete ? "Resuelta" : "No resuelta"}
+              </p>
+              {!complete && (
+                <p className="mx-2 mx-sm-4 text-center">
+                  Al terminar la actividad ya no podrá volver a responderla de
+                  nuevo
+                </p>
+              )}
             </>
           ) : (
             <ActivityResponse data={data} onSubmit={onSubmit} />
