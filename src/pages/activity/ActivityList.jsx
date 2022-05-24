@@ -66,11 +66,12 @@ export default function ActivityList() {
   const removeData = async (id) => {
     setLoading(true);
     await deleteData(id);
-    await getActivities(activities).then((data) => {
+    await getActivities().then((data) => {
       if (data) setActivities(data);
     });
     setLoading(false);
   };
+
   const columns = useMemo(
     () => [
       {
