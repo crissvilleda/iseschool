@@ -35,7 +35,9 @@ export default function ActivityForm({
     formState: { errors },
     control,
     clearErrors,
+    setError,
     reset,
+    getValues,
   } = useForm();
 
   const { fields, append, replace } = useFieldArray({
@@ -93,7 +95,7 @@ export default function ActivityForm({
     append(question);
     setVisible(false);
   };
-
+  console.log(errors);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TitleUnderline title="Datos de actividad" />
@@ -174,7 +176,7 @@ export default function ActivityForm({
       <Tooltip
         title={errors?.questions?.message || ""}
         visible={errors?.questions?.message || false}
-        placement="topRight"
+        placement="top"
         color={"red"}
         autoAdjustOverflow={true}
         getPopupContainer={(trigger) => trigger.parentElement}
@@ -186,7 +188,20 @@ export default function ActivityForm({
         <Link className="button is-secondary mt-4 mb-mt-0" to="/activity">
           Regresar
         </Link>
-        <button className="button is-primary" type="submit">
+        <button
+          className="button is-primary"
+          type="button"
+          onClick={() => {
+            const questions = Array.from(getValues("questions") || []);
+            if (questions.length === 0) {
+              setError("questions", {
+                type: "custom",
+                message: "Debe agregar al menos una pregunta.",
+              });
+            }
+            handleSubmit(onSubmit)();
+          }}
+        >
           {isUpdating ? "Actualizar" : "Registrar"}
         </button>
       </div>
