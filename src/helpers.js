@@ -14,3 +14,8 @@ export const get = (obj, path, defaultValue = undefined) => {
 export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
+export function isEmpty(value) {
+  if (value != "" && value != undefined && value != null) return false;
+  return true;
+}

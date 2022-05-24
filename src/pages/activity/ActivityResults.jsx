@@ -6,14 +6,66 @@ import LoadMask from "../../components/LoadMask";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import useDateUtils from "../../hooks/useDateUtils";
 import Table from "../../components/Table";
-import { get } from "../../helpers";
+import { get, isEmpty } from "../../helpers";
 import Card from "../../components/Card";
 
 function ExpandComponent({ row }) {
   const original = row.original;
-  console.log(original);
-  console.log(row);
-  return <>Hola mundo</>;
+  const questions = get(original, "questions", []);
+  return (
+    <>
+      <table className="table table-answers">
+        <thead>
+          <tr>
+            <th scope="col">Pregunta</th>
+            <th scope="col">Respuestas</th>
+            <th scope="col">Respuesta Correcta</th>
+            <th scope="col">Respuesta Estudiante</th>
+            <th scope="col">Resultado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {questions.map((question) => {
+            console.log(question);
+            const arrayAnswers = Object.values(get(question, "answers", {}));
+            const validAnswers = arrayAnswers.filter(
+              (item) => !isEmpty(get(item, "value", undefined))
+            );
+            const rightAnswers = validAnswers.filter(
+              (item) => get(item, "isRight", false) === true
+            );
+
+            const studentAnswers = validAnswers.filter(
+              (item) => get(item, "selectStudent", false) === true
+            );
+
+            const allAnswers = validAnswers
+              .map((item) => item.value)
+              .join(", ");
+
+            const allRightAnswers = rightAnswers
+              .map((item) => item.value)
+              .join(", ");
+
+            const allStudentAnswers = studentAnswers
+              .map((item) => item.value)
+              .join(", ");
+            return (
+              <tr>
+                <th>{get(question, "question", "")}</th>
+                <td>{allAnswers}</td>
+                <td>{allRightAnswers}</td>
+                <td>{allStudentAnswers}</td>
+                <td>
+                  {get(question, "isCorrect", false) ? "Buena 👍" : "Mala 👎"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </>
+  );
 }
 
 export default function ActivityResults() {

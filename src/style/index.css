@@ -81,3 +81,19 @@ body {
     flex-direction: column !important;
   }
 }
+
+
+.table-answers{
+  border-radius: 5px;
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0px 0 1px rgb(10 10 10 / 2%);
+}
+.table-answers thead {
+  background-color:#296073;
+  color:#fff !important;
+}
+.table-answers thead th {
+  color:  #f8f8f8f8 !important;
+}
+.table-answers tbody tr {
+border-bottom: 1px solid #b8b2b2 !important;
+}
