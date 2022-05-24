@@ -1,11 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function ActivityResponse({ data, onSubmit }) {
   const [numberQuestions, setNumberQuestions] = useState(0);
   const [question, setQuestion] = useState({});
   const [response, setResponse] = useState({});
   const [errorSelect, setErrorSelect] = useState(false);
-  let newData = JSON.parse(JSON.stringify(data));
+  const newData = useRef({});
+
+  useEffect(() => {
+    if (Object.keys(data).length > 0) {
+      newData.current = JSON.parse(JSON.stringify(data));
+    }
+  }, [data]);
 
   useEffect(() => {
     if (data) {
@@ -29,25 +35,29 @@ export default function ActivityResponse({ data, onSubmit }) {
   const checkAnswer = () => {
     Object.keys(response).map((clave) => {
       if (!!response[clave]) {
-        newData.questions[numberQuestions].answers[clave].selectStudent =
-          !!response[clave];
+        newData.current.questions[numberQuestions].answers[
+          clave
+        ].selectStudent = !!response[clave];
       }
     });
     const isIncorrect = Object.keys(
-      newData.questions[numberQuestions].answers
+      newData.current.questions[numberQuestions].answers
     ).some((clave) => {
-      const _answer = newData.questions[numberQuestions].answers[clave];
+      const _answer = newData.current.questions[numberQuestions].answers[clave];
       return !!_answer.selectStudent !== !!_answer.isRight;
     });
-    newData.questions[numberQuestions].isCorrect = !isIncorrect;
+    newData.current.questions[numberQuestions].isCorrect = !isIncorrect;
   };
 
   const checkTotalCorrect = () => {
-    newData.totalQuestions = newData.questions.length;
-    newData.totalQuestionsCorrect = newData.questions.reduce((prev, obj) => {
-      return obj.isCorrect ? prev + 1 : prev;
-    }, 0);
-    newData.complete = true;
+    newData.current.totalQuestions = newData.current.questions.length;
+    newData.current.totalQuestionsCorrect = newData.current.questions.reduce(
+      (prev, obj) => {
+        return obj.isCorrect ? prev + 1 : prev;
+      },
+      0
+    );
+    newData.current.complete = true;
   };
 
   return (
@@ -131,7 +141,7 @@ export default function ActivityResponse({ data, onSubmit }) {
               checkSelect(() => {
                 checkAnswer();
                 checkTotalCorrect();
-                onSubmit(newData);
+                onSubmit(newData.current);
               });
             }}
           >
