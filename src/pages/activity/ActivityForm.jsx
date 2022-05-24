@@ -20,6 +20,7 @@ import {
   getDocs,
   where,
 } from "firebase/firestore";
+import { Tooltip } from "antd";
 
 export default function ActivityForm({
   onSubmit,
@@ -170,7 +171,16 @@ export default function ActivityForm({
         </button>
       </div>
       <br />
-      <Table data={fields} columns={columns}></Table>
+      <Tooltip
+        title={errors?.questions?.message || ""}
+        visible={errors?.questions?.message || false}
+        placement="topRight"
+        color={"red"}
+        autoAdjustOverflow={true}
+        getPopupContainer={(trigger) => trigger.parentElement}
+      >
+        <Table data={fields} columns={columns}></Table>
+      </Tooltip>
       <br />
       <div className="d-flex flex-column-reverse flex-sm-row mt-4 justify-content-between">
         <Link className="button is-secondary mt-4 mb-mt-0" to="/activity">
