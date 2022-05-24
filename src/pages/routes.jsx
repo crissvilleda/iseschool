@@ -12,6 +12,7 @@ import Resource from "./material";
 import ResourceStudent from "./materialStudent";
 import Activity from "./activity";
 import ActivityStudent from "./activityStudent";
+import NotFound from "./404";
 import { registerSW } from "virtual:pwa-register";
 import { get } from "../helpers";
 
@@ -100,6 +101,7 @@ export default function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </UserContext.Provider>
       </LoadingContext.Provider>
