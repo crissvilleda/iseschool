@@ -43,13 +43,10 @@ export default function Home() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user.type == "Student") navigate("/activity-student");
-    else {
-      setLoading(true);
-      getStats()
-        .then((data) => setStats(data))
-        .finally(() => setLoading(false));
-    }
+    setLoading(true);
+    getStats()
+      .then((data) => setStats(data))
+      .finally(() => setLoading(false));
   }, []);
 
   return (

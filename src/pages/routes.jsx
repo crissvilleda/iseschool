@@ -13,6 +13,7 @@ import ResourceStudent from "./materialStudent";
 import Activity from "./activity";
 import ActivityStudent from "./activityStudent";
 import { registerSW } from "virtual:pwa-register";
+import { get } from "../helpers";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export default function App() {
     onNeedRefresh() {},
     onOfflineReady() {},
   });
+
   return (
     <>
       <LoadingContext.Provider value={contextLoading}>
@@ -34,7 +36,11 @@ export default function App() {
               path="/"
               element={
                 <PrivateRoute>
-                  <Home />
+                  {get(user, "type", undefined) === "Student" ? (
+                    <ActivityStudent />
+                  ) : (
+                    <Home />
+                  )}
                 </PrivateRoute>
               }
             />
