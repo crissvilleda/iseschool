@@ -26,7 +26,6 @@ function ExpandComponent({ row }) {
         </thead>
         <tbody>
           {questions.map((question) => {
-            console.log(question);
             const arrayAnswers = Object.values(get(question, "answers", {}));
             const validAnswers = arrayAnswers.filter(
               (item) => !isEmpty(get(item, "value", undefined))
@@ -123,7 +122,11 @@ export default function ActivityResults() {
       },
       {
         Header: "Respuestas correctas",
-        accessor: (row) => get(row, "totalQuestionsCorrect", 0),
+        accessor: (row) => {
+          const totalQuestions = get(row, "questions.length", 0);
+          const totalRight = get(row, "totalQuestionsCorrect", 0);
+          return `${totalRight}/${totalQuestions}`;
+        },
       },
       {
         Header: "Fecha y hora de entrega",
