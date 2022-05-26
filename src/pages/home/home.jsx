@@ -56,44 +56,24 @@ export default function Home() {
         <h1 className="title is-3 ml-1">Inicio</h1>
       </div>
       <LoadMask loading={loading}>
-        <div className="columns">
-          <div className="column is-6">
-            <Card className="p-4 mb-5">
-              <h2>Estudiantes</h2>
-              {stats?.students ? (
-                <Chart
-                  chartType="PieChart"
-                  width="100%"
-                  height="350px"
-                  data={stats?.students}
-                  options={{
-                    title: "Cantidad de estudiantes",
-                    pieHole: 0.4,
-                    is3D: false,
-                  }}
-                />
-              ) : (
-                <span>No hay datos</span>
-              )}
-            </Card>
-          </div>
-          <div className="column is-6">
-            <Card className="p-4 mb-5" borderLeftColor="#00B0BD">
-              <h2>Actividades</h2>
-              <Chart
-                chartType="Bar"
-                width="100%"
-                height="350px"
-                data={dataChart2}
-                options={{
-                  chart: {
-                    subtitle: "Cantidad actividades resueltas",
-                  },
-                }}
-              />
-            </Card>
-          </div>
-        </div>
+        <Card className="p-4 mb-5">
+          <h2>Estudiantes</h2>
+          {stats?.students ? (
+            <Chart
+              chartType="PieChart"
+              width="100%"
+              height="350px"
+              data={stats?.students}
+              options={{
+                title: "Cantidad de estudiantes",
+                pieHole: 0.4,
+                is3D: false,
+              }}
+            />
+          ) : (
+            <span>No hay datos</span>
+          )}
+        </Card>
       </LoadMask>
     </>
   );
