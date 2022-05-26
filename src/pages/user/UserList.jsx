@@ -91,7 +91,7 @@ export default function () {
       },
       {
         Header: "Genero",
-        accessor: "gender",
+        accessor: (row) => (row.gender === "M" ? "Masculino" : "Femenino"),
       },
     ],
     []
