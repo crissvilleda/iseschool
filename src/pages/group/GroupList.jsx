@@ -24,7 +24,7 @@ export default function GroupList() {
 
   useEffect(() => {
     setLoading(true);
-    getGroups(groups).finally(() => setLoading(false));
+    getGroups().finally(() => setLoading(false));
   }, []);
 
   async function getGroups() {
