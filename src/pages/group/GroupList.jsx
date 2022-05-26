@@ -16,40 +16,37 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
-async function getGroups(groups) {
-  let querySet = query(
-    collection(db, "groups"),
-    orderBy("createdAt", "desc"),
-    limit(25)
-  );
-
-  const querySnapshot = await getDocs(querySet);
-  const result = [];
-  querySnapshot.forEach((doc) => result.push({ id: doc.id, ...doc.data() }));
-  return result;
-}
 export default function GroupList() {
   const [groups, setGroups] = useState([]);
-  const { deleteData } = useDelete("users");
+  const { deleteData } = useDelete("groups");
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
-    getGroups(groups)
-      .then((data) => {
-        if (data) setGroups(data);
-      })
-      .finally(() => setLoading(false));
+    getGroups(groups).finally(() => setLoading(false));
   }, []);
 
+  async function getGroups() {
+    let querySet = query(
+      collection(db, "groups"),
+      orderBy("createdAt", "desc"),
+      limit(25)
+    );
+
+    const querySnapshot = await getDocs(querySet);
+    const results = [];
+    querySnapshot.forEach((doc) => results.push({ id: doc.id, ...doc.data() }));
+    setGroups(results);
+  }
   const removeData = async (id) => {
     setLoading(true);
-    await deleteData(id);
-    await getGroups(groups).then((data) => {
-      if (data) setGroups(data);
-    });
-    setLoading(false);
+    try {
+      await deleteData(id);
+      await getGroups();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const columns = useMemo(
