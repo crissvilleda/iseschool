@@ -8,7 +8,11 @@ import {
   InputDate,
   InputSelect,
 } from "../../components/CustomInputs";
-import { required } from "../../validations";
+import {
+  required,
+  greaterThenToday,
+  composeValidators,
+} from "../../validations";
 import Table, { tableActions } from "../../components/Table";
 import QuestionModal from "./QuestionModal/QuestionModal";
 import { db } from "../../firebase";
@@ -138,7 +142,7 @@ export default function ActivityForm({
             className="input"
             control={control}
             name="expirationDate"
-            rules={{ validate: required }}
+            rules={{ validate: composeValidators(required, greaterThenToday) }}
             placeholder={"Selección fecha"}
           />
         </div>

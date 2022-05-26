@@ -56,7 +56,17 @@ export function password(value) {
 
 export function date(value) {
   if (!isEmpty(value) && !dayjs(dateAsDayjs(value)).isValid()) {
-    return "Fecha invalida";
+    return "Fecha invalida.";
+  }
+  return null;
+}
+
+export function greaterThenToday(value) {
+  if (
+    !isEmpty(value) &&
+    dateAsDayjs(value).startOf("day").isBefore(dayjs().startOf("day"))
+  ) {
+    return "No se pueden seleccionar una fecha anteriores a hoy.";
   }
   return null;
 }
