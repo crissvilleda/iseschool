@@ -69,9 +69,13 @@ export default function () {
 
   async function removeData(id) {
     setLoading(true);
-    await deleteDoc(doc(db, "materials", id));
-    await getMaterials(typeUser);
-    setLoading(false);
+    try {
+      await deleteDoc(doc(db, "materials", id));
+      await getMaterials();
+      setGroup(null);
+    } finally {
+      setLoading(false);
+    }
   }
   const columns = useMemo(
     () => [
