@@ -37,7 +37,7 @@ export default function ActivityList() {
       collection(db, "groups"),
       where("active", "==", true),
       orderBy("createdAt"),
-      limit(25)
+      limit(200)
     );
     const results = [];
     getDocs(querySet).then((querySnapshot) => {
@@ -49,12 +49,12 @@ export default function ActivityList() {
   }, []);
 
   async function getActivities(filterGroup = null) {
-    let querySet = query(collection(db, "activities"), limit(25));
+    let querySet = query(collection(db, "activities"), limit(200));
     if (filterGroup) {
       querySet = query(
         collection(db, "activities"),
         where("group", "==", filterGroup),
-        limit(25)
+        limit(200)
       );
     }
     const querySnapshot = await getDocs(querySet);

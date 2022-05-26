@@ -54,7 +54,7 @@ export default function ActivityForm({
       collection(db, "groups"),
       where("active", "==", true),
       orderBy("createdAt"),
-      limit(25)
+      limit(200)
     );
 
     const results = [];

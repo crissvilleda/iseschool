@@ -21,7 +21,7 @@ async function getMaterials(materials = []) {
     collection(db, "materials"),
     orderBy("createdAt", "desc"),
     startAfter(materials),
-    limit(25)
+    limit(200)
   );
 
   const querySnapshot = await getDocs(querySet);

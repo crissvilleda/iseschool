@@ -21,7 +21,7 @@ async function getStudents(students) {
     collection(db, "users"),
     where("type", "==", "Student"),
     orderBy("name"),
-    limit(25)
+    limit(200)
   );
 
   const querySnapshot = await getDocs(querySet);

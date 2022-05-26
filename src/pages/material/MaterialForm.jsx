@@ -37,7 +37,7 @@ export default function MaterialForm({
       collection(db, "groups"),
       where("active", "==", true),
       orderBy("createdAt"),
-      limit(25)
+      limit(200)
     );
 
     const results = [];

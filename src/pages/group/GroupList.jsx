@@ -31,7 +31,7 @@ export default function GroupList() {
     let querySet = query(
       collection(db, "groups"),
       orderBy("createdAt", "desc"),
-      limit(25)
+      limit(200)
     );
 
     const querySnapshot = await getDocs(querySet);

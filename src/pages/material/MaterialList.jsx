@@ -40,7 +40,7 @@ export default function () {
       collection(db, "groups"),
       where("active", "==", true),
       orderBy("createdAt"),
-      limit(25)
+      limit(200)
     );
 
     const results = [];
@@ -53,12 +53,12 @@ export default function () {
   }, []);
 
   async function getMaterials(filterGroup = null) {
-    let querySet = query(collection(db, "materials"), limit(25));
+    let querySet = query(collection(db, "materials"), limit(200));
     if (filterGroup) {
       querySet = query(
         collection(db, "materials"),
         where("group", "==", filterGroup),
-        limit(25)
+        limit(200)
       );
     }
     const querySnapshot = await getDocs(querySet);

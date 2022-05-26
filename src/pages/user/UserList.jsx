@@ -42,7 +42,7 @@ export default function () {
     let querySet = query(
       collection(db, "users"),
       where("type", "in", typeUser),
-      limit(25)
+      limit(200)
     );
     const querySnapshot = await getDocs(querySet);
     const results = [];

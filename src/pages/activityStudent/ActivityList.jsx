@@ -39,7 +39,7 @@ export default function ActivityList() {
       where("expirationDate", ">", new Date()),
       where("group", "==", user.group),
       startAfter(activities),
-      limit(25)
+      limit(200)
     );
 
     const querySnapshot = await getDocs(querySet);
