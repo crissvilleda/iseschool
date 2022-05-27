@@ -39,7 +39,9 @@ export default function Login() {
       .catch((error) => {
         const errorCode = error.code;
         console.log(errorCode);
-        if (errorCode === "auth/wrong-password") {
+        if (
+          ["auth/wrong-password", "auth/user-not-found"].includes(errorCode)
+        ) {
           SwalError("Error", "El email o la contraseña es invalida.");
         }
       })
