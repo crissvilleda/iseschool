@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "./sidebar.css";
 import UserIcon from "../../assets/img/user.png";
@@ -12,10 +12,7 @@ import UserContext from "../../context/UserContext";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 
-function MenuItem({ icon, title, to, user, allowTo = [] }) {
-  const [isActive, setIsActive] = useState(false);
-  const location = useLocation();
-
+function MenuItem({ icon, title, to, user, allowTo = [], location }) {
   const onClickItem = () => {
     const sidebar = document.getElementById("sidebar");
     if (sidebar) sidebar.classList.remove("open");
@@ -24,10 +21,7 @@ function MenuItem({ icon, title, to, user, allowTo = [] }) {
   };
 
   if (!allowTo.includes(user.type)) return <></>;
-  useEffect(() => {
-    if (location.pathname.includes(to) && to != "/") setIsActive(true);
-    else setIsActive(false);
-  }, [location.pathname]);
+  const isActive = location.pathname.includes(to) && to != "/";
   return (
     <li className="menu-item my-2" onClick={onClickItem}>
       <NavLink
@@ -46,6 +40,7 @@ function MenuItem({ icon, title, to, user, allowTo = [] }) {
 
 export default function SideBar({ className }) {
   const { user } = useContext(UserContext);
+  const location = useLocation();
   return (
     <>
       <aside
@@ -61,6 +56,7 @@ export default function SideBar({ className }) {
                 icon={HomeIcon}
                 user={user}
                 allowTo={["Admin", "Teacher"]}
+                location={location}
               />
               <MenuItem
                 title="Usuarios"
@@ -68,6 +64,7 @@ export default function SideBar({ className }) {
                 icon={UserIcon}
                 user={user}
                 allowTo={["Admin"]}
+                location={location}
               />
               <MenuItem
                 title="Estudiantes"
@@ -75,6 +72,7 @@ export default function SideBar({ className }) {
                 icon={StudentIcon}
                 user={user}
                 allowTo={["Admin", "Teacher"]}
+                location={location}
               />
               <MenuItem
                 title="Grupos"
@@ -82,6 +80,7 @@ export default function SideBar({ className }) {
                 icon={GroupIcon}
                 user={user}
                 allowTo={["Admin", "Teacher"]}
+                location={location}
               />
               <MenuItem
                 title="Actividades"
@@ -89,6 +88,7 @@ export default function SideBar({ className }) {
                 icon={ActivityIcon}
                 user={user}
                 allowTo={["Admin", "Teacher"]}
+                location={location}
               />
               <MenuItem
                 title="Mis Actividades"
@@ -96,6 +96,7 @@ export default function SideBar({ className }) {
                 icon={ActivityIcon}
                 user={user}
                 allowTo={["Student"]}
+                location={location}
               />
               <MenuItem
                 title="Material"
@@ -103,6 +104,7 @@ export default function SideBar({ className }) {
                 icon={ResourceIcon}
                 user={user}
                 allowTo={["Admin", "Teacher"]}
+                location={location}
               />
               <MenuItem
                 title="Mis Materiales"
@@ -110,6 +112,7 @@ export default function SideBar({ className }) {
                 icon={ResourceIcon}
                 user={user}
                 allowTo={["Student"]}
+                location={location}
               />
 
               <li
