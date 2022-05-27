@@ -77,11 +77,11 @@ export default function QuestionForm({
     ) {
       setValue(
         "answers.one",
-        get(initialValues, "answers.one", { value: "Verdadero" })
+        get(initialValues, "answers.one", { value: "True" })
       );
       setValue(
         "answers.two",
-        get(initialValues, "answers.two", { value: "Falso" })
+        get(initialValues, "answers.two", { value: "False" })
       );
     } else if (value == "quiz" && get(initialValues, "type") === "quiz") {
       setValue("answers.one", get(initialValues, "answers.one", { value: "" }));
@@ -95,8 +95,8 @@ export default function QuestionForm({
         get(initialValues, "answers.four", { value: "" })
       );
     } else if (value === "true_or_false") {
-      setValue("answers.one", { value: "Verdadero" });
-      setValue("answers.two", { value: "Falso" });
+      setValue("answers.one", { value: "True" });
+      setValue("answers.two", { value: "False" });
     } else {
       setValue("answers.one", { value: "" });
       setValue("answers.two", { value: "" });
