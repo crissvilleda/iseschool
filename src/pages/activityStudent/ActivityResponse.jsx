@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from "react";
+import { get } from "../../helpers";
+import Upload from "../../components/CustomInputs/InputUpload/Upload";
 
 export default function ActivityResponse({ data, onSubmit }) {
   const [numberQuestions, setNumberQuestions] = useState(0);
@@ -59,7 +61,6 @@ export default function ActivityResponse({ data, onSubmit }) {
     );
     newData.current.complete = true;
   };
-
   return (
     <>
       <div>
@@ -68,6 +69,11 @@ export default function ActivityResponse({ data, onSubmit }) {
           <br />
           <div className="text-center title ml-2">{question.question}</div>
         </h5>
+        {get(question, "questionFile", "") !== "" && (
+          <div className=" d-flex justify-content-center">
+            <Upload file={question.questionFile} disabled={true} />
+          </div>
+        )}
         <p className="text-center mt-2 m-0">
           Seleccione la respuesta que considere correcta
         </p>

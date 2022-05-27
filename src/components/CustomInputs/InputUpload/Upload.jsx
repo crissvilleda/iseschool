@@ -30,7 +30,11 @@ export default function Upload(props) {
     setLoading(true);
     getFile()
       .then()
-      .finally(() => setLoading(false));
+      .finally(() =>
+        setTimeout(() => {
+          setLoading(false);
+        }, 300)
+      );
   }, [props.file]);
 
   const onFileChange = (e, file) => {
@@ -73,13 +77,15 @@ export default function Upload(props) {
                 id="uploaded-image-container"
                 className="uploaded-image-container"
               >
-                <button
-                  className="is-button-remove"
-                  type="button"
-                  onClick={onRemove}
-                >
-                  Remover
-                </button>
+                {!disabled && (
+                  <button
+                    className="is-button-remove"
+                    type="button"
+                    onClick={onRemove}
+                  >
+                    Remover
+                  </button>
+                )}
               </div>
               <img src={srcFile} className="uploaded-file-image" />
             </div>
