@@ -41,6 +41,7 @@ export default ({ mode }) => {
       }),
       react(),
       VitePWA({
+        registerType: "autoUpdate",
         includeAssets: [
           "school.png",
           "school.ico",
