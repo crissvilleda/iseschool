@@ -65,7 +65,8 @@ export default function ActivityResponse({ data, onSubmit }) {
       <div>
         <h5 className=" ml-2">
           <span className="fw-bold d-inline">Pregunta: </span>
-          {question.question}:
+          <br />
+          <div className="text-center title ml-2">{question.question}</div>
         </h5>
         <p className="text-center mt-2 m-0">
           Seleccione la respuesta que considere correcta

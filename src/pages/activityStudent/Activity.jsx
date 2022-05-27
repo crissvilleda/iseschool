@@ -120,7 +120,13 @@ export default function Activity() {
       <div className="is-flex is-justify-content-space-between my-4 flex-column">
         <div className="is-flex ">
           <img src={ActivityIcon} className="title-icon" />
-          <h2 className="title is-3 ml-2">{title}</h2>
+          {isRespond ? (
+            <b style={{ color: "#296073" }} className=" ml-2">
+              {title}
+            </b>
+          ) : (
+            <h2 className="title is-3 ml-2">{title}</h2>
+          )}
         </div>
         <LoadMask loading={loading}>
           {!isRespond ? (
