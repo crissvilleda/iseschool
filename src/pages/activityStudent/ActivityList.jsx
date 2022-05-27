@@ -80,20 +80,22 @@ export default function ActivityList() {
                   }}
                 >
                   <h6 className="fw-bold text-line-1">{title}</h6>
-                  <p className=" text-line-5">{description}</p>
+                  {/* <p className=" text-line-5">{description}</p> */}
+                  <div className="d-flex justify-content-center align-items-center mt-2">
+                    {complete ? (
+                      <span className="mt-0 mr-auto badge bg-secondary d-inline">
+                        Actividad resuelta{" "}
+                      </span>
+                    ) : (
+                      <span className="mt-0 mr-auto badge bg-danger d-inline">
+                        Actividad no resuelta
+                      </span>
+                    )}
+                  </div>
                   <span className="ml-auto mt-auto p-0">
                     <span className="fw-bold">Vencimiento: </span>
                     {getDate(expirationDate)}
                   </span>
-                  {complete ? (
-                    <span className="mt-0 mr-auto badge bg-secondary d-inline">
-                      Actividad resuelta{" "}
-                    </span>
-                  ) : (
-                    <span className="mt-0 mr-auto badge bg-danger d-inline">
-                      Actividad no resuelta
-                    </span>
-                  )}
                 </div>
               </div>
             )
